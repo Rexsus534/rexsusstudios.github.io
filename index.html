@@ -24,20 +24,24 @@ h1 span,.red{color:#ed2929}
 section{padding:85px 12%}
 h2{font-size:36px;margin-bottom:15px}
 .subtitle{color:#999;margin-bottom:35px;line-height:1.7}
+.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px}
 .game-card{background:#131313;border:1px solid #333;overflow:hidden}
-.game-banner{height:260px;background:linear-gradient(120deg,#120d0d,#4a1717,#111);display:flex;align-items:center;justify-content:center;text-align:center;padding:20px}
-.game-banner strong{font-size:clamp(25px,5vw,48px);line-height:1.2}
-.game-info{padding:30px}
+.game-banner{height:230px;background:linear-gradient(120deg,#120d0d,#4a1717,#111);display:flex;align-items:center;justify-content:center;text-align:center;padding:20px}
+.game-banner strong{font-size:clamp(25px,4vw,42px);line-height:1.2}
+.game-info{padding:25px}
 .game-info p{color:#aaa;line-height:1.7;margin:15px 0 25px}
 .about{background:#111}
 footer{padding:35px 12%;border-top:1px solid #292929;color:#777;display:flex;justify-content:space-between;flex-wrap:wrap;gap:15px}
-#gameScreen{display:none;position:fixed;inset:0;background:#080d13;z-index:20}
-#gameScreen iframe{width:100%;height:100%;border:0}
-#closeGame{position:absolute;right:15px;top:15px;z-index:25;width:auto;padding:12px 20px;background:#b51f1f;color:white;border:0;cursor:pointer;border-radius:6px}
-@media(max-width:650px){header{padding:0 5%}nav a{margin-left:10px;font-size:11px}.hero{padding:75px 7%}section{padding:65px 7%}}
+@media(max-width:650px){
+header{padding:0 5%}
+nav a{margin-left:10px;font-size:11px}
+.hero{padding:75px 7%}
+section{padding:65px 7%}
+}
 </style>
 </head>
 <body>
+
 <header>
 <div class="logo">REXSUS <span>STUDIOS</span></div>
 <nav>
@@ -48,6 +52,7 @@ footer{padding:35px 12%;border-top:1px solid #292929;color:#777;display:flex;jus
 </header>
 
 <main>
+
 <div class="hero" id="anasayfa">
 <div class="tag">BAĞIMSIZ OYUN STÜDYOSU</div>
 <h1>DÜNYALAR<br><span>YARATIYORUZ.</span></h1>
@@ -56,72 +61,62 @@ footer{padding:35px 12%;border-top:1px solid #292929;color:#777;display:flex;jus
 </div>
 
 <section id="oyunlar">
- 
 <h2>OYUNLARIMIZ<span class="red">.</span></h2>
 <p class="subtitle">REXSUS STUDIOS tarafından geliştirilen oyunları keşfet.</p>
 
+<div class="games-grid">
+
 <div class="game-card">
-  <div class="game-banner">
-    <strong>SHADOWS OF THE<br><span class="red">LOST KINGDOM</span></strong>
-  </div>
-  <div class="game-info">
-    <div class="tag">MACERA • RPG • FANTASTİK</div>
-    <h2>SHADOWS OF THE LOST KINGDOM</h2>
-    <p>Kayıp Krallığın Gölgesinde! Kendi kahramanını oluştur, sınıfını seç, düşmanlarla savaş, görevleri tamamla ve güçlen.</p>
-    <button class="btn" onclick="openGame()">OYNA</button>
-  </div>
+<div class="game-banner">
+<strong>SHADOWS OF THE<br><span class="red">LOST KINGDOM</span></strong>
+</div>
+<div class="game-info">
+<div class="tag">MACERA • RPG • FANTASTİK</div>
+<h2>SHADOWS OF THE LOST KINGDOM</h2>
+<p>Kayıp Krallığın Gölgesinde! Kendi kahramanını oluştur, sınıfını seç, düşmanlarla savaş, görevleri tamamla ve güçlen.</p>
+<button class="btn" onclick="location.href='game.html'">OYNA</button>
+</div>
 </div>
 
 <div class="game-card">
-  <div class="game-banner" style="background:linear-gradient(135deg,#050505,#202020,#080808);">
-    <strong style="color:#ddd;letter-spacing:8px;">ANOMALY<span class="red">.</span></strong>
-  </div>
-  <div class="game-info">
-    <div class="tag">KORKU • GERİLİM • HAYATTA KALMA</div>
-    <h2>ANOMALY</h2>
-    <p>Her odayı dikkatlice incele. Gerçek ile anomaliyi ayırt et. Ama dikkat et... Bazı şeyler sana sandığından daha yakın.</p>
-    <button class="btn" onclick="location.href='anomaly.html'">OYNA</button>
-  </div>
+<div class="game-banner" style="background:linear-gradient(135deg,#050505,#202020,#080808)">
+<strong style="color:#ddd;letter-spacing:8px">ANOMALY<span class="red">.</span></strong>
+</div>
+<div class="game-info">
+<div class="tag">KORKU • GERİLİM • HAYATTA KALMA</div>
+<h2>ANOMALY</h2>
+<p>Her odayı dikkatlice incele. Gerçek ile anomaliyi ayırt et. Ama dikkat et... Bazı şeyler sana sandığından daha yakın.</p>
+<button class="btn" onclick="location.href='anomaly.html'">OYNA</button>
+</div>
+</div>
+
 </div>
 </section>
 
-
-<h2>OYUNLARIMIZ<span class="red">.</span></h2>
-<p class="subtitle">REXSUS STUDIOS tarafından geliştirilen oyunları keşfet.</p>
-
-<div class="game-card">
-  <div class="game-banner">
-    <strong>SHADOWS OF THE<br><span class="red">LOST KINGDOM</span></strong>
-  </div>
-  <div class="game-info">
-    <div class="tag">MACERA • RPG • FANTASTİK</div>
-    <h2>SHADOWS OF THE LOST KINGDOM</h2>
-    <p>Kayıp Krallığın Gölgesinde! Kendi kahramanını oluştur, sınıfını seç, düşmanlarla savaş, görevleri tamamla ve güçlen.</p>
-    <button class="btn" onclick="openGame()">OYNA</button>
-  </div>
-</div>
-
-<h2 style="margin-top:65px;">BOSS FIGHTS<span class="red">.</span></h2>
+<section id="boss" style="background:#0c0b12">
+<h2>BOSS FIGHTS<span class="red">.</span></h2>
 <p class="subtitle">Güçlü düşmanlara karşı hayatta kal ve zafer kazan.</p>
 
+<div class="games-grid">
 <div class="game-card">
-  <div class="game-banner" style="background:linear-gradient(135deg,#080812,#28203b,#080812);">
-    <strong>BONEBOUND<span class="red">:</span><br>LAST OATH</strong>
-  </div>
-  <div class="game-info">
-    <div class="tag">BOSS FIGHT • AKSİYON • 2D</div>
-    <h2>BONEBOUND: LAST OATH</h2>
-    <p>Son iskeletle karşı karşıyasın. Ruhunu koru, ölümcül saldırılardan kaç ve bu savaşın gerçek kazananı ol.</p>
-    <button class="btn" onclick="location.href='bonebound.html'">SAVAŞA BAŞLA</button>
-  </div>
+<div class="game-banner" style="background:linear-gradient(135deg,#080812,#28203b,#080812)">
+<strong>BONEBOUND<span class="red">:</span><br>LAST OATH</strong>
+</div>
+<div class="game-info">
+<div class="tag">BOSS FIGHT • AKSİYON • 2D</div>
+<h2>BONEBOUND: LAST OATH</h2>
+<p>Son iskeletle karşı karşıyasın. Ruhunu koru, ölümcül saldırılardan kaç ve bu savaşın gerçek kazananı ol.</p>
+<button class="btn" onclick="location.href='bonebound.html'">SAVAŞA BAŞLA</button>
+</div>
+</div>
 </div>
 </section>
-
 
 <section class="about" id="hakkimizda">
 <h2>HAKKIMIZDA<span class="red">.</span></h2>
 <p class="subtitle">REXSUS STUDIOS, özgün oyun dünyaları ve maceralar geliştirmeyi hedefleyen bağımsız bir oyun stüdyosudur.</p>
 </section>
+
 </main>
 
 <footer>
@@ -129,20 +124,5 @@ footer{padding:35px 12%;border-top:1px solid #292929;color:#777;display:flex;jus
 <span>YENİ DÜNYALAR. UNUTULMAZ MACERALAR.</span>
 </footer>
 
-<div id="gameScreen">
-<button id="closeGame" onclick="closeGame()">SİTEYE DÖN</button>
-<iframe id="gameFrame" title="Shadows of the Lost Kingdom"></iframe>
-</div>
-
-<script>
-function openGame(){
- document.getElementById("gameScreen").style.display="block";
- document.getElementById("gameFrame").src="game.html";
-}
-function closeGame(){
- document.getElementById("gameScreen").style.display="none";
- document.getElementById("gameFrame").src="";
-}
-</script>
 </body>
 </html>
