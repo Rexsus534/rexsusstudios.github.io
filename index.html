@@ -4,49 +4,129 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>REXSUS STUDIOS | Oyun Dünyası</title>
+<title>REXSUS STUDIOS | Game Universe</title>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:#080808;color:#fff;font-family:Arial,sans-serif}
-header{height:80px;padding:0 8%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #292929}
-.logo{font-size:25px;font-weight:900;letter-spacing:2px}
-.logo span{color:#ed2929}
-nav a{color:#bbb;text-decoration:none;margin-left:25px;font-size:14px}
-nav a:hover{color:#ed2929}
-.hero{min-height:580px;padding:100px 12%;display:flex;flex-direction:column;justify-content:center;background:radial-gradient(ellipse at 80% 50%,#421010,#160909 35%,#080808 75%)}
-.tag{color:#f04444;letter-spacing:5px;font-size:12px;margin-bottom:25px}
-h1{font-size:clamp(48px,8vw,88px);line-height:1.05}
-h1 span,.red{color:#ed2929}
-.hero p{max-width:550px;color:#aaa;line-height:1.8;margin:25px 0}
-.btn{display:inline-block;padding:16px 28px;background:#d92323;color:white;text-decoration:none;font-weight:bold;border:0;cursor:pointer;width:max-content}
-.btn:hover{background:#ff3636}
+body{
+background:#08090d;color:#fff;
+font-family:Arial,sans-serif;
+}
+header{
+height:78px;padding:0 8%;
+display:flex;align-items:center;
+justify-content:space-between;
+background:#090a0f;
+border-bottom:1px solid #252630;
+position:sticky;top:0;z-index:10;
+}
+.logo{font-size:24px;font-weight:900;letter-spacing:2px}
+.logo span{color:#ed303c}
+nav a{
+color:#aaa;text-decoration:none;
+margin-left:25px;font-size:14px;
+}
+nav a:hover{color:#fff}
+.hero{
+min-height:570px;padding:100px 12%;
+display:flex;flex-direction:column;
+justify-content:center;
+background:
+radial-gradient(ellipse at 80% 40%,#38151e,transparent 55%),
+linear-gradient(120deg,#090a0f,#11121b);
+}
+.tag{
+color:#f04b56;letter-spacing:4px;
+font-size:11px;font-weight:bold;
+margin-bottom:20px;
+}
+h1{font-size:clamp(48px,8vw,90px);line-height:1}
+h1 span{color:#ed303c}
+.hero p{
+max-width:570px;color:#aaa;
+line-height:1.8;margin:25px 0 30px;
+}
+.btn{
+display:inline-block;padding:15px 25px;
+background:#e52b38;color:white;
+text-decoration:none;border:0;
+font-weight:bold;cursor:pointer;
+transition:.2s;
+}
+.btn:hover{background:#ff4653;transform:translateY(-2px)}
 section{padding:85px 12%}
-h2{font-size:36px;margin-bottom:15px}
-.subtitle{color:#999;margin-bottom:35px;line-height:1.7}
-.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px}
-.game-card{background:#131313;border:1px solid #333;overflow:hidden}
-.game-banner{height:230px;background:linear-gradient(120deg,#120d0d,#4a1717,#111);display:flex;align-items:center;justify-content:center;text-align:center;padding:20px}
-.game-banner strong{font-size:clamp(25px,4vw,42px);line-height:1.2}
+h2{font-size:32px;margin-bottom:14px}
+.red{color:#ed303c}
+.subtitle{color:#999;line-height:1.8;margin-bottom:35px}
+.games-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:24px;
+}
+.game-card{
+background:#12131a;
+border:1px solid #292a35;
+overflow:hidden;
+transition:.25s;
+}
+.game-card:hover{
+transform:translateY(-6px);
+border-color:#ed303c;
+}
+.game-banner{
+height:210px;
+display:flex;align-items:center;
+justify-content:center;text-align:center;
+padding:20px;
+background:linear-gradient(135deg,#171923,#38202a,#101117);
+}
+.game-banner strong{
+font-size:clamp(25px,4vw,39px);
+line-height:1.2;
+}
 .game-info{padding:25px}
-.game-info p{color:#aaa;line-height:1.7;margin:15px 0 25px}
-.about{background:#111}
-footer{padding:35px 12%;border-top:1px solid #292929;color:#777;display:flex;justify-content:space-between;flex-wrap:wrap;gap:15px}
+.game-info h3{font-size:21px;margin-bottom:12px}
+.game-info p{
+color:#aaa;line-height:1.7;
+margin:14px 0 24px;font-size:14px;
+}
+.brawl .game-banner{
+background:radial-gradient(circle at center,#743b12,#281407,#09090c);
+}
+.brawl .game-banner strong{color:#ffbf62}
+.anomaly .game-banner{
+background:radial-gradient(circle,#333,#080808);
+}
+.bone .game-banner{
+background:linear-gradient(135deg,#090916,#302342,#080812);
+}
+.about{background:#11121a}
+footer{
+padding:35px 12%;
+border-top:1px solid #292a35;
+color:#777;display:flex;
+justify-content:space-between;
+flex-wrap:wrap;gap:15px;
+font-size:13px;
+}
 @media(max-width:650px){
 header{padding:0 5%}
-nav a{margin-left:10px;font-size:11px}
+nav a{margin-left:9px;font-size:11px}
+.logo{font-size:18px}
 .hero{padding:75px 7%}
 section{padding:65px 7%}
 }
 </style>
 </head>
+
 <body>
 
 <header>
 <div class="logo">REXSUS <span>STUDIOS</span></div>
 <nav>
 <a href="#anasayfa">Ana Sayfa</a>
-<a href="#oyunlar">Oyunlarımız</a>
+<a href="#oyunlar">Oyunlar</a>
 <a href="#hakkimizda">Hakkımızda</a>
 </nav>
 </header>
@@ -54,15 +134,15 @@ section{padding:65px 7%}
 <main>
 
 <div class="hero" id="anasayfa">
-<div class="tag">BAĞIMSIZ OYUN STÜDYOSU</div>
-<h1>DÜNYALAR<br><span>YARATIYORUZ.</span></h1>
-<p>Yeni dünyalar keşfet, zorlu düşmanlarla savaş ve unutulmaz maceralara katıl. REXSUS STUDIOS dünyasına hoş geldin.</p>
-<a href="#oyunlar" class="btn">OYUNLARIMIZI KEŞFET</a>
+<div class="tag">INDEPENDENT GAME STUDIO</div>
+<h1>PLAY<br><span>BEYOND.</span></h1>
+<p>Her oyun yeni bir dünya. Her savaş yeni bir hikâye. REXSUS STUDIOS tarafından geliştirilen özgün oyunları keşfet.</p>
+<a href="#oyunlar" class="btn">OYUNLARI KEŞFET</a>
 </div>
 
 <section id="oyunlar">
 <h2>OYUNLARIMIZ<span class="red">.</span></h2>
-<p class="subtitle">REXSUS STUDIOS tarafından geliştirilen oyunları keşfet.</p>
+<p class="subtitle">Kendi dünyanı keşfet. Kendi hikâyeni yaz.</p>
 
 <div class="games-grid">
 
@@ -72,21 +152,33 @@ section{padding:65px 7%}
 </div>
 <div class="game-info">
 <div class="tag">MACERA • RPG • FANTASTİK</div>
-<h2>SHADOWS OF THE LOST KINGDOM</h2>
-<p>Kayıp Krallığın Gölgesinde! Kendi kahramanını oluştur, sınıfını seç, düşmanlarla savaş, görevleri tamamla ve güçlen.</p>
+<h3>SHADOWS OF THE LOST KINGDOM</h3>
+<p>Kahramanını oluştur, sınıfını seç, düşmanlarla savaş ve kayıp krallığın sırlarını keşfet.</p>
 <button class="btn" onclick="location.href='game.html'">OYNA</button>
 </div>
 </div>
 
-<div class="game-card">
-<div class="game-banner" style="background:linear-gradient(135deg,#050505,#202020,#080808)">
-<strong style="color:#ddd;letter-spacing:8px">ANOMALY<span class="red">.</span></strong>
+<div class="game-card anomaly">
+<div class="game-banner">
+<strong style="color:#ddd;letter-spacing:7px">ANOMALY.</strong>
 </div>
 <div class="game-info">
 <div class="tag">KORKU • GERİLİM • HAYATTA KALMA</div>
-<h2>ANOMALY</h2>
-<p>Her odayı dikkatlice incele. Gerçek ile anomaliyi ayırt et. Ama dikkat et... Bazı şeyler sana sandığından daha yakın.</p>
+<h3>ANOMALY</h3>
+<p>Her odayı incele. Anomalileri bul. Gerçek ile yanılsama arasındaki farkı keşfet.</p>
 <button class="btn" onclick="location.href='anomaly.html'">OYNA</button>
+</div>
+</div>
+
+<div class="game-card brawl">
+<div class="game-banner">
+<strong>REX<br>BRAWLVERSE</strong>
+</div>
+<div class="game-info">
+<div class="tag">AKSİYON • ARENA • 3V3</div>
+<h3>REX BRAWLVERSE</h3>
+<p>Kahramanını seç, arenaya gir! Özel yetenekler, güçlü saldırılar ve hızlı savaşlar seni bekliyor.</p>
+<button class="btn" onclick="location.href='project-rex.html'">ARENA'YA GİR</button>
 </div>
 </div>
 
@@ -95,17 +187,17 @@ section{padding:65px 7%}
 
 <section id="boss" style="background:#0c0b12">
 <h2>BOSS FIGHTS<span class="red">.</span></h2>
-<p class="subtitle">Güçlü düşmanlara karşı hayatta kal ve zafer kazan.</p>
+<p class="subtitle">Güçlü rakiplerle karşılaş ve savaşın galibi ol.</p>
 
 <div class="games-grid">
-<div class="game-card">
-<div class="game-banner" style="background:linear-gradient(135deg,#080812,#28203b,#080812)">
+<div class="game-card bone">
+<div class="game-banner">
 <strong>BONEBOUND<span class="red">:</span><br>LAST OATH</strong>
 </div>
 <div class="game-info">
 <div class="tag">BOSS FIGHT • AKSİYON • 2D</div>
-<h2>BONEBOUND: LAST OATH</h2>
-<p>Son iskeletle karşı karşıyasın. Ruhunu koru, ölümcül saldırılardan kaç ve bu savaşın gerçek kazananı ol.</p>
+<h3>BONEBOUND: LAST OATH</h3>
+<p>Son savaş başladı. Saldırılardan kaç, ruhunu koru ve zorlu boss savaşını kazan.</p>
 <button class="btn" onclick="location.href='bonebound.html'">SAVAŞA BAŞLA</button>
 </div>
 </div>
@@ -114,14 +206,14 @@ section{padding:65px 7%}
 
 <section class="about" id="hakkimizda">
 <h2>HAKKIMIZDA<span class="red">.</span></h2>
-<p class="subtitle">REXSUS STUDIOS, özgün oyun dünyaları ve maceralar geliştirmeyi hedefleyen bağımsız bir oyun stüdyosudur.</p>
+<p class="subtitle">REXSUS STUDIOS, özgün oyun dünyaları ve unutulmaz deneyimler geliştirmeyi hedefleyen bağımsız bir oyun stüdyosudur.</p>
 </section>
 
 </main>
 
 <footer>
 <span>© 2026 REXSUS STUDIOS</span>
-<span>YENİ DÜNYALAR. UNUTULMAZ MACERALAR.</span>
+<span>PLAY BEYOND.</span>
 </footer>
 
 </body>
