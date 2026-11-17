@@ -611,5 +611,236 @@ canvas.addEventListener("mouseup",()=>mouse.down=false);
 canvas.addEventListener("contextmenu",e=>e.preventDefault());
 setInterval(()=>{if(running&&mouse.down)meleeAttack()},100);
 </script>
+<style>
+/* REXSUS STUDIOS - MOBİL KONTROLLER */
+#mobileControls {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  user-select: none;
+  touch-action: none;
+}
+
+#mobileJoystick {
+  position: absolute;
+  left: 22px;
+  bottom: 28px;
+  width: 125px;
+  height: 125px;
+  border-radius: 50%;
+  background: #ffffff25;
+  border: 2px solid #d5b16b;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+#mobileStick {
+  position: absolute;
+  left: 35px;
+  top: 35px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: #d5b16b;
+  box-shadow: 0 0 12px #000;
+}
+
+#mobileButtons {
+  position: absolute;
+  right: 15px;
+  bottom: 22px;
+  display: grid;
+  grid-template-columns: repeat(2, 62px);
+  gap: 9px;
+  pointer-events: auto;
+}
+
+#mobileButtons button {
+  width: 62px;
+  height: 62px;
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid #e5c27b;
+  background: #17232ddd;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  touch-action: none;
+}
+
+#mobileButtons button:active {
+  background: #a97832;
+  transform: scale(.94);
+}
+
+#mobileButtons .attackButton {
+  background: #a52d2d;
+}
+
+@media (pointer: coarse), (max-width: 800px) {
+  #mobileControls {
+    display: block;
+    visibility: hidden;
+  }
+
+  #help {
+    display: none !important;
+  }
+}
+</style>
+
+<div id="mobileControls">
+  <div id="mobileJoystick">
+    <div id="mobileStick"></div>
+  </div>
+
+  <div id="mobileButtons">
+    <button class="attackButton" id="mobileAttack">SALDIRI</button>
+    <button id="mobileDash">ATILMA</button>
+    <button id="mobileQ">Q</button>
+    <button id="mobileE">E</button>
+    <button id="mobileR">R</button>
+    <button id="mobilePotion">İKSİR</button>
+  </div>
+</div>
+
+<script>
+(() => {
+  const controls = document.getElementById("mobileControls");
+  const joystick = document.getElementById("mobileJoystick");
+  const stick = document.getElementById("mobileStick");
+
+  const isMobile = () =>
+    matchMedia("(pointer: coarse)").matches ||
+    innerWidth <= 800;
+
+  const observer = new MutationObserver(() => {
+    if (isMobile() && document.getElementById("menu").style.display === "none") {
+      controls.style.visibility = "visible";
+    }
+  });
+
+  observer.observe(document.getElementById("menu"), {
+    attributes: true,
+    attributeFilter: ["style"]
+  });
+
+  let activePointer = null;
+  let joyX = 0;
+  let joyY = 0;
+
+  function moveJoystick(e) {
+    const rect = joystick.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+
+    let x = e.clientX - cx;
+    let y = e.clientY - cy;
+
+    const max = 42;
+    const length = Math.hypot(x, y);
+
+    if (length > max) {
+      x = x / length * max;
+      y = y / length * max;
+    }
+
+    joyX = x / max;
+    joyY = y / max;
+
+    stick.style.transform =
+      `translate(${x}px, ${y}px)`;
+
+    keys.w = joyY < -0.2;
+    keys.s = joyY > 0.2;
+    keys.a = joyX < -0.2;
+    keys.d = joyX > 0.2;
+
+    if (Math.hypot(joyX, joyY) > 0.15) {
+      mouse.x = W / 2 + joyX * 100;
+      mouse.y = H / 2 + joyY * 100;
+    }
+  }
+
+  function releaseJoystick() {
+    activePointer = null;
+    joyX = 0;
+    joyY = 0;
+
+    keys.w = false;
+    keys.a = false;
+    keys.s = false;
+    keys.d = false;
+
+    stick.style.transform = "translate(0px, 0px)";
+  }
+
+  joystick.addEventListener("pointerdown", e => {
+    e.preventDefault();
+    activePointer = e.pointerId;
+    joystick.setPointerCapture(e.pointerId);
+    moveJoystick(e);
+  });
+
+  joystick.addEventListener("pointermove", e => {
+    if (e.pointerId === activePointer) {
+      e.preventDefault();
+      moveJoystick(e);
+    }
+  });
+
+  joystick.addEventListener("pointerup", releaseJoystick);
+  joystick.addEventListener("pointercancel", releaseJoystick);
+
+  function bindButton(id, action) {
+    const button = document.getElementById(id);
+
+    button.addEventListener("pointerdown", e => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (running) action();
+    });
+  }
+
+  const attack = document.getElementById("mobileAttack");
+
+  attack.addEventListener("pointerdown", e => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (running) {
+      mouse.down = true;
+      meleeAttack();
+    }
+  });
+
+  function stopAttack(e) {
+    e.preventDefault();
+    mouse.down = false;
+  }
+
+  attack.addEventListener("pointerup", stopAttack);
+  attack.addEventListener("pointercancel", stopAttack);
+  attack.addEventListener("lostpointercapture", stopAttack);
+
+  bindButton("mobileQ", () => useSkill("q"));
+  bindButton("mobileE", () => useSkill("e"));
+  bindButton("mobileR", () => useSkill("r"));
+  bindButton("mobileDash", dash);
+  bindButton("mobilePotion", usePotion);
+
+  document.addEventListener("contextmenu", e => {
+    if (controls.contains(e.target)) e.preventDefault();
+  });
+
+  window.addEventListener("blur", () => {
+    releaseJoystick();
+    mouse.down = false;
+  });
+})();
+</script>
 </body>
 </html>
