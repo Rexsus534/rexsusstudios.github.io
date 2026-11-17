@@ -9,119 +9,81 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{
-background:#08090d;color:#fff;
-font-family:Arial,sans-serif;
-}
+body{background:#08090d;color:#fff;font-family:Arial,sans-serif}
 header{
-height:78px;padding:0 8%;
-display:flex;align-items:center;
-justify-content:space-between;
-background:#090a0f;
-border-bottom:1px solid #252630;
-position:sticky;top:0;z-index:10;
+height:78px;padding:0 8%;display:flex;align-items:center;
+justify-content:space-between;background:#090a0f;
+border-bottom:1px solid #252630;position:sticky;top:0;z-index:10
 }
 .logo{font-size:24px;font-weight:900;letter-spacing:2px}
 .logo span{color:#ed303c}
-nav a{
-color:#aaa;text-decoration:none;
-margin-left:25px;font-size:14px;
-}
+nav a{color:#aaa;text-decoration:none;margin-left:25px;font-size:14px}
 nav a:hover{color:#fff}
 .hero{
-min-height:570px;padding:100px 12%;
-display:flex;flex-direction:column;
+min-height:570px;padding:100px 12%;display:flex;flex-direction:column;
 justify-content:center;
-background:
-radial-gradient(ellipse at 80% 40%,#38151e,transparent 55%),
-linear-gradient(120deg,#090a0f,#11121b);
+background:radial-gradient(ellipse at 80% 40%,#38151e,transparent 55%),
+linear-gradient(120deg,#090a0f,#11121b)
 }
-.tag{
-color:#f04b56;letter-spacing:4px;
-font-size:11px;font-weight:bold;
-margin-bottom:20px;
-}
+.tag{color:#f04b56;letter-spacing:4px;font-size:11px;font-weight:bold;margin-bottom:20px}
 h1{font-size:clamp(48px,8vw,90px);line-height:1}
 h1 span{color:#ed303c}
-.hero p{
-max-width:570px;color:#aaa;
-line-height:1.8;margin:25px 0 30px;
-}
+.hero p{max-width:570px;color:#aaa;line-height:1.8;margin:25px 0 30px}
 .btn{
-display:inline-block;padding:15px 25px;
-background:#e52b38;color:white;
-text-decoration:none;border:0;
-font-weight:bold;cursor:pointer;
-transition:.2s;
+display:inline-block;padding:15px 25px;background:#e52b38;color:white;
+text-decoration:none;border:0;font-weight:bold;cursor:pointer;transition:.2s
 }
 .btn:hover{background:#ff4653;transform:translateY(-2px)}
 section{padding:85px 12%}
 h2{font-size:32px;margin-bottom:14px}
 .red{color:#ed303c}
 .subtitle{color:#999;line-height:1.8;margin-bottom:35px}
-.games-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:24px;
-}
-.game-card{
-background:#12131a;
-border:1px solid #292a35;
-overflow:hidden;
-transition:.25s;
-}
-.game-card:hover{
-transform:translateY(-6px);
-border-color:#ed303c;
-}
+.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.game-card{background:#12131a;border:1px solid #292a35;overflow:hidden;transition:.25s}
+.game-card:hover{transform:translateY(-6px);border-color:#ed303c}
 .game-banner{
-height:210px;
-display:flex;align-items:center;
-justify-content:center;text-align:center;
-padding:20px;
-background:linear-gradient(135deg,#171923,#38202a,#101117);
+height:210px;display:flex;align-items:center;justify-content:center;
+text-align:center;padding:20px;background:linear-gradient(135deg,#171923,#38202a,#101117)
 }
-.game-banner strong{
-font-size:clamp(25px,4vw,39px);
-line-height:1.2;
-}
+.game-banner strong{font-size:clamp(25px,4vw,39px);line-height:1.2}
 .game-info{padding:25px}
 .game-info h3{font-size:21px;margin-bottom:12px}
-.game-info p{
-color:#aaa;line-height:1.7;
-margin:14px 0 24px;font-size:14px;
-}
-.brawl .game-banner{
-background:radial-gradient(circle at center,#743b12,#281407,#09090c);
-}
+.game-info p{color:#aaa;line-height:1.7;margin:14px 0 24px;font-size:14px}
+.brawl .game-banner{background:radial-gradient(circle at center,#743b12,#281407,#09090c)}
 .brawl .game-banner strong{color:#ffbf62}
-.anomaly .game-banner{
-background:radial-gradient(circle,#333,#080808);
+.anomaly .game-banner{background:radial-gradient(circle,#333,#080808)}
+.bone .game-banner{background:linear-gradient(135deg,#090916,#302342,#080812)}
+.rift .game-banner{
+background:radial-gradient(ellipse at 50% 45%,#623b20,#211b27 55%,#08090d);
+position:relative;overflow:hidden
 }
-.bone .game-banner{
-background:linear-gradient(135deg,#090916,#302342,#080812);
+.rift .game-banner:before{
+content:"";position:absolute;width:170px;height:170px;border:2px solid #d18b45;
+transform:rotate(45deg);box-shadow:0 0 25px #c87935, inset 0 0 25px #c87935;
+opacity:.65
 }
+.rift .game-banner strong{position:relative;color:#f5d3a0;text-shadow:0 0 18px #d47732;letter-spacing:3px}
+.rift .tag{color:#d99b59}
+.rift .btn{background:#a65b27}
+.rift .btn:hover{background:#d47b39}
 .about{background:#11121a}
 footer{
-padding:35px 12%;
-border-top:1px solid #292a35;
-color:#777;display:flex;
-justify-content:space-between;
-flex-wrap:wrap;gap:15px;
-font-size:13px;
+padding:35px 12%;border-top:1px solid #292a35;color:#777;
+display:flex;justify-content:space-between;flex-wrap:wrap;gap:15px;font-size:13px
 }
 @media(max-width:650px){
-header{padding:0 5%}
+header{padding:0 5%;height:68px}
 nav a{margin-left:9px;font-size:11px}
 .logo{font-size:18px}
-.hero{padding:75px 7%}
+.hero{padding:75px 7%;min-height:500px}
 section{padding:65px 7%}
+.games-grid{grid-template-columns:1fr}
+.game-banner{height:190px}
 }
 </style>
 </head>
 
 <body>
-
 <header>
 <div class="logo">REXSUS <span>STUDIOS</span></div>
 <nav>
@@ -132,7 +94,6 @@ section{padding:65px 7%}
 </header>
 
 <main>
-
 <div class="hero" id="anasayfa">
 <div class="tag">INDEPENDENT GAME STUDIO</div>
 <h1>PLAY<br><span>BEYOND.</span></h1>
@@ -182,13 +143,24 @@ section{padding:65px 7%}
 </div>
 </div>
 
+<div class="game-card rift">
+<div class="game-banner">
+<strong>RIFTBOUND<br>THE FORGOTTEN REALM</strong>
+</div>
+<div class="game-info">
+<div class="tag">AKSİYON RPG • FANTASTİK • BOSS</div>
+<h3>RIFTBOUND: THE FORGOTTEN REALM</h3>
+<p>Unutulmuş diyarlara adım at. Karanlık yaratıklarla savaş, güçlen ve üç farklı bölgenin tehlikeli bosslarını yenerek ilerle.</p>
+<button class="btn" onclick="location.href='riftbound.html'">MACERAYA BAŞLA</button>
+</div>
+</div>
+
 </div>
 </section>
 
 <section id="boss" style="background:#0c0b12">
 <h2>BOSS FIGHTS<span class="red">.</span></h2>
 <p class="subtitle">Güçlü rakiplerle karşılaş ve savaşın galibi ol.</p>
-
 <div class="games-grid">
 <div class="game-card bone">
 <div class="game-banner">
@@ -208,13 +180,11 @@ section{padding:65px 7%}
 <h2>HAKKIMIZDA<span class="red">.</span></h2>
 <p class="subtitle">REXSUS STUDIOS, özgün oyun dünyaları ve unutulmaz deneyimler geliştirmeyi hedefleyen bağımsız bir oyun stüdyosudur.</p>
 </section>
-
 </main>
 
 <footer>
 <span>© 2026 REXSUS STUDIOS</span>
 <span>PLAY BEYOND.</span>
 </footer>
-
 </body>
 </html>
