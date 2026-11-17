@@ -3,84 +3,133 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>ANOMALY | REXSUS STUDIOS</title>
+
 <style>
-/* DÜZELTİLMİŞ MOBİL KONTROLLER */
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050606;color:white;font-family:Arial}
+canvas{display:block;position:fixed;inset:0;z-index:0;touch-action:none}
+
+button{
+ background:#17191b;color:white;border:1px solid #777;
+ padding:14px 22px;font-size:15px;cursor:pointer;
+ touch-action:manipulation;
+}
+button:active{background:#555}
+
+#menu,#scare,#result,#error{
+ position:fixed;inset:0;z-index:20;
+ display:flex;align-items:center;justify-content:center;
+ flex-direction:column;text-align:center;padding:22px;
+ background:#050606;
+}
+#menu{
+ background:radial-gradient(ellipse,#202020,#080808 65%);
+}
+#menu h1{
+ font-size:clamp(45px,10vw,90px);
+ letter-spacing:12px;margin:0 0 15px;
+ text-shadow:0 0 25px #aaa;
+}
+.red{color:#a52b2b}
+#menu p,#result p{color:#aaa;line-height:1.8}
+#menu button,#result button{margin-top:20px}
+
+#hud{
+ position:fixed;z-index:3;top:15px;left:0;width:100%;
+ text-align:center;pointer-events:none;text-shadow:0 2px 8px black;
+}
+#roomText{font-size:19px;letter-spacing:4px}
+#status{font-size:13px;color:#ccc}
+
 #question{
-  z-index:30 !important;
-  pointer-events:auto !important;
-  bottom:25px !important;
+ position:fixed;z-index:12;bottom:22px;left:0;width:100%;
+ display:none;align-items:center;justify-content:center;
+ flex-direction:column;pointer-events:none;
 }
-#question button{
-  pointer-events:auto !important;
-  touch-action:manipulation;
-  position:relative;
-  z-index:31;
+#question #hint{font-size:14px;margin-bottom:8px;text-shadow:0 2px 8px black}
+#question .answers{display:flex;gap:12px;pointer-events:auto}
+#question button{min-width:125px;background:#101214ed}
+
+#scare{
+ display:none;z-index:30;
+ background:#000;
+ animation:shake .09s infinite;
 }
-#look{
-  width:55% !important;
-  height:55% !important;
-  top:0;
-  right:0;
+#monsterFace{
+ font-size:clamp(130px,30vw,260px);
+ color:#ddd;text-shadow:0 0 35px white;
+ animation:appear .15s;
 }
-#stick{
-  z-index:10;
+#scareText{
+ font-size:clamp(22px,5vw,42px);
+ letter-spacing:4px;color:#ddd;margin-top:15px;
 }
-#result{
-  z-index:50 !important;
+@keyframes shake{
+ 0%{transform:translate(0)}
+ 25%{transform:translate(8px,-5px)}
+ 50%{transform:translate(-7px,5px)}
+ 75%{transform:translate(5px,7px)}
 }
-#retry{
-  pointer-events:auto;
-  touch-action:manipulation;
+@keyframes appear{
+ from{transform:scale(.1);opacity:0}
+ to{transform:scale(1);opacity:1}
 }
 
-*{box-sizing:border-box}
-body{margin:0;overflow:hidden;background:#050607;color:white;font-family:Arial}
-canvas{display:block}
-#menu,#scare,#result{
- position:fixed;inset:0;display:flex;align-items:center;
- justify-content:center;flex-direction:column;text-align:center;
- background:#050607;z-index:10;padding:20px
+#result{display:none;z-index:40}
+#result h1{font-size:clamp(38px,8vw,70px);letter-spacing:7px;color:#ddd}
+#result button{background:#8d1717;border:0}
+
+#error{display:none;z-index:60}
+#error p{color:#bbb;max-width:500px;line-height:1.7}
+
+#mobile{display:none;position:fixed;inset:0;z-index:5;pointer-events:none}
+#stick{
+ position:absolute;left:22px;bottom:25px;
+ width:120px;height:120px;border-radius:50%;
+ border:2px solid #aaa9;background:#2225;
+ pointer-events:auto;touch-action:none;
 }
-h1{font-size:clamp(42px,9vw,85px);letter-spacing:12px;color:#ddd;text-shadow:0 0 25px #777}
-p{color:#aaa;line-height:1.7}
-button{background:#17191b;color:white;border:1px solid #777;padding:15px 27px;margin:7px;font-size:16px;cursor:pointer}
-button:active{background:#555}
-#hud{position:fixed;top:18px;left:0;width:100%;text-align:center;pointer-events:none;text-shadow:0 2px 8px black}
-#question{position:fixed;bottom:25px;left:0;width:100%;text-align:center;z-index:4}
-#question button{min-width:130px;background:#101214dd}
-#hint{color:#bbb;font-size:13px}
-#scare{display:none;background:#000;z-index:20;animation:shake .09s infinite}
-#monster{font-size:clamp(100px,25vw,240px);filter:drop-shadow(0 0 25px #aaa);animation:appear .15s}
-#scareText{font-size:clamp(22px,5vw,48px);letter-spacing:5px;color:#ddd}
-@keyframes shake{0%{transform:translate(0)}25%{transform:translate(8px,-5px)}50%{transform:translate(-7px,5px)}75%{transform:translate(4px,7px)}}
-@keyframes appear{from{transform:scale(.1);opacity:0}to{transform:scale(1);opacity:1}}
-#mobile{display:none;position:fixed;inset:0;pointer-events:none;z-index:5}
-#stick{position:absolute;bottom:35px;left:25px;width:120px;height:120px;border-radius:50%;border:2px solid #aaa8;background:#2225;pointer-events:auto;touch-action:none}
-#knob{position:absolute;width:45px;height:45px;border-radius:50%;background:#aaa8;left:36px;top:36px}
-#look{position:absolute;right:0;top:0;width:65%;height:75%;pointer-events:auto;touch-action:none}
-@media(pointer:coarse){#mobile{display:block}#question{bottom:170px}}
+#knob{
+ position:absolute;width:44px;height:44px;
+ left:36px;top:36px;border-radius:50%;background:#aaa9;
+}
+#look{
+ position:absolute;right:0;top:0;
+ width:60%;height:calc(100% - 155px);
+ pointer-events:auto;touch-action:none;
+}
+@media(pointer:coarse){
+ #mobile{display:block}
+ #question{bottom:20px}
+ #question button{min-width:105px;padding:13px 15px}
+ #question #hint{font-size:12px}
+}
 </style>
 </head>
+
 <body>
+
 <div id="menu">
-<h1>ANOMALY</h1>
-<p>HER ODA GÜVENLİ DEĞİL.<br>GÖRDÜĞÜN HER ŞEYE GÜVENME.</p>
-<p>WASD: Hareket · Fare: Bakış<br>1: Anomali var · 2: Anomali yok</p>
-<button id="start">OYUNA BAŞLA</button>
-<p style="font-size:12px">REXSUS STUDIOS</p>
+ <h1>ANOMALY<span class="red">.</span></h1>
+ <p>HER ODA GÜVENLİ DEĞİL.<br>GÖRDÜĞÜN HER ŞEYE GÜVENME.</p>
+ <p>PC: WASD hareket · Fare ile bakış<br>1: Anomali var · 2: Anomali yok</p>
+ <button id="start">OYUNA BAŞLA</button>
+ <p>REXSUS STUDIOS</p>
 </div>
 
 <div id="hud" style="display:none">
- <b id="roomText">ODA 0</b>
- <p id="status">Etrafı dikkatlice incele.</p>
+ <div id="roomText">ODA 0</div>
+ <div id="status">Odayı dikkatlice incele.</div>
 </div>
 
-<div id="question" style="display:none">
+<div id="question">
  <div id="hint">Bu odada anomali var mı?</div>
- <button onclick="answer(true)">1 — VAR</button>
- <button onclick="answer(false)">2 — YOK</button>
+ <div class="answers">
+  <button id="yes">1 — VAR</button>
+  <button id="no">2 — YOK</button>
+ </div>
 </div>
 
 <div id="mobile">
@@ -89,282 +138,508 @@ button:active{background:#555}
 </div>
 
 <div id="scare">
- <div id="monster">◉</div>
- <div id="scareText">SENİ GÖRÜYOR.</div>
+ <div id="monsterFace">◉</div>
+ <div id="scareText">ARKANDA.</div>
 </div>
-<div id="result" style="display:none">
-  <h1>YAKALANDIN</h1>
-  <p id="resultText">ANOMALİ SENİ YAKALADI.</p>
-  <button id="retry">TEKRAR DENE</button>
+
+<div id="result">
+ <h1>YAKALANDIN</h1>
+ <p id="resultText">ANOMALİ SENİ YAKALADI.</p>
+ <button id="retry">TEKRAR DENE</button>
 </div>
+
+<div id="error">
+ <h1>OYUN YÜKLENEMEDİ</h1>
+ <p>3D oyun kütüphanesi yüklenemedi. İnternet bağlantını kontrol edip sayfayı yenile.</p>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
 <script>
 (()=>{
+"use strict";
+
 const $=id=>document.getElementById(id);
+
+if(!window.THREE){
+ $("menu").style.display="none";
+ $("error").style.display="flex";
+ return;
+}
+
 let scene,camera,renderer,roomGroup;
-let playing=false,room=0,hasAnomaly=false;
-let objects=[],monster=null,monsterTriggered=false;
-let keys={},yaw=0,pitch=0;
-let move={x:0,y:0},lookTouch=null;
-let audio,master;
-let scareIndex=0,roomTime=0;
-const scares=[
- ["◉","ARKANDA."],["☠","BİZİMLE DEĞİLSİN."],
- ["◉","SAKIN ARKANA BAKMA."],["♟","SENİ BEKLİYORDU."],
- ["◉","ÇOK YAKLAŞTIN."],["☻","ARTIK ÇOK GEÇ."]
+let playing=false;
+let room=0;
+let hasAnomaly=false;
+let monster=null;
+let monsterTriggered=false;
+let yaw=0,pitch=0;
+let keys={};
+let moveX=0,moveY=0;
+let audio=null,master=null;
+let soundInterval=null;
+let touchLook=null;
+let lastTime=0;
+let scareNumber=0;
+let roomObjects={};
+
+const scareMessages=[
+ ["◉","ARKANDA."],
+ ["☻","SENİ GÖRÜYOR."],
+ ["◉","DOLABIN İÇİNDE."],
+ ["♟","ÇOK YAKLAŞTIN."],
+ ["◉","BU ODA BOŞ DEĞİL."],
+ ["☠","SAKIN BAKMA."]
 ];
 
-function sound(freq=60,duration=.5,volume=.15){
- if(!audio)return;
- const o=audio.createOscillator(),g=audio.createGain();
- o.type="sawtooth";o.frequency.value=freq;
- g.gain.setValueAtTime(volume,audio.currentTime);
- g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);
- o.connect(g);g.connect(master);o.start();o.stop(audio.currentTime+duration);
+function startAudio(){
+ if(audio){
+  if(audio.state==="suspended")audio.resume();
+  return;
+ }
+ try{
+  audio=new(window.AudioContext||window.webkitAudioContext)();
+  master=audio.createGain();
+  master.gain.value=.045;
+  master.connect(audio.destination);
+
+  let a=audio.createOscillator();
+  let b=audio.createOscillator();
+  let filter=audio.createBiquadFilter();
+
+  a.type="sine";
+  b.type="sine";
+  a.frequency.value=43;
+  b.frequency.value=46;
+  filter.type="lowpass";
+  filter.frequency.value=100;
+
+  a.connect(filter);
+  b.connect(filter);
+  filter.connect(master);
+  a.start();
+  b.start();
+
+  soundInterval=setInterval(()=>{
+   if(playing&&Math.random()<.7){
+    playSound(90+Math.random()*100,.9,.025);
+   }
+  },7000);
+ }catch(e){}
 }
-function ambience(){
- if(audio)return;
- audio=new(window.AudioContext||window.webkitAudioContext)();
- master=audio.createGain();master.gain.value=.055;master.connect(audio.destination);
- let a=audio.createOscillator(),b=audio.createOscillator();
- let filter=audio.createBiquadFilter();
- filter.type="lowpass";filter.frequency.value=110;
- a.frequency.value=43;b.frequency.value=46;
- a.connect(filter);b.connect(filter);filter.connect(master);
- a.start();b.start();
- setInterval(()=>{if(playing&&Math.random()<.7)sound(100+Math.random()*100,.8,.025)},6500);
+
+function playSound(freq=70,duration=.5,volume=.15){
+ if(!audio)return;
+ try{
+  const osc=audio.createOscillator();
+  const gain=audio.createGain();
+  osc.type="sawtooth";
+  osc.frequency.value=freq;
+  gain.gain.setValueAtTime(volume,audio.currentTime);
+  gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);
+  osc.connect(gain);
+  gain.connect(master);
+  osc.start();
+  osc.stop(audio.currentTime+duration);
+ }catch(e){}
 }
 
 function init(){
  scene=new THREE.Scene();
- scene.background=new THREE.Color(0x080a0b);
- scene.fog=new THREE.FogExp2(0x080a0b,.045);
+ scene.background=new THREE.Color(0x080909);
+ scene.fog=new THREE.FogExp2(0x080909,.035);
+
  camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,.1,100);
  camera.position.set(0,1.65,3);
+
  renderer=new THREE.WebGLRenderer({antialias:true});
  renderer.setSize(innerWidth,innerHeight);
  renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
+ renderer.outputEncoding=THREE.sRGBEncoding;
  document.body.appendChild(renderer.domElement);
- roomGroup=new THREE.Group();scene.add(roomGroup);
- scene.add(new THREE.AmbientLight(0xffffff,.32));
- let light=new THREE.PointLight(0xffe8c8,1.2,14);
- light.position.set(0,3,0);scene.add(light);
+
+ scene.add(new THREE.AmbientLight(0xffffff,.35));
+
+ let light=new THREE.PointLight(0xffe3c2,1.1,13);
+ light.position.set(0,2.7,0);
+ scene.add(light);
+
+ roomGroup=new THREE.Group();
+ scene.add(roomGroup);
+
  createRoom();
+ renderer.domElement.addEventListener("click",()=>{
+  if(playing&&!isTouchDevice()){
+   renderer.domElement.requestPointerLock?.();
+  }
+ });
+
  window.addEventListener("resize",resize);
- animate();
+ requestAnimationFrame(animate);
 }
-function material(color,roughness=1){
+
+function isTouchDevice(){
+ return window.matchMedia("(pointer:coarse)").matches;
+}
+
+function mat(color,roughness=1){
  return new THREE.MeshStandardMaterial({color,roughness});
 }
+
 function box(x,y,z,w,h,d,color){
- let m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material(color));
- m.position.set(x,y,z);roomGroup.add(m);return m;
+ const mesh=new THREE.Mesh(
+  new THREE.BoxGeometry(w,h,d),
+  mat(color)
+ );
+ mesh.position.set(x,y,z);
+ roomGroup.add(mesh);
+ return mesh;
 }
+
 function createRoom(){
- roomGroup.clear();objects=[];monster=null;monsterTriggered=false;
- camera.position.set(0,1.65,3);yaw=0;pitch=0;
- const wall=material(0x292a29),floor=material(0x292a28);
- box(0,-.15,0,8,.3,8,0x242524);
+ roomGroup.clear();
+ roomObjects={};
+ monster=null;
+ monsterTriggered=false;
+
+ camera.position.set(0,1.65,3);
+ yaw=0;
+ pitch=0;
+
+ // Zemin ve duvarlar
+ box(0,-.15,0,8,.3,8,0x292a29);
  box(0,3.1,0,8,.2,8,0x171819);
  box(0,1.5,-4,8,3,.2,0x292a29);
  box(-4,1.5,0,.2,3,8,0x292a29);
  box(4,1.5,0,.2,3,8,0x292a29);
  box(0,1.5,4,8,3,.2,0x292a29);
- // kapı
- box(0,1.1,-3.88,1.3,2.2,.08,0x111514);
- let lamp=new THREE.PointLight(0xffdfaa,.9,9);
- lamp.position.set(0,2.8,0);roomGroup.add(lamp);
- // yatak
- box(-1.6,.35,-1.2,2,.35,2,0x49413a);
- box(-1.6,.58,-1.2,1.9,.12,1.9,0x77716a);
- box(-1.6,.78,-2, .65,.2,.5,0xb0aaa0);
- // masa
- box(1.7,.8,-1.4,1.5,.12,1,0x49392b);
- for(let x of [1.1,2.3])for(let z of [-1.8,-1])
- box(x,.38,z,.09,.8,.09,0x33271d);
- // dolap
- box(2.8,1.25,1.4,.9,2.5,.9,0x493e34);
- box(2.8,1.25,.92,.86,2.4,.08,0x302922);
- // dolap kapak çizgisi
+
+ // Kapı
+ box(0,1.1,-3.88,1.3,2.2,.08,0x101211);
+
+ // Yatak
+ roomObjects.bed=box(-1.6,.35,-1.2,2,.35,2,0x49413a);
+ roomObjects.bedsheet=box(-1.6,.58,-1.2,1.9,.12,1.9,0x77716a);
+ roomObjects.pillow=box(-1.6,.78,-2,.65,.2,.5,0xb0aaa0);
+
+ // Masa
+ roomObjects.table=box(1.7,.8,-1.4,1.5,.12,1,0x49392b);
+ for(let x of [1.1,2.3]){
+  for(let z of [-1.8,-1]){
+   box(x,.38,z,.09,.8,.09,0x33271d);
+  }
+ }
+
+ // Dolap
+ roomObjects.cabinet=box(2.8,1.25,1.4,.9,2.5,.9,0x493e34);
+ roomObjects.cabinetDoor=box(2.8,1.25,.92,.86,2.4,.08,0x302922);
  box(2.8,1.25,.86,.025,2.3,.03,0x8a7860);
- // pencere
- box(-1.8,1.9,-3.85,1.4,1.1,.06,0x111b22);
- // sandalye
- box(.8,.55,.5,.7,.12,.7,0x44352b);
+
+ // Pencere
+ roomObjects.window=box(-1.8,1.9,-3.85,1.4,1.1,.06,0x18232b);
+
+ // Sandalye
+ roomObjects.chair=box(.8,.55,.5,.7,.12,.7,0x44352b);
  box(.8,1,.8,.7,.9,.12,0x44352b);
- for(let x of [.55,1.05])for(let z of [.25,.75])
- box(x,.25,z,.07,.5,.07,0x33271d);
- // saat
- let clock=new THREE.Mesh(new THREE.CircleGeometry(.25,32),material(0xbab3a4));
- clock.position.set(-2.8,2.2,-3.86);roomGroup.add(clock);
- objects.push({type:"clock",obj:clock});
+ for(let x of [.55,1.05]){
+  for(let z of [.25,.75]){
+   box(x,.25,z,.07,.5,.07,0x33271d);
+  }
+ }
+
+ // Saat
+ roomObjects.clock=new THREE.Mesh(
+  new THREE.CircleGeometry(.25,32),
+  mat(0xbab3a4)
+ );
+ roomObjects.clock.position.set(-2.8,2.2,-3.86);
+ roomGroup.add(roomObjects.clock);
+
+ // Işık
+ let lamp=new THREE.PointLight(0xffdfaa,.8,9);
+ lamp.position.set(0,2.8,0);
+ roomGroup.add(lamp);
+
+ hasAnomaly=false;
  if(room>0)createAnomalies();
+
  $("roomText").textContent="ODA "+room;
- $("status").textContent=room===0?"Bu oda normal. Her ayrıntıyı ezberle.":"Etrafı dikkatlice incele.";
+ $("status").textContent=room===0?
+  "Bu oda normal. Her ayrıntıyı ezberle.":
+  "Etrafı dikkatlice incele.";
 }
+
 function createAnomalies(){
  let count=1;
- if(room>=4)count=Math.random()<.45?2:1;
- if(room>=8)count=Math.random()<.7?2:1;
- hasAnomaly=Math.random()<Math.min(.88,.52+room*.035);
+ if(room>=4&&Math.random()<.4)count=2;
+ if(room>=8&&Math.random()<.65)count=2;
+
+ hasAnomaly=Math.random()<Math.min(.85,.5+room*.035);
  if(!hasAnomaly)return;
+
+ let types=["cabinet","clock","chair","bedsheet","window"];
+ if(room>=3)types.push("monster");
+ if(room>=6)types.push("monster","pillow");
+
+ // Her odada seçilen anomalileri farklılaştır
  for(let i=0;i<count;i++){
- let type=Math.floor(Math.random()*(room>=3?7:5));
- if(type===0){
- let obj=roomGroup.children.find(o=>o.geometry?.type==="BoxGeometry"&&Math.abs(o.position.x-2.8)<.1&&o.position.y>1);
- if(obj)obj.rotation.y=.35;
- }
- if(type===1){
- let obj=objects[0]?.obj;if(obj)obj.rotation.z=.5;
- }
- if(type===2){
- let obj=roomGroup.children.find(o=>o.position.x===.8&&o.position.y===.55);
- if(obj)obj.position.x+=.5;
- }
- if(type===3){
- let obj=roomGroup.children.find(o=>o.position.x===-1.6&&o.position.y===.58);
- if(obj)obj.material=material(0x151515);
- }
- if(type===4){
- let obj=roomGroup.children.find(o=>o.position.x===-1.8&&o.position.y===1.9);
- if(obj)obj.material=material(0x000000);
- }
- if(type===5||type===6){
- createMonster();
- }
+  let type=types[Math.floor(Math.random()*types.length)];
+
+  if(type==="cabinet"){
+   roomObjects.cabinetDoor.rotation.y=.45;
+  }
+  else if(type==="clock"){
+   roomObjects.clock.rotation.z=.8;
+  }
+  else if(type==="chair"){
+   roomObjects.chair.position.x+=.55;
+   roomObjects.chair.rotation.y=.8;
+  }
+  else if(type==="bedsheet"){
+   roomObjects.bedsheet.material=mat(0x252525);
+  }
+  else if(type==="window"){
+   roomObjects.window.material=mat(0x000000);
+  }
+  else if(type==="pillow"){
+   roomObjects.pillow.position.x-=.65;
+  }
+  else if(type==="monster"){
+   createMonster();
+  }
  }
 }
+
 function createMonster(){
  if(monster)return;
- // Dolap içinde saklanan karanlık siluet
+
  monster=new THREE.Group();
- let dark=material(0x020203);
- let body=new THREE.Mesh(new THREE.CapsuleGeometry(.28,.9,5,8),dark);
- body.position.y=1.05;monster.add(body);
- for(let x of [-.12,.12]){
- let eye=new THREE.Mesh(new THREE.SphereGeometry(.055,8,8),
- new THREE.MeshBasicMaterial({color:0xe5e5e5}));
- eye.position.set(x,1.65,.23);monster.add(eye);
+
+ const dark=mat(0x030303);
+ const body=new THREE.Mesh(
+  new THREE.CapsuleGeometry(.24,.85,5,8),dark
+ );
+ body.position.y=1.05;
+ monster.add(body);
+
+ const head=new THREE.Mesh(
+  new THREE.SphereGeometry(.24,12,12),dark
+ );
+ head.position.y=1.72;
+ monster.add(head);
+
+ for(let x of [-.105,.105]){
+  const eye=new THREE.Mesh(
+   new THREE.SphereGeometry(.045,8,8),
+   new THREE.MeshBasicMaterial({color:0xd8d8d8})
+  );
+  eye.position.set(x,1.76,.21);
+  monster.add(eye);
  }
- monster.position.set(2.8,0,1.4);
- monster.visible=false;
+
+ monster.position.set(2.8,0,1.05);
+ monster.visible=true;
  roomGroup.add(monster);
 }
+
 function distance(a,b){
  return Math.hypot(a.x-b.x,a.z-b.z);
 }
+
 function checkMonster(){
  if(!monster||monsterTriggered)return;
- let d=distance(camera.position,monster.position);
- if(d<1.65){
- monsterTriggered=true;monster.visible=true;
- scare("DOLABIN İÇİNDE BİR ŞEY VAR.");
+
+ const d=distance(camera.position,monster.position);
+
+ if(d<1.25){
+  monsterTriggered=true;
+  scare("DOLABIN İÇİNDE BİR ŞEY VAR.");
  }
 }
+
 function scare(message){
+ if(!playing)return;
+
  playing=false;
+ document.exitPointerLock?.();
+
  $("scare").style.display="flex";
- $("monster").textContent=scares[scareIndex%scares.length][0];
- $("scareText").textContent=message||scares[scareIndex%scares.length][1];
- scareIndex++;
- sound(35,.8,.7);sound(90,.4,.5);
+
+ const data=scareMessages[scareNumber%scareMessages.length];
+ $("monsterFace").textContent=data[0];
+ $("scareText").textContent=message||data[1];
+ scareNumber++;
+
+ playSound(38,.8,.55);
+ setTimeout(()=>playSound(75,.6,.4),100);
+
  setTimeout(()=>{
- $("scare").style.display="none";
- $("result").style.display="flex";
- $("resultText").textContent="ANOMALİ SENİ YAKALADI.";
- },1100);
+  $("scare").style.display="none";
+  $("result").style.display="flex";
+  $("resultText").textContent="ANOMALİ SENİ YAKALADI.";
+ },1200);
 }
+
 function answer(value){
  if(!playing)return;
+
  if(value===hasAnomaly){
- room++;
- createRoom();
+  room++;
+  createRoom();
  }else{
- scare();
+  scare();
  }
 }
-window.answer=answer;
-function nextTry(){
+
+function restart(){
  $("result").style.display="none";
- room=0;createRoom();playing=true;
+ $("scare").style.display="none";
+ room=0;
+ createRoom();
+ playing=true;
+ resetStick();
 }
+
+function resetStick(){
+ moveX=0;
+ moveY=0;
+ $("knob").style.left="36px";
+ $("knob").style.top="36px";
+}
+
 function resize(){
  if(!camera||!renderer)return;
  camera.aspect=innerWidth/innerHeight;
- camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);
+ camera.updateProjectionMatrix();
+ renderer.setSize(innerWidth,innerHeight);
 }
-function animate(){
+
+function animate(time){
  requestAnimationFrame(animate);
+
+ if(!renderer||!camera)return;
+
+ const delta=Math.min((time-lastTime)/16.67,2);
+ lastTime=time;
+
  if(playing){
- const speed=.055;
- let forward=new THREE.Vector3(-Math.sin(yaw),0,-Math.cos(yaw));
- let right=new THREE.Vector3(Math.cos(yaw),0,-Math.sin(yaw));
- if(keys.w||move.y<-.15)camera.position.addScaledVector(forward,speed);
- if(keys.s||move.y>.15)camera.position.addScaledVector(forward,-speed);
- if(keys.a||move.x<-.15)camera.position.addScaledVector(right,-speed);
- if(keys.d||move.x>.15)camera.position.addScaledVector(right,speed);
- camera.position.x=Math.max(-3.5,Math.min(3.5,camera.position.x));
- camera.position.z=Math.max(-3.5,Math.min(3.5,camera.position.z));
- camera.rotation.order="YXZ";
- camera.rotation.set(pitch,yaw,0);
- checkMonster();
+  const speed=.055*delta;
+
+  const forward=new THREE.Vector3(
+   -Math.sin(yaw),0,-Math.cos(yaw)
+  );
+  const right=new THREE.Vector3(
+   Math.cos(yaw),0,-Math.sin(yaw)
+  );
+
+  if(keys.w||moveY<-.15)camera.position.addScaledVector(forward,speed);
+  if(keys.s||moveY>.15)camera.position.addScaledVector(forward,-speed);
+  if(keys.a||moveX<-.15)camera.position.addScaledVector(right,-speed);
+  if(keys.d||moveX>.15)camera.position.addScaledVector(right,speed);
+
+  camera.position.x=Math.max(-3.5,Math.min(3.5,camera.position.x));
+  camera.position.z=Math.max(-3.5,Math.min(3.5,camera.position.z));
+
+  camera.rotation.order="YXZ";
+  camera.rotation.set(pitch,yaw,0);
+
+  checkMonster();
  }
- renderer?.render(scene,camera);
+
+ renderer.render(scene,camera);
 }
+
+// Klavye kontrolleri
 document.addEventListener("keydown",e=>{
- keys[e.key.toLowerCase()]=true;
+ const key=e.key.toLowerCase();
+ keys[key]=true;
+
  if(e.key==="1")answer(true);
  if(e.key==="2")answer(false);
 });
-document.addEventListener("keyup",e=>keys[e.key.toLowerCase()]=false);
+document.addEventListener("keyup",e=>{
+ keys[e.key.toLowerCase()]=false;
+});
+
+// Fare kontrolleri
 document.addEventListener("mousemove",e=>{
  if(document.pointerLockElement===renderer?.domElement&&playing){
- yaw-=e.movementX*.002;
- pitch-=e.movementY*.002;
- pitch=Math.max(-1.4,Math.min(1.4,pitch));
+  yaw-=e.movementX*.002;
+  pitch-=e.movementY*.002;
+  pitch=Math.max(-1.35,Math.min(1.35,pitch));
  }
 });
-rendererStart();
-function rendererStart(){
- $("start").onclick=()=>{
- $("menu").style.display="none";
- $("hud").style.display="block";
- $("question").style.display="block";
- ambience();init();playing=true;
- if(!("ontouchstart"in window))renderer.domElement.requestPointerLock?.();
- };
-}
-$("result").innerHTML='<h1>YAKALANDIN</h1><p id="resultText">ANOMALİ SENİ YAKALADI.</p><button id="retry">TEKRAR DENE</button>';
-$("result").style.display="none";
-document.body.appendChild($("result"));
-$("retry").onclick=nextTry;
 
 // Mobil joystick
-const stick=$("stick"),knob=$("knob");
-stick.addEventListener("pointerdown",e=>{stick.setPointerCapture(e.pointerId);});
+const stick=$("stick");
+const knob=$("knob");
+
+stick.addEventListener("pointerdown",e=>{
+ stick.setPointerCapture(e.pointerId);
+});
 stick.addEventListener("pointermove",e=>{
  if(!stick.hasPointerCapture(e.pointerId))return;
- let r=stick.getBoundingClientRect(),dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);
- let len=Math.hypot(dx,dy),max=38;
- if(len>max){dx=dx/len*max;dy=dy/len*max}
- knob.style.left=(36+dx)+"px";knob.style.top=(36+dy)+"px";
- move.x=dx/max;move.y=dy/max;
+
+ const r=stick.getBoundingClientRect();
+ let dx=e.clientX-(r.left+r.width/2);
+ let dy=e.clientY-(r.top+r.height/2);
+ const max=38;
+ const len=Math.hypot(dx,dy);
+
+ if(len>max){
+  dx=dx/len*max;
+  dy=dy/len*max;
+ }
+
+ knob.style.left=(36+dx)+"px";
+ knob.style.top=(36+dy)+"px";
+ moveX=dx/max;
+ moveY=dy/max;
 });
-function resetStick(){knob.style.left="36px";knob.style.top="36px";move={x:0,y:0}}
 stick.addEventListener("pointerup",resetStick);
 stick.addEventListener("pointercancel",resetStick);
-$("look").addEventListener("pointerdown",e=>{
- lookTouch={x:e.clientX,y:e.clientY};
- $("look").setPointerCapture(e.pointerId);
+
+// Mobil kamera kontrolü
+const look=$("look");
+
+look.addEventListener("pointerdown",e=>{
+ touchLook={x:e.clientX,y:e.clientY};
+ look.setPointerCapture(e.pointerId);
 });
-$("look").addEventListener("pointermove",e=>{
- if(!lookTouch||!$("look").hasPointerCapture(e.pointerId))return;
- let dx=e.clientX-lookTouch.x,dy=e.clientY-lookTouch.y;
- yaw-=dx*.006;pitch-=dy*.006;
- pitch=Math.max(-1.3,Math.min(1.3,pitch));
- lookTouch={x:e.clientX,y:e.clientY};
+look.addEventListener("pointermove",e=>{
+ if(!touchLook||!look.hasPointerCapture(e.pointerId))return;
+
+ const dx=e.clientX-touchLook.x;
+ const dy=e.clientY-touchLook.y;
+
+ yaw-=dx*.006;
+ pitch-=dy*.006;
+ pitch=Math.max(-1.35,Math.min(1.35,pitch));
+
+ touchLook={x:e.clientX,y:e.clientY};
 });
-$("look").addEventListener("pointerup",()=>lookTouch=null);
+look.addEventListener("pointerup",()=>touchLook=null);
+look.addEventListener("pointercancel",()=>touchLook=null);
+
+// Butonlar
+$("yes").addEventListener("click",()=>answer(true));
+$("no").addEventListener("click",()=>answer(false));
+$("retry").addEventListener("click",restart);
+
+$("start").addEventListener("click",()=>{
+ try{
+  $("menu").style.display="none";
+  $("hud").style.display="block";
+  $("question").style.display="flex";
+  startAudio();
+  init();
+  playing=true;
+ }catch(e){
+  $("menu").style.display="none";
+  $("error").style.display="flex";
+ }
+});
+
 })();
 </script>
 </body>
