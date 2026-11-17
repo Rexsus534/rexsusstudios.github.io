@@ -10,29 +10,17 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:#08090d;color:#fff;font-family:Arial,sans-serif}
-header{
-height:78px;padding:0 8%;display:flex;align-items:center;
-justify-content:space-between;background:#090a0f;
-border-bottom:1px solid #252630;position:sticky;top:0;z-index:10
-}
+header{height:78px;padding:0 8%;display:flex;align-items:center;justify-content:space-between;background:#090a0f;border-bottom:1px solid #252630;position:sticky;top:0;z-index:10}
 .logo{font-size:24px;font-weight:900;letter-spacing:2px}
 .logo span{color:#ed303c}
 nav a{color:#aaa;text-decoration:none;margin-left:25px;font-size:14px}
 nav a:hover{color:#fff}
-.hero{
-min-height:570px;padding:100px 12%;display:flex;flex-direction:column;
-justify-content:center;
-background:radial-gradient(ellipse at 80% 40%,#38151e,transparent 55%),
-linear-gradient(120deg,#090a0f,#11121b)
-}
+.hero{min-height:570px;padding:100px 12%;display:flex;flex-direction:column;justify-content:center;background:radial-gradient(ellipse at 80% 40%,#38151e,transparent 55%),linear-gradient(120deg,#090a0f,#11121b)}
 .tag{color:#f04b56;letter-spacing:4px;font-size:11px;font-weight:bold;margin-bottom:20px}
 h1{font-size:clamp(48px,8vw,90px);line-height:1}
 h1 span{color:#ed303c}
 .hero p{max-width:570px;color:#aaa;line-height:1.8;margin:25px 0 30px}
-.btn{
-display:inline-block;padding:15px 25px;background:#e52b38;color:white;
-text-decoration:none;border:0;font-weight:bold;cursor:pointer;transition:.2s
-}
+.btn{display:inline-block;padding:15px 25px;background:#e52b38;color:white;text-decoration:none;border:0;font-weight:bold;cursor:pointer;transition:.2s}
 .btn:hover{background:#ff4653;transform:translateY(-2px)}
 section{padding:85px 12%}
 h2{font-size:32px;margin-bottom:14px}
@@ -41,10 +29,7 @@ h2{font-size:32px;margin-bottom:14px}
 .games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
 .game-card{background:#12131a;border:1px solid #292a35;overflow:hidden;transition:.25s}
 .game-card:hover{transform:translateY(-6px);border-color:#ed303c}
-.game-banner{
-height:210px;display:flex;align-items:center;justify-content:center;
-text-align:center;padding:20px;background:linear-gradient(135deg,#171923,#38202a,#101117)
-}
+.game-banner{height:210px;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;background:linear-gradient(135deg,#171923,#38202a,#101117)}
 .game-banner strong{font-size:clamp(25px,4vw,39px);line-height:1.2}
 .game-info{padding:25px}
 .game-info h3{font-size:21px;margin-bottom:12px}
@@ -53,24 +38,43 @@ text-align:center;padding:20px;background:linear-gradient(135deg,#171923,#38202a
 .brawl .game-banner strong{color:#ffbf62}
 .anomaly .game-banner{background:radial-gradient(circle,#333,#080808)}
 .bone .game-banner{background:linear-gradient(135deg,#090916,#302342,#080812)}
-.rift .game-banner{
-background:radial-gradient(ellipse at 50% 45%,#623b20,#211b27 55%,#08090d);
-position:relative;overflow:hidden
-}
-.rift .game-banner:before{
-content:"";position:absolute;width:170px;height:170px;border:2px solid #d18b45;
-transform:rotate(45deg);box-shadow:0 0 25px #c87935, inset 0 0 25px #c87935;
-opacity:.65
-}
+.rift .game-banner{background:radial-gradient(ellipse at 50% 45%,#623b20,#211b27 55%,#08090d);position:relative;overflow:hidden}
+.rift .game-banner:before{content:"";position:absolute;width:170px;height:170px;border:2px solid #d18b45;transform:rotate(45deg);box-shadow:0 0 25px #c87935,inset 0 0 25px #c87935;opacity:.65}
 .rift .game-banner strong{position:relative;color:#f5d3a0;text-shadow:0 0 18px #d47732;letter-spacing:3px}
 .rift .tag{color:#d99b59}
 .rift .btn{background:#a65b27}
 .rift .btn:hover{background:#d47b39}
-.about{background:#11121a}
-footer{
-padding:35px 12%;border-top:1px solid #292a35;color:#777;
-display:flex;justify-content:space-between;flex-wrap:wrap;gap:15px;font-size:13px
+
+/* THE LAST HEIR */
+.heir .game-banner{
+background:radial-gradient(ellipse at center,#80602b 0%,#352719 40%,#101014 85%);
+position:relative;
+overflow:hidden;
 }
+.heir .game-banner:before{
+content:"";
+position:absolute;
+width:130px;
+height:180px;
+border:2px solid #d7ad65;
+border-radius:50% 50% 10% 10%;
+box-shadow:0 0 30px #d7ad65, inset 0 0 35px #d7ad65;
+opacity:.45;
+transform:rotate(45deg);
+}
+.heir .game-banner strong{
+position:relative;
+color:#f3d69d;
+letter-spacing:5px;
+text-shadow:0 0 20px #c99542;
+}
+.heir .tag{color:#d8ad65}
+.heir .btn{background:#9b7137}
+.heir .btn:hover{background:#c49a53}
+
+.about{background:#11121a}
+footer{padding:35px 12%;border-top:1px solid #292a35;color:#777;display:flex;justify-content:space-between;flex-wrap:wrap;gap:15px;font-size:13px}
+
 @media(max-width:650px){
 header{padding:0 5%;height:68px}
 nav a{margin-left:9px;font-size:11px}
@@ -152,6 +156,18 @@ section{padding:65px 7%}
 <h3>RIFTBOUND: THE FORGOTTEN REALM</h3>
 <p>Unutulmuş diyarlara adım at. Karanlık yaratıklarla savaş, güçlen ve üç farklı bölgenin tehlikeli bosslarını yenerek ilerle.</p>
 <button class="btn" onclick="location.href='riftbound.html'">MACERAYA BAŞLA</button>
+</div>
+</div>
+
+<div class="game-card heir">
+<div class="game-banner">
+<strong>THE<br>LAST HEIR</strong>
+</div>
+<div class="game-info">
+<div class="tag">DARK FANTASY • RPG • MACERA</div>
+<h3>THE LAST HEIR</h3>
+<p>Yıkılmış bir dünyanın sırlarını keşfet. Tehlikeli yaratıklarla savaş, kadim görevleri tamamla ve kaderini belirle.</p>
+<button class="btn" onclick="location.href='last-heir.html'">HİKÂYEYE BAŞLA</button>
 </div>
 </div>
 
