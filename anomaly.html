@@ -6,6 +6,35 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>ANOMALY | REXSUS STUDIOS</title>
 <style>
+/* DÜZELTİLMİŞ MOBİL KONTROLLER */
+#question{
+  z-index:30 !important;
+  pointer-events:auto !important;
+  bottom:25px !important;
+}
+#question button{
+  pointer-events:auto !important;
+  touch-action:manipulation;
+  position:relative;
+  z-index:31;
+}
+#look{
+  width:55% !important;
+  height:55% !important;
+  top:0;
+  right:0;
+}
+#stick{
+  z-index:10;
+}
+#result{
+  z-index:50 !important;
+}
+#retry{
+  pointer-events:auto;
+  touch-action:manipulation;
+}
+
 *{box-sizing:border-box}
 body{margin:0;overflow:hidden;background:#050607;color:white;font-family:Arial}
 canvas{display:block}
