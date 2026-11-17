@@ -58,7 +58,7 @@ width:130px;
 height:180px;
 border:2px solid #d7ad65;
 border-radius:50% 50% 10% 10%;
-box-shadow:0 0 30px #d7ad65, inset 0 0 35px #d7ad65;
+box-shadow:0 0 30px #d7ad65,inset 0 0 35px #d7ad65;
 opacity:.45;
 transform:rotate(45deg);
 }
@@ -71,6 +71,45 @@ text-shadow:0 0 20px #c99542;
 .heir .tag{color:#d8ad65}
 .heir .btn{background:#9b7137}
 .heir .btn:hover{background:#c49a53}
+
+/* PROJECT NOCTURNE */
+.nocturne .game-banner{
+background:
+radial-gradient(ellipse at 50% 100%,#27313a 0%,transparent 55%),
+linear-gradient(180deg,#050609 0%,#101820 55%,#030405 100%);
+position:relative;
+overflow:hidden;
+}
+.nocturne .game-banner:before{
+content:"";
+position:absolute;
+width:100px;
+height:150px;
+background:linear-gradient(180deg,#020304,#111820);
+clip-path:polygon(35% 0,65% 0,75% 18%,100% 100%,0 100%,25% 18%);
+opacity:.8;
+filter:drop-shadow(0 0 18px #8b171e);
+}
+.nocturne .game-banner:after{
+content:"";
+position:absolute;
+width:180px;
+height:2px;
+background:#a51f2b;
+box-shadow:0 0 20px #e52b38;
+bottom:38px;
+opacity:.8;
+}
+.nocturne .game-banner strong{
+position:relative;
+z-index:1;
+color:#e7e7e7;
+letter-spacing:7px;
+text-shadow:0 0 18px #a51f2b,0 0 35px #76121c;
+}
+.nocturne .tag{color:#a9b2bd}
+.nocturne .btn{background:#791923}
+.nocturne .btn:hover{background:#b52635}
 
 .about{background:#11121a}
 footer{padding:35px 12%;border-top:1px solid #292a35;color:#777;display:flex;justify-content:space-between;flex-wrap:wrap;gap:15px;font-size:13px}
@@ -168,6 +207,19 @@ section{padding:65px 7%}
 <h3>THE LAST HEIR</h3>
 <p>Yıkılmış bir dünyanın sırlarını keşfet. Tehlikeli yaratıklarla savaş, kadim görevleri tamamla ve kaderini belirle.</p>
 <button class="btn" onclick="location.href='last-heir.html'">HİKÂYEYE BAŞLA</button>
+</div>
+</div>
+
+<!-- PROJECT NOCTURNE -->
+<div class="game-card nocturne">
+<div class="game-banner">
+<strong>PROJECT:<br>NOCTURNE</strong>
+</div>
+<div class="game-info">
+<div class="tag">KORKU • FPS • HAYATTA KALMA</div>
+<h3>PROJECT: NOCTURNE</h3>
+<p>Sislerle kaplı terk edilmiş bir kasabaya adım at. Karanlığın içindeki sırları keşfet, görevleri tamamla ve gece boyunca hayatta kal.</p>
+<button class="btn" onclick="location.href='nocturne.html'">KARANLIĞA GİR</button>
 </div>
 </div>
 
