@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REXSUS STUDIOS</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#080808;color:white;font-family:Arial,sans-serif}
+header{height:85px;display:flex;align-items:center;justify-content:space-between;padding:0 8%;border-bottom:1px solid #252525}
+.logo{font-size:25px;font-weight:900;letter-spacing:2px}
+.logo span{color:#ed2020}
+nav a{color:#aaa;text-decoration:none;margin-left:30px;font-size:14px}
+nav a:hover{color:red}
+.hero{min-height:620px;display:flex;flex-direction:column;justify-content:center;padding:80px 12%;background:radial-gradient(ellipse at 80% 50%,#421010 0%,#150909 30%,#080808 70%)}
+.tag{color:#ed3030;letter-spacing:5px;font-size:12px;margin-bottom:25px}
+h1{font-size:clamp(48px,8vw,90px);font-weight:900;line-height:1}
+h1 span{color:#e52525}
+.hero p{color:#aaa;max-width:520px;line-height:1.8;margin:25px 0}
+.btn{display:inline-block;background:#d91f1f;color:white;text-decoration:none;padding:16px 28px;font-weight:bold;width:max-content}
+section{padding:90px 12%}
+.section-title{font-size:35px;margin-bottom:15px}
+.section-title span{color:#ed2525}
+.subtitle{color:#888;margin-bottom:40px}
+.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px}
+.game{background:#141414;border:1px solid #292929;padding:30px;min-height:210px;transition:.3s}
+.game:hover{border-color:#e52525;transform:translateY(-5px)}
+.game h3{font-size:22px;margin-bottom:15px}
+.game p{color:#999;line-height:1.7}
+.status{color:#ed3030;font-size:11px;letter-spacing:2px;margin-bottom:20px}
+.about{background:#111}
+footer{padding:35px 12%;border-top:1px solid #292929;color:#777;font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:15px}
+@media(max-width:650px){header{padding:0 5%}nav a{margin-left:10px;font-size:11px}.hero{padding:70px 7%}section{padding:65px 7%}}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">REXSUS <span>STUDIOS</span></div>
+<nav>
+<a href="#home">HOME</a>
+<a href="#games">GAMES</a>
+<a href="#about">ABOUT</a>
+</nav>
+</header>
+
+<main>
+<div class="hero" id="home">
+<div class="tag">INDEPENDENT GAME STUDIO</div>
+<h1>WE CREATE<br><span>WORLDS.</span></h1>
+<p>We build immersive worlds, unforgettable adventures and unique gaming experiences. Welcome to REXSUS STUDIOS.</p>
+<a class="btn" href="#games">EXPLORE OUR GAMES</a>
+</div>
+
+<section id="games">
+<h2 class="section-title">OUR <span>GAMES</span></h2>
+<p class="subtitle">Discover our worlds and adventures.</p>
+<div class="games">
+<div class="game">
+<div class="status">IN DEVELOPMENT</div>
+<h3>SHADOWS OF THE LOST KINGDOM</h3>
+<p>Enter a mysterious kingdom, face dangerous enemies and discover your destiny.</p>
+</div>
+<div class="game">
+<div class="status">COMING SOON</div>
+<h3>MORE GAMES</h3>
+<p>New adventures are being created. Stay tuned.</p>
+</div>
+</div>
+</section>
+
+<section class="about" id="about">
+<h2 class="section-title">ABOUT <span>US</span></h2>
+<p class="subtitle">REXSUS STUDIOS is an independent game studio focused on creating memorable gaming experiences.</p>
+</section>
+</main>
+
+<footer>
+<span>© 2026 REXSUS STUDIOS</span>
+<span>CREATING WORLDS. BUILDING LEGENDS.</span>
+</footer>
+</body>
+</html>
