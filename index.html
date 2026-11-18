@@ -215,6 +215,31 @@ section{padding:65px 7%}
 .games-grid{grid-template-columns:1fr}
 .game-banner{height:190px}
 }
+
+/* REXSUS MASTER ADMIN */
+#masterAdminBtn{background:#171a23;border:1px solid #ed303c;color:#fff;padding:10px 13px;font-weight:800;cursor:pointer;margin-left:18px}
+#masterAdminBtn:hover{background:#ed303c}
+#masterAdminOverlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.86);backdrop-filter:blur(8px);overflow:auto;padding:22px}
+#masterAdminBox{max-width:1050px;margin:30px auto;background:#10131b;border:1px solid #343746;box-shadow:0 20px 80px #000;padding:24px;color:#fff}
+#masterAdminBox h2{margin:0 0 8px;color:#fff}
+.ma-muted{color:#9ba1b2;font-size:13px;line-height:1.6}
+.ma-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:16px 0}
+.ma-field{background:#090c12;color:#fff;border:1px solid #343746;padding:12px;min-width:180px;max-width:100%}
+.ma-btn{background:#e52b38;color:#fff;border:0;padding:11px 15px;font-weight:bold;cursor:pointer}
+.ma-btn.secondary{background:#292e3b}
+.ma-btn.danger{background:#76202a}
+.ma-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:16px 0}
+.ma-card{background:#171b25;border:1px solid #303646;padding:15px}
+.ma-card h3{font-size:15px;margin-bottom:8px}
+.ma-card label{display:flex;align-items:center;gap:8px;margin:9px 0;color:#d8dbe4;font-size:13px}
+.ma-card input[type=checkbox]{accent-color:#ed303c;width:17px;height:17px}
+.ma-card input[type=text],.ma-card input[type=number],.ma-card textarea{width:100%;margin-top:7px;background:#090c12;color:#fff;border:1px solid #343746;padding:10px}
+#maLogin{max-width:380px;margin:10vh auto;background:#11151e;border:1px solid #383d4d;padding:25px}
+#maLogin input{display:block;width:100%;margin:12px 0;background:#080b11;color:white;border:1px solid #343746;padding:13px}
+#maStatus{color:#70e0ae;min-height:20px;font-size:13px}
+.ma-close{float:right;background:#292e3b;color:white;border:0;padding:9px 12px;cursor:pointer}
+@media(max-width:650px){#masterAdminOverlay{padding:8px}#masterAdminBox{padding:15px;margin:8px auto}.ma-field{width:100%}#masterAdminBtn{margin-left:5px;padding:8px;font-size:11px}}
+
 </style>
 </head>
 
@@ -226,6 +251,7 @@ section{padding:65px 7%}
 <a href="#anasayfa">Ana Sayfa</a>
 <a href="#oyunlar">Oyunlar</a>
 <a href="#hakkimizda">Hakkımızda</a>
+<button id="masterAdminBtn" type="button" onclick="openMasterAdmin()">MASTER ADMIN</button>
 </nav>
 </header>
 
@@ -386,6 +412,170 @@ section{padding:65px 7%}
 <span>© 2026 REXSUS STUDIOS</span>
 <span>PLAY BEYOND.</span>
 </footer>
+
+
+<div id="masterAdminOverlay" aria-hidden="true">
+  <div id="maLogin">
+    <button class="ma-close" onclick="closeMasterAdmin()">KAPAT</button>
+    <div class="tag">REXSUS STUDIOS • CONTROL CENTER</div>
+    <h2>MASTER ADMIN</h2>
+    <p class="ma-muted">Merkez yönetim paneline giriş yap.</p>
+    <input id="maUser" autocomplete="username" placeholder="Yönetici kullanıcı adı">
+    <input id="maPass" type="password" autocomplete="current-password" placeholder="Yönetici şifresi">
+    <button class="ma-btn" style="width:100%" onclick="masterAdminLogin()">GİRİŞ YAP</button>
+    <p id="maLoginError" class="ma-muted" style="color:#ff737d;margin-top:10px"></p>
+  </div>
+  <div id="masterAdminBox" style="display:none">
+    <button class="ma-close" onclick="closeMasterAdmin()">PANELİ KAPAT</button>
+    <div class="tag">REXSUS STUDIOS • CENTRAL CONTROL</div>
+    <h2>MASTER ADMIN <span class="red">.</span></h2>
+    <p class="ma-muted">Tek merkezden oyun ayarları, duyurular ve yönetici modlarını düzenle.</p>
+    <div class="ma-row">
+      <select id="maGameSelect" class="ma-field" onchange="maLoadGame()">
+        <option value="all">Tüm oyunlar</option>
+        <option value="game.html">Shadows of the Lost Kingdom</option>
+        <option value="anomaly.html">Anomaly</option>
+        <option value="project-rex.html">Rex Brawlverse</option>
+        <option value="riftbound.html">Riftbound</option>
+        <option value="last-heir.html">The Last Heir</option>
+        <option value="nocturne.html">Project: Nocturne</option>
+        <option value="troll-devil.html">Troll Devil</option>
+        <option value="tenyuo.html">Tenyuo: Eldoria</option>
+        <option value="deadzone.html">Dead Zone</option>
+        <option value="bonebound.html">Bonebound: Last Oath</option>
+      </select>
+      <button class="ma-btn secondary" onclick="maSaveGame()">AYARLARI KAYDET</button>
+      <button class="ma-btn secondary" onclick="maExport()">AYARLARI DIŞA AKTAR</button>
+    </div>
+    <div class="ma-grid">
+      <div class="ma-card">
+        <h3>Oyun yönetimi</h3>
+        <label><input id="maMaintenance" type="checkbox"> Bakım moduna al</label>
+        <label><input id="maGod" type="checkbox"> Admin ölümsüzlüğü</label>
+        <label><input id="maFly" type="checkbox"> Uçma yetkisi</label>
+        <label><input id="maSpeed" type="checkbox"> Yüksek hız</label>
+        <label><input id="maUnlimited" type="checkbox"> Sınırsız kaynak</label>
+        <p class="ma-muted">Bu yetkiler oyun kodları tarafından okunmalıdır.</p>
+      </div>
+      <div class="ma-card">
+        <h3>Oyuncu / ekonomi ayarları</h3>
+        <label>Başlangıç bonusu</label>
+        <input id="maBonus" type="number" min="0" max="1000000" value="0">
+        <label>XP çarpanı</label>
+        <input id="maXp" type="number" min="1" max="100" value="1">
+        <label>Genel oyun mesajı</label>
+        <textarea id="maAnnouncement" rows="3" placeholder="Oyunculara gösterilecek duyuru..."></textarea>
+      </div>
+    </div>
+    <div class="ma-card">
+      <h3>Merkez duyurusu</h3>
+      <p class="ma-muted">Duyuru tüm oyunlar için ortak ayar olarak saklanır.</p>
+      <div class="ma-row">
+        <button class="ma-btn" onclick="maPublishAnnouncement()">DUYURUYU YAYINLA</button>
+        <button class="ma-btn danger" onclick="maClearAnnouncement()">DUYURUYU KALDIR</button>
+      </div>
+      <p id="maAnnouncementPreview" class="ma-muted"></p>
+    </div>
+    <div class="ma-card" style="margin-top:12px">
+      <h3>Sistem durumu</h3>
+      <p id="maStatus">Panel hazır.</p>
+      <p class="ma-muted">Ayarlar bu tarayıcıda saklanır. Farklı cihazlar ve oyuncular arasında gerçek yönetim için sunucu/veritabanı bağlantısı gerekir.</p>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  const ADMIN_USER = "TENYUO_ADMIN";
+  const ADMIN_PASS = "Eldoria2026!";
+  const KEY = "rexsus_master_admin_v1";
+  const ANNOUNCE_KEY = "rexsus_master_announcement";
+  const games = ["game.html","anomaly.html","project-rex.html","riftbound.html","last-heir.html","nocturne.html","troll-devil.html","tenyuo.html","deadzone.html","bonebound.html"];
+  const defaults = {maintenance:false,god:false,fly:false,speed:false,unlimited:false,bonus:0,xp:1,announcement:""};
+  const readAll = () => { try{return JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){return {}} };
+  const writeAll = x => localStorage.setItem(KEY,JSON.stringify(x));
+  const selected = () => document.getElementById("maGameSelect").value;
+  const status = s => document.getElementById("maStatus").textContent=s;
+  window.openMasterAdmin = function(){
+    document.getElementById("masterAdminOverlay").style.display="block";
+    document.getElementById("masterAdminOverlay").setAttribute("aria-hidden","false");
+    document.getElementById("maLogin").style.display="block";
+    document.getElementById("masterAdminBox").style.display="none";
+    document.getElementById("maUser").focus();
+  };
+  window.closeMasterAdmin = function(){
+    document.getElementById("masterAdminOverlay").style.display="none";
+    document.getElementById("masterAdminOverlay").setAttribute("aria-hidden","true");
+  };
+  window.masterAdminLogin = function(){
+    const u=document.getElementById("maUser").value;
+    const p=document.getElementById("maPass").value;
+    if(u!==ADMIN_USER || p!==ADMIN_PASS){
+      document.getElementById("maLoginError").textContent="Kullanıcı adı veya şifre hatalı.";
+      return;
+    }
+    document.getElementById("maLogin").style.display="none";
+    document.getElementById("masterAdminBox").style.display="block";
+    document.getElementById("maLoginError").textContent="";
+    maLoadGame();
+    maRefreshAnnouncement();
+    status("Yönetici girişi başarılı.");
+  };
+  window.maLoadGame = function(){
+    const all=readAll(), key=selected();
+    const d=Object.assign({},defaults,all[key]||{});
+    ["maintenance","god","fly","speed","unlimited"].forEach(k=>document.getElementById("ma"+k[0].toUpperCase()+k.slice(1)).checked=!!d[k]);
+    document.getElementById("maBonus").value=d.bonus;
+    document.getElementById("maXp").value=d.xp;
+    document.getElementById("maAnnouncement").value=d.announcement||"";
+  };
+  window.maSaveGame = function(){
+    const key=selected(), all=readAll();
+    const d={
+      maintenance:document.getElementById("maMaintenance").checked,
+      god:document.getElementById("maGod").checked,
+      fly:document.getElementById("maFly").checked,
+      speed:document.getElementById("maSpeed").checked,
+      unlimited:document.getElementById("maUnlimited").checked,
+      bonus:Math.max(0,Math.min(1000000,Number(document.getElementById("maBonus").value)||0)),
+      xp:Math.max(1,Math.min(100,Number(document.getElementById("maXp").value)||1)),
+      announcement:document.getElementById("maAnnouncement").value.slice(0,500)
+    };
+    if(key==="all") games.forEach(g=>all[g]=Object.assign({},all[g]||defaults,d));
+    else all[key]=d;
+    all[key]=key==="all"?all[key]:d;
+    if(key==="all") all.all=d;
+    writeAll(all);
+    status("Ayarlar kaydedildi: "+(key==="all"?"Tüm oyunlar":key));
+  };
+  window.maPublishAnnouncement = function(){
+    const msg=document.getElementById("maAnnouncement").value.trim();
+    if(!msg){status("Önce duyuru metni yaz.");return;}
+    localStorage.setItem(ANNOUNCE_KEY,msg);
+    maRefreshAnnouncement();
+    status("Merkez duyurusu yayınlandı.");
+  };
+  window.maClearAnnouncement = function(){
+    localStorage.removeItem(ANNOUNCE_KEY);
+    maRefreshAnnouncement();
+    status("Merkez duyurusu kaldırıldı.");
+  };
+  function maRefreshAnnouncement(){
+    const msg=localStorage.getItem(ANNOUNCE_KEY)||"";
+    document.getElementById("maAnnouncementPreview").textContent=msg?"Aktif duyuru: "+msg:"Aktif duyuru bulunmuyor.";
+  }
+  window.maExport = function(){
+    const blob=new Blob([JSON.stringify({settings:readAll(),announcement:localStorage.getItem(ANNOUNCE_KEY)||""},null,2)],{type:"application/json"});
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="rexsus-admin-settings.json";a.click();URL.revokeObjectURL(a.href);
+    status("Ayar dosyası indirildi.");
+  };
+  window.addEventListener("keydown",e=>{if(e.key==="Escape")closeMasterAdmin()});
+  window.rexsusGetAdminSettings = function(gameFile){
+    const all=readAll();
+    return Object.assign({},defaults,all[gameFile]||all.all||{});
+  };
+  window.rexsusGetAnnouncement = function(){return localStorage.getItem(ANNOUNCE_KEY)||""};
+})();
+</script>
 
 </body>
 </html>
