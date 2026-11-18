@@ -1,0 +1,841 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>DEAD ZONE</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101416;color:white;font-family:Arial,sans-serif;touch-action:none}
+canvas{display:block}
+#hud{position:fixed;inset:0;pointer-events:none}
+#top{position:absolute;top:18px;left:20px;background:#101719dd;padding:13px 18px;border:1px solid #52615b;border-radius:8px;min-width:190px}
+#title{font-size:19px;font-weight:900;letter-spacing:3px;color:#b9d5bd}
+#timer{font-size:25px;font-weight:900;color:#f0d58a;margin-top:9px}
+#mission{font-size:12px;color:#dce6dd;margin-top:5px;max-width:210px}
+#healthText{font-size:12px;margin:12px 0 5px;color:#ddd}
+#healthOuter{height:12px;background:#303b37;border-radius:8px;overflow:hidden}
+#health{height:100%;width:100%;background:#65bd72;transition:width .2s}
+#zombies,#ammo{margin-top:10px;font-size:13px;color:#d4d9d5}
+#crosshair{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:7px;height:7px;border:1px solid #e6eee7;border-radius:50%;box-shadow:0 0 5px #000}
+#hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);background:#101719d9;padding:10px 16px;border-radius:7px;font-size:12px;color:#dce6dd;text-align:center}
+#start{position:fixed;inset:0;background:#090e0def;z-index:5;display:flex;align-items:center;justify-content:center;text-align:center}
+#startBox{max-width:500px;padding:30px}
+#start h1{font-size:48px;letter-spacing:6px;color:#b7d5bc;margin:0 0 8px}
+#start p{color:#b4c0b8;line-height:1.7}
+#start button,#restart{border:0;background:#658c6b;color:white;padding:14px 30px;font-weight:bold;font-size:15px;border-radius:5px;cursor:pointer}
+#damage{position:fixed;inset:0;pointer-events:none;background:#b5222240;opacity:0;transition:opacity .15s;z-index:3}
+#message{position:fixed;top:22%;left:50%;transform:translateX(-50%);font-size:22px;font-weight:bold;color:#e3eee3;text-shadow:0 2px 8px black;text-align:center}
+#gameover{display:none;position:fixed;inset:0;z-index:10;background:#080b0dee;align-items:center;justify-content:center;text-align:center}
+#gameover h1{font-size:42px;color:#c65e5e;letter-spacing:4px}
+#rotateScreen{display:none;position:fixed;inset:0;background:#101719;z-index:20;align-items:center;justify-content:center;text-align:center;padding:25px;font-size:20px;font-weight:bold}
+#mobileControls{display:none;position:fixed;inset:0;z-index:4;pointer-events:none}
+.mobileBtn{position:absolute;pointer-events:auto;border:1px solid #ffffff70;background:#17231dcc;color:white;border-radius:50%;width:58px;height:58px;font-size:12px;font-weight:bold;touch-action:none}
+#up{left:75px;bottom:125px}
+#down{left:75px;bottom:15px}
+#left{left:15px;bottom:70px}
+#right{left:135px;bottom:70px}
+#runBtn{left:205px;bottom:25px}
+#shootBtn{right:22px;bottom:35px;width:76px;height:76px;background:#713d39dd}
+#pickupBtn{right:115px;bottom:35px}
+#dropBtn{right:115px;bottom:105px}
+#lookArea{position:absolute;right:0;top:0;width:48%;height:100%;pointer-events:auto;touch-action:none}
+#jumpscare{display:none;position:fixed;inset:0;z-index:15;background:#050505;align-items:center;justify-content:center;overflow:hidden}
+#scareFace{width:min(75vw,520px);height:min(75vw,520px);border-radius:48% 48% 42% 42%;background:radial-gradient(ellipse at 50% 35%,#a6a49a 0%,#555b55 38%,#171c19 75%);position:relative;box-shadow:0 0 100px #a11}
+#scareFace:before,#scareFace:after{content:"";position:absolute;top:36%;width:23%;height:13%;background:#080808;border-radius:50%;box-shadow:0 0 25px #e22}
+#scareFace:before{left:17%;transform:rotate(12deg)}
+#scareFace:after{right:17%;transform:rotate(-12deg)}
+#scareMouth{position:absolute;left:30%;top:61%;width:40%;height:24%;background:#090909;border-radius:45% 45% 30% 30%;border:5px solid #302a27}
+#scareText{position:absolute;bottom:9%;color:white;font-size:25px;font-weight:900;letter-spacing:5px;text-shadow:0 0 15px red}
+@media (orientation:portrait) and (max-width:950px){#rotateScreen{display:flex}}
+@media (orientation:landscape) and (max-width:950px){
+ #mobileControls{display:block}
+ #top{top:8px;left:8px;transform:scale(.78);transform-origin:top left}
+ #hint{bottom:5px;font-size:10px;padding:6px 9px}
+ #start h1{font-size:35px}
+ #timer{font-size:22px}
+}
+</style>
+</head>
+<body>
+
+<div id="start">
+ <div id="startBox">
+  <h1>DEAD ZONE</h1>
+  <p>Şehir terk edilmiş durumda.<br>Bir şeyler hâlâ sokaklarda dolaşıyor.</p>
+  <p><b>İLK GÖREV</b><br>5 dakika boyunca hayatta kal.<br>Sonra arabayla buradan kaç!</p>
+  <p>
+   <b>WASD:</b> Hareket<br>
+   <b>Fare:</b> Etrafa bak<br>
+   <b>SHIFT:</b> Koş<br>
+   <b>E:</b> Silah al / Arabaya bin<br>
+   <b>Sol tık:</b> Ateş et<br>
+   <b>Q:</b> Mermi bitince silahı at
+  </p>
+  <button id="startButton">OYUNA BAŞLA</button>
+ </div>
+</div>
+
+<div id="rotateScreen">📱<br><br>DEAD ZONE oynamak için<br>telefonunu yatay çevir.</div>
+
+<div id="hud">
+ <div id="top">
+  <div id="title">DEAD ZONE</div>
+  <div id="timer">05:00</div>
+  <div id="mission">GÖREV: 5 dakika hayatta kal</div>
+  <div id="healthText">SAĞLIK</div>
+  <div id="healthOuter"><div id="health"></div></div>
+  <div id="zombies">Zombiler: <span id="zombieCount">0</span></div>
+  <div id="ammo">Enerji: <span id="ammoCount">0</span></div>
+ </div>
+ <div id="crosshair"></div>
+ <div id="hint">WASD: Hareket · SHIFT: Koş · E: Silah al</div>
+ <div id="message"></div>
+</div>
+<div id="damage"></div>
+
+<div id="mobileControls">
+ <div id="lookArea"></div>
+ <button class="mobileBtn" id="up">▲</button>
+ <button class="mobileBtn" id="down">▼</button>
+ <button class="mobileBtn" id="left">◀</button>
+ <button class="mobileBtn" id="right">▶</button>
+ <button class="mobileBtn" id="runBtn">KOŞ</button>
+ <button class="mobileBtn" id="shootBtn">ATEŞ</button>
+ <button class="mobileBtn" id="pickupBtn">AL</button>
+ <button class="mobileBtn" id="dropBtn">AT</button>
+</div>
+
+<div id="gameover">
+ <div>
+  <h1 id="gameoverTitle">HAYATTA KALAMADIN</h1>
+  <p id="gameoverText">Şehir seni ele geçirdi.</p>
+  <button id="restart">TEKRAR DENE</button>
+ </div>
+</div>
+
+<div id="jumpscare">
+ <div id="scareFace"><div id="scareMouth"></div></div>
+ <div id="scareText">SENİ BULDU!</div>
+</div>
+
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x89918d);
+scene.fog=new THREE.Fog(0x89918d,35,190);
+
+const camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,.1,300);
+camera.position.set(0,1.7,8);
+camera.rotation.order="YXZ";
+scene.add(camera);
+
+const renderer=new THREE.WebGLRenderer({antialias:false,powerPreference:"high-performance"});
+renderer.setSize(innerWidth,innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.2));
+renderer.shadowMap.enabled=false;
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+
+scene.add(new THREE.HemisphereLight(0xc7d5d0,0x333b35,2));
+const sun=new THREE.DirectionalLight(0xffe5c2,2);
+sun.position.set(-35,55,30);
+scene.add(sun);
+
+const mat=(color,roughness=1)=>new THREE.MeshStandardMaterial({color,roughness});
+const materials={
+ ground:mat(0x515750),road:mat(0x292f30),sidewalk:mat(0x77786f),
+ concrete:mat(0x77776e),dark:mat(0x343a38),window:mat(0x273c40),
+ wood:mat(0x584638),metal:mat(0x59605b),yellow:mat(0xb5a15d),
+ green:mat(0x425b46),leaf:mat(0x465744),rust:mat(0x754b36),
+ glass:mat(0x526b6b),tire:mat(0x181c1b),red:mat(0x713d39)
+};
+
+const geometryCache=new Map();
+function box(parent,x,y,z,sx,sy,sz,material){
+ const key=`${sx}_${sy}_${sz}`;
+ let geometry=geometryCache.get(key);
+ if(!geometry){geometry=new THREE.BoxGeometry(sx,sy,sz);geometryCache.set(key,geometry)}
+ const mesh=new THREE.Mesh(geometry,material);
+ mesh.position.set(x,y,z);parent.add(mesh);return mesh;
+}
+function random(min,max){return min+Math.random()*(max-min)}
+function choose(array){return array[Math.floor(Math.random()*array.length)]}
+
+// ZEMİN VE YOL
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(420,420),materials.ground);
+ground.rotation.x=-Math.PI/2;ground.position.y=-.08;scene.add(ground);
+box(scene,0,0,-5,16,.08,350,materials.road);
+box(scene,-8.5,.04,-5,1.5,.12,350,materials.sidewalk);
+box(scene,8.5,.04,-5,1.5,.12,350,materials.sidewalk);
+for(let z=-175;z<175;z+=9)box(scene,0,.055,z,.18,.025,4,materials.yellow);
+
+// BİNALAR
+const buildingColors=[0x77756b,0x656d68,0x8a8375,0x5b625f,0x777b77,0x666158,0x77716a,0x59635d];
+function building(x,z,w,h,d){
+ const group=new THREE.Group();group.position.set(x,0,z);scene.add(group);
+ box(group,0,h/2,0,w,h,d,mat(choose(buildingColors)));
+ box(group,0,h+.18,0,w+.3,.35,d+.3,materials.dark);
+ if(Math.random()>.45)box(group,random(-w*.3,w*.3),h+.7,random(-d*.3,d*.3),random(1,2),1,random(1,2),materials.metal);
+ const floors=Math.max(1,Math.floor(h/3)),columns=Math.max(1,Math.floor(w/2.5));
+ for(let floor=0;floor<floors;floor++)for(let col=0;col<columns;col++){
+  const wx=-w/2+1.1+col*(w-1.5)/columns,wy=1.5+floor*2.7;
+  if(wy>h-.5)continue;
+  const broken=Math.random()>.72;
+  box(group,wx,wy,d/2+.025,.85,1.15,.07,broken?materials.dark:materials.window);
+  box(group,wx-.47,wy,d/2+.08,.06,1.3,.09,materials.metal);
+  box(group,wx+.47,wy,d/2+.08,.06,1.3,.09,materials.metal);
+  box(group,wx,wy+.6,d/2+.08,1,.06,.09,materials.metal);
+  box(group,wx,wy-.6,d/2+.08,1,.06,.09,materials.metal);
+  if(Math.random()>.68)box(group,wx,wy-.7,d/2+.12,1,.08,.15,materials.wood);
+ }
+ box(group,0,1.05,d/2+.06,1.1,2.1,.12,materials.wood);
+ box(group,0,2.2,d/2+.5,2,.16,1,materials.dark);
+ if(Math.random()>.5)box(group,-w*.25,1.8,d/2+.1,1.4,.12,.12,materials.wood);
+ if(Math.random()>.5)box(group,w/2+.03,h*.55,0,.1,1.5,2,materials.dark);
+}
+for(let z=-165;z<=165;z+=18){
+ building(-17+random(-2,2),z,random(9,13),random(9,19),random(9,13));
+ building(17+random(-2,2),z+random(-3,3),random(9,13),random(8,18),random(9,13));
+}
+for(let z=-150;z<=150;z+=30){
+ building(-38+random(-3,3),z+random(-8,8),random(12,17),random(12,24),random(12,17));
+ building(38+random(-3,3),z+random(-8,8),random(12,17),random(11,22),random(12,17));
+}
+
+// ARABALAR
+function car(x,z,rotation=0){
+ const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=rotation;scene.add(g);
+ const bodyMat=mat(choose([0x46545b,0x77715d,0x4b514d,0x773e36,0x343c40]));
+ box(g,0,.65,0,3.8,.8,6,bodyMat);
+ box(g,0,1.25,-.4,3.2,.8,3.1,materials.dark);
+ box(g,0,1.3,-2,2.7,.55,.08,materials.glass);
+ box(g,0,1.3,1.2,2.7,.55,.08,materials.glass);
+ box(g,-1.65,1.25,-.4,.08,.55,2.8,materials.metal);
+ box(g,1.65,1.25,-.4,.08,.55,2.8,materials.metal);
+ for(const sx of [-1.8,1.8])for(const sz of [-1.8,1.8]){
+  const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.48,.48,.25,8),materials.tire);
+  wheel.rotation.z=Math.PI/2;wheel.position.set(sx,.48,sz);g.add(wheel);
+ }
+ box(g,-1,.65,-3.04,.5,.25,.08,materials.yellow);
+ box(g,1,.65,-3.04,.5,.25,.08,materials.yellow);
+ if(Math.random()>.4)box(g,0,1.07,2.9,1.4,.15,.1,materials.rust);
+ return g;
+}
+for(let i=0;i<24;i++)car((Math.random()>.5?1:-1)*random(9.5,13),random(-160,160),random(-.2,.2));
+
+// SOKAK LAMBALARI
+function streetLight(x,z){
+ const g=new THREE.Group();g.position.set(x,0,z);scene.add(g);
+ box(g,0,2.7,0,.16,5.4,.16,materials.metal);
+ box(g,.65,5.25,0,1.4,.13,.13,materials.metal);
+ box(g,1.25,5.05,0,.55,.2,.5,materials.yellow);
+}
+for(let z=-160;z<=160;z+=22){streetLight(-10,z);streetLight(10,z+8)}
+
+// ENKAZ
+for(let i=0;i<170;i++){
+ const x=random(-65,65),z=random(-170,170);
+ if(Math.abs(x)<9.5)continue;
+ const size=random(.25,.9);
+ const debris=box(scene,x,size/2,z,size,random(.2,.8),size,choose([materials.dark,materials.wood,materials.rust,materials.concrete]));
+ debris.rotation.y=random(0,Math.PI);debris.rotation.x=random(-.2,.2);
+}
+
+// ÇÖP KUTULARI
+for(let i=0;i<18;i++){
+ const g=new THREE.Group();g.position.set(choose([-11,11])+random(-1,1),0,random(-165,165));scene.add(g);
+ box(g,0,.65,0,1,1.3,.9,materials.green);box(g,0,1.35,0,1.1,.12,1,materials.dark);
+}
+
+// AĞAÇLAR
+function tree(x,z){
+ const g=new THREE.Group();g.position.set(x,0,z);scene.add(g);
+ box(g,0,1.5,0,.55,3,.55,materials.wood);
+ for(let i=0;i<4;i++){
+  const crown=new THREE.Mesh(new THREE.ConeGeometry(random(1.1,1.6),random(2,3),5),choose([materials.leaf,materials.green]));
+  crown.position.set(random(-.2,.2),3+i*.6,random(-.2,.2));g.add(crown);
+ }
+}
+for(let i=0;i<65;i++){let x=random(-70,70);if(Math.abs(x)<10)x=x<0?-12:12;tree(x,random(-170,170))}
+
+// ÇIKIŞ KAPISI
+const exitGate=new THREE.Group();
+exitGate.position.set(0,0,-169);
+scene.add(exitGate);
+box(exitGate,-7,3,0,.5,6,.6,materials.metal);
+box(exitGate,7,3,0,.5,6,.6,materials.metal);
+box(exitGate,0,6,0,14,.5,.6,materials.metal);
+box(exitGate,0,5.2,-.05,8,.65,.15,materials.red);
+for(let x=-6;x<=6;x+=2)box(exitGate,x,.55,0,.12,1.1,.15,materials.yellow);
+
+// OYUNCU
+const player={health:100,yaw:0,pitch:0,speed:4.5,alive:true,pos:new THREE.Vector3(0,0,8),ammo:0,hasWeapon:false};
+const keys={};
+let locked=false,gameStarted=false,pickupState=null,shootCooldown=0,runTime=0;
+let missionTime=300,missionPhase="survive",escapeCar=null,driving=false,carSpeed=0,carYaw=0;
+let scareStarted=false;
+const isMobile=('ontouchstart' in window)||navigator.maxTouchPoints>0;
+
+document.addEventListener("keydown",e=>{
+ keys[e.code]=true;
+ if(e.code==="KeyE"&&!e.repeat){
+  if(missionPhase==="escape"&&!driving)tryEnterCar();
+  else tryPickup();
+ }
+ if(e.code==="KeyQ"&&!e.repeat)dropWeapon();
+});
+document.addEventListener("keyup",e=>keys[e.code]=false);
+
+document.addEventListener("mousemove",e=>{
+ if(!locked||!player.alive||pickupState||isMobile||driving)return;
+ player.yaw-=e.movementX*.002;
+ player.pitch-=e.movementY*.002;
+ player.pitch=THREE.MathUtils.clamp(player.pitch,-1.45,1.45);
+ camera.rotation.set(player.pitch,player.yaw,0);
+});
+
+renderer.domElement.addEventListener("click",()=>{
+ if(gameStarted&&player.alive&&!locked&&!isMobile)renderer.domElement.requestPointerLock();
+});
+document.addEventListener("pointerlockchange",()=>{
+ if(isMobile)return;
+ locked=document.pointerLockElement===renderer.domElement;
+ if(!locked&&player.alive&&gameStarted)document.getElementById("hint").textContent="Devam etmek için ekrana tıkla";
+ else if(locked)updateHint();
+});
+
+document.getElementById("startButton").onclick=()=>{
+ gameStarted=true;
+ document.getElementById("start").style.display="none";
+ if(isMobile){locked=true;updateHint()}
+ else renderer.domElement.requestPointerLock();
+};
+
+// BİRİNCİ ŞAHIS ELLERİ VE SİLAH
+const handMat=mat(0xb18b70),sleeveMat=mat(0x333e3a),weaponMat=mat(0x303b40);
+const energyMat=new THREE.MeshBasicMaterial({color:0x55dfff});
+const viewModel=new THREE.Group();camera.add(viewModel);
+const leftHand=new THREE.Group(),rightHand=new THREE.Group();
+viewModel.add(leftHand,rightHand);
+
+function makeViewHand(group){
+ const arm=new THREE.Mesh(new THREE.BoxGeometry(.16,.48,.17),sleeveMat);
+ arm.position.set(0,-.15,0);group.add(arm);
+ const hand=new THREE.Mesh(new THREE.BoxGeometry(.17,.17,.18),handMat);
+ hand.position.set(0,-.42,-.02);group.add(hand);
+}
+makeViewHand(leftHand);makeViewHand(rightHand);
+leftHand.position.set(-.48,-.12,-.65);
+rightHand.position.set(.48,-.12,-.65);
+
+const viewWeapon=new THREE.Group();viewModel.add(viewWeapon);
+const gunBody=new THREE.Mesh(new THREE.BoxGeometry(.22,.19,.55),weaponMat);viewWeapon.add(gunBody);
+const gunTop=new THREE.Mesh(new THREE.BoxGeometry(.14,.09,.3),mat(0x586b70));
+gunTop.position.set(0,.13,-.04);viewWeapon.add(gunTop);
+const barrel=new THREE.Mesh(new THREE.CylinderGeometry(.065,.08,.25,8),weaponMat);
+barrel.rotation.x=Math.PI/2;barrel.position.set(0,.02,-.37);viewWeapon.add(barrel);
+const energyCore=new THREE.Mesh(new THREE.SphereGeometry(.07,8,8),energyMat);
+energyCore.position.set(0,.02,-.51);viewWeapon.add(energyCore);
+viewWeapon.position.set(.24,-.28,-.58);viewWeapon.visible=false;
+
+function updateViewModel(dt){
+ const moving=keys.KeyW||keys.KeyA||keys.KeyS||keys.KeyD;
+ const running=keys.ShiftLeft||keys.ShiftRight;
+ const sprinting=moving&&running&&!pickupState;
+ runTime+=dt*(sprinting?12:3);
+ const wave=Math.sin(runTime),opposite=Math.sin(runTime+Math.PI);
+ viewModel.position.y=moving?Math.abs(wave)*.035:0;
+ viewModel.position.x=moving?Math.cos(runTime)*.012:0;
+ if(!player.hasWeapon){
+  leftHand.visible=true;rightHand.visible=true;viewWeapon.visible=false;
+  leftHand.position.set(-.48,-.12+(sprinting?wave*.14:0),-.65);
+  rightHand.position.set(.48,-.12+(sprinting?opposite*.14:0),-.65);
+  leftHand.rotation.set(sprinting?wave*.35:0,0,-.18+(sprinting?wave*.08:0));
+  rightHand.rotation.set(sprinting?opposite*.35:0,0,.18+(sprinting?opposite*.08:0));
+ }else{
+  leftHand.visible=false;rightHand.visible=false;viewWeapon.visible=true;
+  if(sprinting){
+   viewWeapon.position.set(.24+Math.cos(runTime)*.045,-.28+wave*.13,-.58);
+   viewWeapon.rotation.set(.08+Math.cos(runTime)*.12,-.08+wave*.07,.28+wave*.22);
+  }else{
+   viewWeapon.position.set(.24,-.28,-.58);viewWeapon.rotation.set(0,0,.08);
+  }
+ }
+}
+
+// ÜÇÜNCÜ ŞAHIS SİLAH ALMA ANİMASYONU
+const pickupAvatar=new THREE.Group();scene.add(pickupAvatar);pickupAvatar.visible=false;
+const avatarBody=new THREE.Group();pickupAvatar.add(avatarBody);
+const avatarShirt=mat(0x343e3a),avatarPants=mat(0x303438),avatarSkin=mat(0xb18b70);
+const avatarTorso=new THREE.Mesh(new THREE.BoxGeometry(.65,.85,.35),avatarShirt);
+avatarTorso.position.y=1.15;avatarBody.add(avatarTorso);
+const avatarHead=new THREE.Mesh(new THREE.BoxGeometry(.35,.4,.35),avatarSkin);
+avatarHead.position.y=1.8;avatarBody.add(avatarHead);
+const avatarArms=[],avatarLegs=[];
+for(const side of [-1,1]){
+ const arm=new THREE.Group();arm.position.set(side*.42,1.45,0);avatarBody.add(arm);
+ const upper=new THREE.Mesh(new THREE.BoxGeometry(.17,.48,.18),avatarShirt);upper.position.y=-.22;arm.add(upper);
+ const hand=new THREE.Mesh(new THREE.BoxGeometry(.14,.16,.14),avatarSkin);hand.position.y=-.48;arm.add(hand);
+ avatarArms.push(arm);
+ const leg=new THREE.Mesh(new THREE.BoxGeometry(.23,.65,.25),avatarPants);
+ leg.position.set(side*.17,.35,0);avatarBody.add(leg);avatarLegs.push(leg);
+}
+function startPickup(weapon){
+ if(pickupState||!player.alive)return;
+ pickupState={weapon,time:0,duration:1.8,startPosition:camera.position.clone()};
+ pickupAvatar.visible=true;pickupAvatar.position.set(player.pos.x,0,player.pos.z);
+ pickupAvatar.rotation.y=player.yaw;viewModel.visible=false;
+ document.getElementById("hint").textContent="Silah alınıyor...";
+}
+function updatePickup(dt){
+ if(!pickupState)return;
+ const p=pickupState;p.time+=dt;
+ const t=Math.min(p.time/p.duration,1);
+ const behindX=Math.sin(player.yaw)*3.8,behindZ=Math.cos(player.yaw)*3.8;
+ const targetCamera=new THREE.Vector3(player.pos.x+behindX,2.45,player.pos.z+behindZ);
+ camera.position.lerpVectors(p.startPosition,targetCamera,Math.min(p.time/.35,1));
+ camera.lookAt(player.pos.x,1.1,player.pos.z);
+ const crouch=Math.sin(Math.min(t*1.5,1)*Math.PI/2);
+ avatarTorso.position.y=1.15-.42*crouch;avatarHead.position.y=1.8-.38*crouch;
+ avatarArms.forEach(a=>a.rotation.x=-.4-.8*crouch);
+ avatarLegs.forEach(a=>a.rotation.x=-.35*crouch);
+ if(p.time>=.85&&!p.collected){
+  p.collected=true;p.weapon.visible=false;p.weapon.group.visible=false;
+  player.hasWeapon=true;player.ammo+=15;viewWeapon.visible=true;updateAmmo();
+ }
+ if(p.time>=p.duration){
+  pickupAvatar.visible=false;avatarTorso.position.y=1.15;avatarHead.position.y=1.8;
+  avatarArms.forEach(a=>a.rotation.set(0,0,0));avatarLegs.forEach(a=>a.rotation.set(0,0,0));
+  camera.position.set(player.pos.x,1.7,player.pos.z);
+  camera.rotation.order="YXZ";camera.rotation.set(player.pitch,player.yaw,0);
+  viewModel.visible=true;pickupState=null;updateHint();
+ }
+}
+
+// HARİTADAKİ SİLAHLAR - 18 ADET
+const pickups=[];
+function createPickup(x,z){
+ const group=new THREE.Group();group.position.set(x,.15,z);scene.add(group);
+ group.add(new THREE.Mesh(new THREE.BoxGeometry(.32,.18,.65),weaponMat));
+ const top=new THREE.Mesh(new THREE.BoxGeometry(.2,.1,.3),mat(0x657b80));
+ top.position.y=.13;group.add(top);
+ const glow=new THREE.Mesh(new THREE.TorusGeometry(.65,.035,6,18),new THREE.MeshBasicMaterial({color:0x48dfff}));
+ glow.rotation.x=Math.PI/2;glow.position.y=-.08;group.add(glow);
+ const light=new THREE.PointLight(0x39cfff,1.1,5);light.position.y=.5;group.add(light);
+ pickups.push({group,glow,visible:true});
+}
+const pickupPositions=[
+[-12,-42],[12,-82],[-13,18],[13,62],
+[-45,-110],[45,-45],[-42,105],[43,145],
+[-12,130],[12,-145],[-25,-20],[25,35],
+[-30,75],[30,-100],[-50,20],[50,90],
+[-18,-125],[18,110]
+];
+for(const p of pickupPositions)createPickup(p[0],p[1]);
+
+function tryPickup(){
+ if(!locked||pickupState||!player.alive||missionPhase!=="survive")return;
+ let closest=null,closestDistance=2.8;
+ for(const weapon of pickups){
+  if(!weapon.visible)continue;
+  const dx=weapon.group.position.x-player.pos.x,dz=weapon.group.position.z-player.pos.z;
+  const d=Math.hypot(dx,dz);
+  if(d<closestDistance){closestDistance=d;closest=weapon}
+ }
+ if(closest)startPickup(closest);
+}
+function updatePickups(dt){
+ for(const weapon of pickups){
+  if(!weapon.visible)continue;
+  weapon.glow.rotation.z+=dt*.8;
+  weapon.group.position.y=.15+Math.sin(clock.elapsedTime*2)*.07;
+ }
+}
+function updateAmmo(){document.getElementById("ammoCount").textContent=player.ammo}
+function updateHint(){
+ if(pickupState||!locked)return;
+ if(missionPhase==="escape"&&!driving){
+  document.getElementById("hint").textContent="E: Arabaya bin";return;
+ }
+ if(driving){
+  document.getElementById("hint").textContent="W: Gaz · S: Fren · A/D: Direksiyon";return;
+ }
+ let nearby=false;
+ for(const weapon of pickups){
+  if(!weapon.visible)continue;
+  if(Math.hypot(weapon.group.position.x-player.pos.x,weapon.group.position.z-player.pos.z)<2.8){nearby=true;break}
+ }
+ if(nearby)document.getElementById("hint").textContent="E: Enerji silahını al";
+ else if(player.hasWeapon)document.getElementById("hint").textContent=player.ammo>0?"WASD: Hareket · SHIFT: Koş · Q: Silahı at":"Mermi bitti · Q: Silahı at";
+ else document.getElementById("hint").textContent="WASD: Hareket · SHIFT: Koş · E: Silah al";
+}
+
+// SİLAHI YERE ATMA
+const droppedWeapons=[];
+function createWorldWeapon(position){
+ const group=new THREE.Group();scene.add(group);
+ const body=new THREE.Mesh(new THREE.BoxGeometry(.22,.19,.55),weaponMat);group.add(body);
+ const top=new THREE.Mesh(new THREE.BoxGeometry(.14,.09,.3),mat(0x586b70));
+ top.position.set(0,.13,-.04);group.add(top);
+ const barrelMesh=new THREE.Mesh(new THREE.CylinderGeometry(.065,.08,.25,8),weaponMat);
+ barrelMesh.rotation.x=Math.PI/2;barrelMesh.position.set(0,.02,-.37);group.add(barrelMesh);
+ group.position.copy(position);return group;
+}
+function dropWeapon(){
+ if(!player.hasWeapon||player.ammo>0||!player.alive||pickupState||driving)return;
+ const forward=new THREE.Vector3(-Math.sin(player.yaw),0,-Math.cos(player.yaw));
+ const position=player.pos.clone().add(forward.clone().multiplyScalar(1.1));position.y=1.1;
+ const group=createWorldWeapon(position);group.rotation.y=player.yaw;
+ droppedWeapons.push({group,velocity:forward.multiplyScalar(5).add(new THREE.Vector3(0,3,0)),spin:5,grounded:false});
+ player.hasWeapon=false;viewWeapon.visible=false;leftHand.visible=true;rightHand.visible=true;updateHint();
+}
+function updateDroppedWeapons(dt){
+ for(const item of droppedWeapons){
+  if(!item.grounded){
+   item.velocity.y-=9.8*dt;item.group.position.addScaledVector(item.velocity,dt);
+   item.group.rotation.x+=dt*item.spin;item.group.rotation.z+=dt*item.spin*.5;
+   if(item.group.position.y<=.18){
+    item.group.position.y=.18;item.velocity.set(0,0,0);item.grounded=true;
+    item.group.rotation.x=0;item.group.rotation.z=0;
+   }
+  }
+ }
+}
+
+// ZOMBİLER - 35 ADET
+const zombies=[];
+const zombieSkins=[0x82917b,0x596a59,0x9b927c,0x697b70,0x777c64,0x555d52];
+const zombieShirts=[0x4b4d48,0x555c66,0x635047,0x384b47,0x6b6250,0x343d3b];
+const zombiePants=[0x343d3b,0x41434b,0x554b40,0x292f32,0x50564e];
+
+function createZombie(x,z){
+ const group=new THREE.Group();group.position.set(x,0,z);scene.add(group);
+ const skin=mat(choose(zombieSkins)),shirt=mat(choose(zombieShirts)),pants=mat(choose(zombiePants));
+ const dark=mat(0x292b29),eye=mat(0xb53b32),mouth=mat(0x241c1b),wound=mat(0x633b36),bone=mat(0xaaa28c);
+ const body=new THREE.Group();group.add(body);
+ const torso=new THREE.Group();torso.position.set(0,1.2,0);body.add(torso);
+ box(torso,0,0,0,.68,.9,.42,shirt);box(torso,0,.48,-.01,.64,.16,.44,dark);
+ for(let i=0;i<3;i++){
+  const patch=box(torso,random(-.25,.25),random(-.25,.25),-.225,random(.12,.22),random(.08,.16),.025,choose([dark,wound,pants]));
+  patch.rotation.z=random(-.5,.5);
+ }
+ box(body,0,1.72,0,.24,.25,.25,skin);
+ const head=new THREE.Group();head.position.set(0,2.05,-.02);body.add(head);
+ head.add(new THREE.Mesh(new THREE.BoxGeometry(.5,.55,.48),skin));
+ box(head,0,.29,.02,.53,.12,.5,dark);
+ box(head,-.2,.22,0,.13,.18,.46,dark);box(head,-.28,0,0,.1,.18,.16,skin);box(head,.28,0,0,.1,.18,.16,skin);
+ box(head,-.12,.08,-.25,.09,.075,.035,eye);box(head,.12,.08,-.25,.09,.075,.035,eye);
+ box(head,-.12,.16,-.27,.13,.04,.04,dark);box(head,.12,.16,-.27,.13,.04,.04,dark);
+ box(head,0,-.03,-.27,.1,.13,.1,skin);box(head,0,-.17,-.255,.25,.09,.045,mouth);
+ for(let i=0;i<3;i++)box(head,-.07+i*.07,-.19,-.29,.035,.045,.025,bone);
+ box(head,-.2,-.02,-.25,.06,.12,.035,wound);
+
+ function makeArm(side){
+  const arm=new THREE.Group();arm.position.set(side*.43,1.55,0);body.add(arm);
+  box(arm,0,-.24,0,.2,.52,.22,shirt);
+  const elbow=new THREE.Group();elbow.position.set(0,-.5,0);arm.add(elbow);
+  box(elbow,0,-.2,0,.17,.42,.19,skin);box(elbow,0,-.43,-.01,.2,.12,.21,skin);
+  for(let i=0;i<4;i++)box(elbow,-.07+i*.045,-.52,-.06,.035,.13,.05,skin);
+  return {arm,elbow};
+ }
+ const leftArm=makeArm(-1),rightArm=makeArm(1);
+ function makeLeg(side){
+  const leg=new THREE.Group();leg.position.set(side*.19,.82,0);body.add(leg);
+  box(leg,0,-.25,0,.24,.5,.26,pants);
+  const knee=new THREE.Group();knee.position.set(0,-.5,0);leg.add(knee);
+  box(knee,0,-.2,0,.2,.4,.22,skin);box(knee,0,-.43,-.09,.28,.15,.42,dark);
+  return {leg,knee};
+ }
+ const leftLeg=makeLeg(-1),rightLeg=makeLeg(1);
+ if(Math.random()>.65)box(torso,0,.05,.22,.5,.3,.15,dark);
+ if(Math.random()>.5)box(body,-.4,1.48,0,.25,.25,.3,skin);
+ zombies.push({group,body,head,torso,leftArm,rightArm,leftLeg,rightLeg,speed:random(.9,1.45),phase:random(0,6),hitCooldown:0,health:3,limp:Math.random()>.5?1:-1});
+}
+for(let i=0;i<35;i++){
+ let x,z;
+ do{x=random(-70,70);z=random(-165,165)}while(Math.abs(x)<5&&Math.abs(z)<12);
+ createZombie(x,z);
+}
+
+// ENERJİ MERMİLERİ
+const projectiles=[];
+const projectileGeometry=new THREE.SphereGeometry(.11,8,8);
+const projectileMaterial=new THREE.MeshBasicMaterial({color:0x54ddff});
+function shoot(){
+ if(!locked||pickupState||!player.alive||driving||!player.hasWeapon||player.ammo<=0||shootCooldown>0)return;
+ shootCooldown=.32;player.ammo--;updateAmmo();
+ const direction=new THREE.Vector3();camera.getWorldDirection(direction);
+ const projectile=new THREE.Mesh(projectileGeometry,projectileMaterial);
+ projectile.position.copy(camera.position).add(direction.clone().multiplyScalar(.8));scene.add(projectile);
+ projectiles.push({mesh:projectile,velocity:direction.multiplyScalar(34),life:2});
+ viewWeapon.position.z=-.25;
+ if(player.ammo===0)document.getElementById("hint").textContent="Mermi bitti · Q: Silahı at";
+}
+document.addEventListener("mousedown",e=>{if(e.button===0)shoot()});
+function updateProjectiles(dt){
+ for(let i=projectiles.length-1;i>=0;i--){
+  const p=projectiles[i];p.life-=dt;p.mesh.position.addScaledVector(p.velocity,dt);
+  let hit=false;
+  for(let j=zombies.length-1;j>=0;j--){
+   const zombie=zombies[j],target=zombie.group.position;
+   const dx=p.mesh.position.x-target.x,dy=p.mesh.position.y-1.3,dz=p.mesh.position.z-target.z;
+   if(dx*dx+dy*dy+dz*dz<1.05){
+    zombie.health--;
+    if(zombie.health<=0){scene.remove(zombie.group);zombies.splice(j,1);updateUI()}
+    hit=true;break;
+   }
+  }
+  if(hit||p.life<=0){scene.remove(p.mesh);projectiles.splice(i,1)}
+ }
+}
+
+// OYUNCU HAREKETİ
+function updatePlayer(dt){
+ if(!player.alive||!locked||pickupState||driving)return;
+ const forward=new THREE.Vector3(-Math.sin(player.yaw),0,-Math.cos(player.yaw));
+ const right=new THREE.Vector3(Math.cos(player.yaw),0,-Math.sin(player.yaw));
+ const move=new THREE.Vector3();
+ if(keys.KeyW)move.add(forward);if(keys.KeyS)move.sub(forward);
+ if(keys.KeyD)move.add(right);if(keys.KeyA)move.sub(right);
+ if(move.lengthSq()>0){
+  move.normalize();
+  const running=keys.ShiftLeft||keys.ShiftRight;
+  move.multiplyScalar(player.speed*(running?1.38:1)*dt);player.pos.add(move);
+ }
+ player.pos.x=THREE.MathUtils.clamp(player.pos.x,-78,78);
+ player.pos.z=THREE.MathUtils.clamp(player.pos.z,-178,178);
+ camera.position.set(player.pos.x,1.7,player.pos.z);
+ camera.rotation.set(player.pitch,player.yaw,0);
+}
+
+// ZOMBİ YAPAY ZEKÂSI
+function updateZombies(dt){
+ const playerPos=player.pos;
+ const finalRush=missionTime<=10;
+ for(const zombie of zombies){
+  const pos=zombie.group.position,dx=playerPos.x-pos.x,dz=playerPos.z-pos.z;
+  const distance=Math.sqrt(dx*dx+dz*dz);
+  if((distance<42||finalRush)&&distance>1.15&&player.alive){
+   zombie.group.rotation.y=Math.atan2(-dx,-dz);
+   const speed=zombie.speed*(finalRush?3.5:(distance<7?1.18:1));
+   pos.x+=(dx/distance)*speed*dt;
+   pos.z+=(dz/distance)*speed*dt;
+  }
+  zombie.phase+=dt*(finalRush?9:5.2);
+  const swing=Math.sin(zombie.phase),limp=zombie.limp;
+  zombie.leftArm.arm.rotation.x=1.05+swing*.25;
+  zombie.rightArm.arm.rotation.x=.9-swing*.22;
+  zombie.leftArm.arm.rotation.z=-.12;zombie.rightArm.arm.rotation.z=.12;
+  zombie.leftArm.elbow.rotation.x=.35+Math.max(0,swing)*.2;
+  zombie.rightArm.elbow.rotation.x=.3+Math.max(0,-swing)*.2;
+  zombie.leftLeg.leg.rotation.x=swing*.48;
+  zombie.rightLeg.leg.rotation.x=-swing*.48*limp;
+  zombie.leftLeg.leg.rotation.z=Math.sin(zombie.phase*.5)*.025;
+  zombie.rightLeg.leg.rotation.z=-Math.sin(zombie.phase*.5)*.04;
+  zombie.head.rotation.x=Math.sin(zombie.phase*.5)*.06;
+  zombie.body.rotation.z=Math.sin(zombie.phase)*.035+limp*.025;
+  zombie.body.position.y=Math.abs(Math.sin(zombie.phase))*.035;
+  zombie.hitCooldown=Math.max(0,zombie.hitCooldown-dt);
+  if(distance<1.45&&zombie.hitCooldown<=0&&player.alive){
+   damagePlayer(finalRush?18:12);
+   zombie.hitCooldown=finalRush?.65:1.1;
+  }
+ }
+ updateUI();
+}
+
+// 5 DAKİKA SONRASI KAÇIŞ GÖREVİ
+function startEscapeMission(){
+ if(missionPhase!=="survive")return;
+ missionPhase="escape";
+ missionTime=0;
+
+ for(const zombie of zombies)scene.remove(zombie.group);
+ zombies.length=0;
+ for(const p of projectiles)scene.remove(p.mesh);
+ projectiles.length=0;
+
+ document.getElementById("zombieCount").textContent="0";
+ document.getElementById("mission").textContent="GÖREV: Arabaya bin ve şehirden kaç!";
+ document.getElementById("message").textContent="5 DAKİKA TAMAMLANDI! ARABAYA ULAŞ!";
+ document.getElementById("hint").textContent="E: Arabaya bin";
+
+ escapeCar=car(player.pos.x,player.pos.z-5,0);
+ escapeCar.traverse(obj=>{if(obj.isMesh)obj.material=obj.material.clone()});
+ box(escapeCar,0,1.72,-.4,1.1,.12,1.4,materials.yellow);
+ document.getElementById("pickupBtn").textContent="BİN";
+ document.getElementById("shootBtn").style.display="none";
+ document.getElementById("dropBtn").style.display="none";
+ setTimeout(()=>{document.getElementById("message").textContent=""},4000);
+}
+
+function tryEnterCar(){
+ if(missionPhase!=="escape"||!escapeCar||driving)return;
+ const distance=Math.hypot(escapeCar.position.x-player.pos.x,escapeCar.position.z-player.pos.z);
+ if(distance>9)return;
+ driving=true;carYaw=escapeCar.rotation.y;carSpeed=0;
+ player.hasWeapon=false;viewModel.visible=false;
+ document.getElementById("mission").textContent="GÖREV: ÇIKIŞ KAPISINA ulaş!";
+ document.getElementById("hint").textContent="W: Gaz · S: Fren · A/D: Direksiyon";
+ document.getElementById("pickupBtn").style.display="none";
+ document.getElementById("runBtn").textContent="GAZ";
+ document.getElementById("crosshair").style.display="none";
+}
+
+function updateCarDriving(dt){
+ if(!driving||!escapeCar)return;
+ const forward=keys.KeyW||keys.ArrowUp;
+ const backward=keys.KeyS||keys.ArrowDown;
+ const steerLeft=keys.KeyA||keys.ArrowLeft;
+ const steerRight=keys.KeyD||keys.ArrowRight;
+
+ if(forward)carSpeed=Math.min(carSpeed+12*dt,17);
+ else if(backward)carSpeed=Math.max(carSpeed-18*dt,-6);
+ else carSpeed=THREE.MathUtils.lerp(carSpeed,0,dt*1.2);
+
+ if(Math.abs(carSpeed)>.2){
+  const steer=(steerLeft?1:0)-(steerRight?1:0);
+  carYaw+=steer*dt*(carSpeed>=0?1:-1)*1.35;
+ }
+ escapeCar.rotation.y=carYaw;
+ const direction=new THREE.Vector3(-Math.sin(carYaw),0,-Math.cos(carYaw));
+ escapeCar.position.addScaledVector(direction,carSpeed*dt);
+ escapeCar.position.x=THREE.MathUtils.clamp(escapeCar.position.x,-78,78);
+ escapeCar.position.z=THREE.MathUtils.clamp(escapeCar.position.z,-178,178);
+ player.pos.copy(escapeCar.position);
+
+ const behind=new THREE.Vector3(Math.sin(carYaw)*9,5,Math.cos(carYaw)*9);
+ camera.position.copy(escapeCar.position).add(behind);
+ camera.lookAt(escapeCar.position.x,1.1,escapeCar.position.z-1);
+
+ const exitDistance=Math.hypot(escapeCar.position.x,escapeCar.position.z+169);
+ if(exitDistance<8)triggerJumpscare();
+}
+
+function triggerJumpscare(){
+ if(scareStarted)return;
+ scareStarted=true;driving=false;carSpeed=0;
+ document.exitPointerLock?.();
+ document.getElementById("jumpscare").style.display="flex";
+ document.getElementById("mission").textContent="GÖREV TAMAMLANDI";
+ document.getElementById("hint").textContent="";
+ document.getElementById("crosshair").style.display="none";
+ document.getElementById("jumpscare").animate(
+  [{transform:"scale(.05)",opacity:0},{transform:"scale(1.2)",opacity:1},{transform:"scale(1)",opacity:1}],
+  {duration:100,iterations:1}
+ );
+ setTimeout(()=>{
+  document.getElementById("jumpscare").style.display="none";
+  document.getElementById("gameoverTitle").textContent="KAÇIŞ TAMAMLANDI";
+  document.getElementById("gameoverTitle").style.color="#8dcf9a";
+  document.getElementById("gameoverText").textContent="Çıkışa ulaştın... ama son anda bir şey seni buldu.";
+  document.getElementById("gameover").style.display="flex";
+ },900);
+}
+
+// SÜRE VE GÖREV ARAYÜZÜ
+function updateMission(dt){
+ if(!gameStarted||!player.alive||missionPhase!=="survive")return;
+ missionTime=Math.max(0,missionTime-dt);
+ const minutes=Math.floor(missionTime/60);
+ const seconds=Math.floor(missionTime%60);
+ document.getElementById("timer").textContent=
+  String(minutes).padStart(2,"0")+":"+String(seconds).padStart(2,"0");
+ if(missionTime<=0)startEscapeMission();
+}
+
+// HASAR
+function damagePlayer(amount){
+ if(missionPhase!=="survive")return;
+ player.health=Math.max(0,player.health-amount);
+ document.getElementById("health").style.width=player.health+"%";
+ const damage=document.getElementById("damage");damage.style.opacity="1";
+ setTimeout(()=>damage.style.opacity="0",180);
+ if(player.health<=0)endGame();
+}
+function endGame(){
+ player.alive=false;
+ if(!isMobile)document.exitPointerLock();
+ document.getElementById("gameover").style.display="flex";
+}
+function updateUI(){document.getElementById("zombieCount").textContent=zombies.length}
+document.getElementById("restart").onclick=()=>location.reload();
+
+// MOBİL DOKUNMATİK KONTROLLER
+function holdButton(id,key){
+ const el=document.getElementById(id);
+ el.addEventListener("touchstart",e=>{e.preventDefault();keys[key]=true},{passive:false});
+ el.addEventListener("touchend",e=>{e.preventDefault();keys[key]=false},{passive:false});
+ el.addEventListener("touchcancel",()=>keys[key]=false);
+}
+holdButton("up","KeyW");holdButton("down","KeyS");
+holdButton("left","KeyA");holdButton("right","KeyD");
+holdButton("runBtn","ShiftLeft");
+
+document.getElementById("shootBtn").addEventListener("touchstart",e=>{e.preventDefault();shoot()},{passive:false});
+document.getElementById("pickupBtn").addEventListener("touchstart",e=>{
+ e.preventDefault();
+ if(missionPhase==="escape")tryEnterCar();else tryPickup();
+},{passive:false});
+document.getElementById("dropBtn").addEventListener("touchstart",e=>{e.preventDefault();dropWeapon()},{passive:false});
+
+const lookArea=document.getElementById("lookArea");
+let lookTouch=null,lastLookX=0,lastLookY=0;
+lookArea.addEventListener("touchstart",e=>{
+ if(driving)return;
+ const t=e.changedTouches[0];lookTouch=t.identifier;lastLookX=t.clientX;lastLookY=t.clientY;
+},{passive:false});
+lookArea.addEventListener("touchmove",e=>{
+ e.preventDefault();
+ if(driving)return;
+ for(const t of e.changedTouches)if(t.identifier===lookTouch){
+  const dx=t.clientX-lastLookX,dy=t.clientY-lastLookY;
+  player.yaw-=dx*.005;player.pitch=THREE.MathUtils.clamp(player.pitch-dy*.005,-1.35,1.35);
+  lastLookX=t.clientX;lastLookY=t.clientY;
+ }
+},{passive:false});
+lookArea.addEventListener("touchend",e=>{
+ for(const t of e.changedTouches)if(t.identifier===lookTouch)lookTouch=null;
+});
+
+// ANA DÖNGÜ
+const clock=new THREE.Clock();
+updateUI();updateAmmo();
+
+function animate(){
+ requestAnimationFrame(animate);
+ const dt=Math.min(clock.getDelta(),.04);
+
+ if(player.alive&&gameStarted&&!scareStarted){
+  updateMission(dt);
+
+  if(pickupState)updatePickup(dt);
+  else if(driving){
+   updateCarDriving(dt);
+  }else{
+   updatePlayer(dt);
+   if(missionPhase==="survive"){
+    updateZombies(dt);
+    updateViewModel(dt);
+    updatePickups(dt);
+    updateProjectiles(dt);
+    updateDroppedWeapons(dt);
+    shootCooldown=Math.max(0,shootCooldown-dt);
+    if(player.hasWeapon)viewWeapon.position.z=THREE.MathUtils.lerp(viewWeapon.position.z,-.58,Math.min(dt*12,1));
+   }
+  }
+ }
+ renderer.render(scene,camera);
+}
+
+window.addEventListener("resize",()=>{
+ camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
+ renderer.setSize(innerWidth,innerHeight);
+});
+animate();
+</script>
+</body>
+</html>
