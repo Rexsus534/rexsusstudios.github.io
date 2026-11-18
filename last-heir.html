@@ -9,7 +9,7 @@
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080d12;color:#eee;font-family:Georgia,serif;touch-action:none}
 canvas{display:block;width:100%;height:100%;touch-action:none}
-button{background:#35291e;border:1px solid #a98a58;color:#f2dfbd;padding:10px 14px;border-radius:6px;font-family:Georgia;cursor:pointer;touch-action:none}
+button{background:#35291e;border:1px solid #a98a58;color:#f2dfbd;padding:10px 14px;border-radius:6px;font-family:Georgia;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none}
 button:active{background:#77542f}
 #ui{position:fixed;inset:0;pointer-events:none}
 .panel{background:linear-gradient(145deg,#10191df2,#20231df0);border:1px solid #9b8054;border-radius:9px;box-shadow:0 8px 30px #0009;padding:12px}
@@ -30,7 +30,7 @@ button:active{background:#77542f}
 #speaker{font-size:18px;color:#e1bd7f;margin-bottom:8px}
 #dialogText{font-size:15px;line-height:1.65;min-height:48px}
 #dialogButtons{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
-.overlay{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(570px,92vw);max-height:85vh;overflow:auto;pointer-events:auto}
+.overlay{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(570px,92vw);max-height:85vh;max-height:85dvh;overflow:auto;pointer-events:auto}
 .overlay h2{font-weight:normal;letter-spacing:3px;color:#dfbd80}
 #items{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .item{background:#252b2c;padding:15px 5px;text-align:center;border:1px solid #64533b;border-radius:5px;font-size:12px}
@@ -40,31 +40,31 @@ button:active{background:#77542f}
 #title h1{font-size:clamp(35px,8vw,68px);letter-spacing:5px;color:#e4c58e;text-shadow:0 0 28px #bd692e;font-weight:normal}
 #title p{line-height:1.8;color:#c8c0b1}
 #title button{font-size:17px;padding:14px 30px;margin-top:12px}
-#mobile{display:none;position:absolute;bottom:15px;left:12px;pointer-events:auto}
+#mobile{display:none;position:absolute;bottom:15px;left:12px;pointer-events:auto;z-index:5}
 .pad{display:grid;grid-template-columns:43px 43px 43px;grid-template-rows:43px 43px 43px;gap:3px}
 .pad button{padding:0;background:#20252add;font-size:18px;touch-action:none}
-#actions{position:absolute;bottom:20px;right:12px;display:flex;gap:7px;pointer-events:auto;flex-wrap:wrap;justify-content:flex-end;max-width:190px}
+#actions{display:none;position:absolute;bottom:20px;right:12px;gap:7px;pointer-events:auto;flex-wrap:wrap;justify-content:flex-end;max-width:190px;z-index:5}
 #actions button{width:57px;height:57px;border-radius:50%;padding:0;font:10px Arial;background:#25211ddd;touch-action:none}
-#musicControl{position:absolute;left:12px;bottom:12px;pointer-events:auto}
+#musicControl{position:absolute;left:12px;bottom:12px;pointer-events:auto;z-index:6}
 #musicControl button{font:11px Arial;padding:8px 10px;background:#111c}
 #catScare{display:none;position:absolute;inset:0;background:#050407f2;z-index:10;pointer-events:auto;align-items:center;justify-content:center;flex-direction:column;text-align:center}
 #catFace{font-size:min(35vw,220px);filter:drop-shadow(0 0 25px #b9eaff);animation:catPop .18s infinite alternate}
 #catWords{font:bold 24px Arial;color:#f0d9a5;letter-spacing:3px;text-shadow:0 0 18px #fff}
 @keyframes catPop{from{transform:scale(.92) rotate(-3deg)}to{transform:scale(1.08) rotate(3deg)}}
 #gameOver{text-align:center}
-
-/* MOBİL DİKEY */
-@media(max-width:700px){
+@media(max-width:700px),(pointer:coarse){
  #stats{width:130px;padding:7px;top:5px;left:5px}
  #brand{font-size:8px;letter-spacing:2px}
  #hero{font-size:13px;margin:4px 0}
  .info{font-size:9px}
  .bar{height:5px;margin:3px 0 5px}
  #quests{width:145px;top:5px;right:5px;padding:7px}
+ #heading{font-size:8px}
  #questText{font-size:9px}
  #location{top:100px;left:7px;font-size:8px}
  #controls{display:none}
  #mobile{display:block}
+ #actions{display:flex}
  #dialog{bottom:105px}
  #dialogText{font-size:12px;min-height:35px}
  #speaker{font-size:14px}
@@ -74,39 +74,39 @@ button:active{background:#77542f}
  #musicControl{bottom:8px;left:50%;transform:translateX(-50%)}
  #musicControl button{font-size:9px;padding:6px}
  #title{padding:16px}
- #title h1{font-size:34px}
+ #title h1{font-size:34px;letter-spacing:2px}
  #title p{font-size:12px}
  #items{grid-template-columns:repeat(2,1fr)}
 }
-
-/* MOBİL YATAY EKRAN - GENİŞLİK SINIRI YOK */
-@media (orientation:landscape) and (max-height:600px){
- #stats{width:130px;padding:6px;top:5px;left:5px}
- #brand{font-size:8px;letter-spacing:2px}
- #hero{font-size:12px;margin:3px 0}
- .info{font-size:9px}
- .bar{height:5px;margin:3px 0 5px}
- #quests{width:145px;top:5px;right:5px;padding:6px}
- #questText{font-size:9px}
- #location{top:90px;left:7px;font-size:8px}
+@media(orientation:landscape) and (max-height:600px){
+ #stats{width:125px;padding:5px;top:4px;left:4px}
+ #brand{font-size:7px;letter-spacing:2px}
+ #hero{font-size:11px;margin:2px 0}
+ .info{font-size:8px}
+ .bar{height:4px;margin:2px 0 4px}
+ #quests{width:135px;top:4px;right:4px;padding:5px}
+ #questText{font-size:8px;line-height:1.3}
+ .heading{font-size:8px;margin-bottom:4px}
+ #location{top:78px;left:6px;font-size:7px}
  #controls{display:none}
- #mobile{display:block;bottom:7px;left:7px}
- .pad{grid-template-columns:38px 38px 38px;grid-template-rows:38px 38px 38px;gap:2px}
- .pad button{font-size:15px}
- #actions{bottom:7px;right:7px;max-width:190px;gap:5px}
- #actions button{width:44px;height:44px;font-size:8px}
- #dialog{bottom:55px;width:70vw;padding:8px}
- #dialogText{font-size:12px;min-height:25px;line-height:1.4}
- #speaker{font-size:14px;margin-bottom:4px}
- #dialogButtons{margin-top:5px}
- #dialogButtons button{padding:6px;font-size:10px}
- #hint{bottom:55px;font-size:9px}
- #musicControl{bottom:5px;left:50%;transform:translateX(-50%)}
- #musicControl button{padding:5px;font-size:9px}
- #title{padding:12px}
- #title h1{font-size:32px;margin:8px}
- #title p{font-size:11px;line-height:1.4;margin:6px}
- #title button{font-size:13px;padding:9px 18px}
+ #mobile{display:block;bottom:5px;left:5px}
+ .pad{grid-template-columns:34px 34px 34px;grid-template-rows:34px 34px 34px;gap:2px}
+ .pad button{font-size:13px}
+ #actions{display:flex;bottom:5px;right:5px;max-width:170px;gap:4px}
+ #actions button{width:39px;height:39px;font-size:7px}
+ #dialog{bottom:48px;width:68vw;padding:7px}
+ #dialogText{font-size:11px;min-height:22px;line-height:1.35}
+ #speaker{font-size:12px;margin-bottom:3px}
+ #dialogButtons{margin-top:4px}
+ #dialogButtons button{padding:5px;font-size:9px}
+ #hint{bottom:48px;font-size:8px}
+ #musicControl{bottom:4px;left:50%;transform:translateX(-50%)}
+ #musicControl button{padding:4px;font-size:8px}
+ #title{padding:8px;max-height:94dvh;overflow:auto}
+ #title h1{font-size:29px;margin:5px;letter-spacing:2px}
+ #title p{font-size:10px;line-height:1.3;margin:5px}
+ #title button{font-size:12px;padding:7px 15px;margin-top:5px}
+ #items{grid-template-columns:repeat(3,1fr)}
 }
 </style>
 </head>
@@ -181,7 +181,7 @@ const $=id=>document.getElementById(id);
 const canvas=$("game"),ctx=canvas.getContext("2d");
 const mapCanvas=$("mapCanvas"),mctx=mapCanvas.getContext("2d");
 let W,H,DPR=Math.min(devicePixelRatio||1,2);
-function resize(){W=innerWidth;H=innerHeight;canvas.width=W*DPR;canvas.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0)}
+function resize(){W=innerWidth;H=innerHeight;canvas.width=Math.round(W*DPR);canvas.height=Math.round(H*DPR);ctx.setTransform(DPR,0,0,DPR,0,0)}
 addEventListener("resize",resize);resize();
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const rand=(a,b)=>a+Math.random()*(b-a);
@@ -255,7 +255,25 @@ function drawCat(c){let p=screen(c.x,c.y);ellipse(p.x,p.y+5,17,6,"#0007");ellips
 function lighting(){let g=ctx.createRadialGradient(W/2,H/2,60,W/2,H/2,Math.max(W,H)*.75);g.addColorStop(0,"#00000000");g.addColorStop(1,"#050b12a0");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);let b=biome(player.x);if(b.name==="KARANLIK BATAKLIK"){ctx.fillStyle="#0b2d2933";ctx.fillRect(0,0,W,H)}if(b.name==="DONMUŞ DAĞLAR"){ctx.fillStyle="#b9e7f022";ctx.fillRect(0,0,W,H)}}
 function weather(){let b=biome(player.x);if(b.name==="DONMUŞ DAĞLAR")for(let i=0;i<55;i++){let x=(i*71+time*13)%W,y=(i*97+time*37)%H;ellipse(x,y,1.5,2,"#e7f6ff99")}if(b.name==="KARANLIK BATAKLIK")for(let i=0;i<13;i++){let x=(i*131+time*5)%W,y=(i*89+time*7)%H;ellipse(x,y,3,3,"#a1eac477")}if(b.name==="AY IŞIĞI KIYISI")for(let i=0;i<10;i++){let x=(i*103+time*9)%W,y=(i*61+time*4)%H;ellipse(x,y,2,2,"#b5efff99")}}
 function nearestNPC(){let best=null,d0=85;for(const n of npcs){let d=dist(n,player);if(d<d0){best=n;d0=d}}return best}
-function render(){ctx.clearRect(0,0,W,H);drawGround();for(const b of buildings)drawBuilding(b);const objects=[];obstacles.forEach(o=>objects.push({y:o.y,fn:()=>drawTree(o)}));loot.forEach(l=>{if(!l.taken)objects.push({y:l.y,fn:()=>drawLoot(l)})});npcs.forEach(n=>objects.push({y:n.y,fn:()=>drawPerson(n.x,n.y,n.style)}));cats.forEach(c=>{if(!c.done)objects.push({y:c.y,fn:()=>drawCat(c)}));enemies.forEach(e=>{if(e.alive)objects.push({y:e.y,fn:()=>drawEnemy(e)})});objects.push({y:player.y,fn:()=>drawPerson(player.x,player.y,"player",player.fx)});objects.sort((a,b)=>a.y-b.y).forEach(o=>o.fn());if(player.attack>0){let p=screen(player.x,player.y);ctx.save();ctx.translate(p.x,p.y-20);ctx.rotate(Math.atan2(player.fy,player.fx));ctx.globalAlpha=player.attack/.27;ctx.shadowBlur=18;ctx.shadowColor="#ffdb9b";ctx.strokeStyle="#ffe0a0";ctx.lineWidth=6;ctx.beginPath();ctx.arc(0,0,48,-.8,.8);ctx.stroke();ctx.restore()}for(const p of particles){let s=screen(p.x,p.y);ctx.globalAlpha=Math.max(0,p.life*2);ellipse(s.x,s.y,p.size,p.size,p.color);ctx.globalAlpha=1}for(const t of texts){let p=screen(t.x,t.y);ctx.globalAlpha=t.life;ctx.font="bold 14px Arial";ctx.textAlign="center";ctx.fillStyle=t.color;ctx.fillText(t.text,p.x,p.y);ctx.globalAlpha=1}weather();lighting();nearby=nearestNPC();$("hint").textContent=nearby&&!dialogOpen?"E — "+nearby.name+" ile konuş":""}
+function render(){
+ ctx.clearRect(0,0,W,H);
+ drawGround();
+ for(const b of buildings)drawBuilding(b);
+ const objects=[];
+ obstacles.forEach(o=>objects.push({y:o.y,fn:()=>drawTree(o)}));
+ loot.forEach(l=>{if(!l.taken)objects.push({y:l.y,fn:()=>drawLoot(l)})});
+ npcs.forEach(n=>objects.push({y:n.y,fn:()=>drawPerson(n.x,n.y,n.style)}));
+ cats.forEach(c=>{if(!c.done)objects.push({y:c.y,fn:()=>drawCat(c)})});
+ enemies.forEach(e=>{if(e.alive)objects.push({y:e.y,fn:()=>drawEnemy(e)})});
+ objects.push({y:player.y,fn:()=>drawPerson(player.x,player.y,"player",player.fx)});
+ objects.sort((a,b)=>a.y-b.y).forEach(o=>o.fn());
+ if(player.attack>0){let p=screen(player.x,player.y);ctx.save();ctx.translate(p.x,p.y-20);ctx.rotate(Math.atan2(player.fy,player.fx));ctx.globalAlpha=player.attack/.27;ctx.shadowBlur=18;ctx.shadowColor="#ffdb9b";ctx.strokeStyle="#ffe0a0";ctx.lineWidth=6;ctx.beginPath();ctx.arc(0,0,48,-.8,.8);ctx.stroke();ctx.restore()}
+ for(const p of particles){let s=screen(p.x,p.y);ctx.globalAlpha=Math.max(0,p.life*2);ellipse(s.x,s.y,p.size,p.size,p.color);ctx.globalAlpha=1}
+ for(const t of texts){let p=screen(t.x,t.y);ctx.globalAlpha=t.life;ctx.font="bold 14px Arial";ctx.textAlign="center";ctx.fillStyle=t.color;ctx.fillText(t.text,p.x,p.y);ctx.globalAlpha=1}
+ weather();lighting();
+ nearby=nearestNPC();
+ $("hint").textContent=nearby&&!dialogOpen?"E — "+nearby.name+" ile konuş":"";
+}
 function updateUI(){$("hpText").textContent=Math.ceil(player.hp)+"/"+player.maxHp;$("hpFill").style.width=player.hp/player.maxHp*100+"%";$("level").textContent=level;$("xpText").textContent=xp+"/"+nextXP;$("xpFill").style.width=xp/nextXP*100+"%";$("gold").textContent=gold}
 function questUpdate(){let q;if(!elderQuestDone)q="Aldric'i bul ve onunla konuş.";else if(fragments<3)q="Alev Parçalarını bul: "+fragments+"/3";else if(!guardianDefeated)q="Bataklık Muhafızı'nı yen. Bataklığın kalbine git.";else if(!finalGateOpen)q="Muhafız yenildi! Kuzey geçidine ulaş.";else q="Son kaleye gir ve krallığın sırrını keşfet.";$("questText").textContent=q}
 function gainXP(n){xp+=n;while(xp>=nextXP){xp-=nextXP;level++;nextXP=Math.floor(nextXP*1.35);player.maxHp+=12;player.hp=player.maxHp;player.speed+=4;float(player.x,player.y-55,"SEVİYE "+level+"!","#f4d38c")}updateUI()}
@@ -263,32 +281,127 @@ function checkQuestState(){if(!guardian.alive&&!guardianDefeated){guardianDefeat
 function catSong(){if(!audio)return;const seq=[523.25,659.25,783.99,659.25,587.33,698.46,880,698.46];seq.forEach((f,i)=>{const o=audio.createOscillator(),g=audio.createGain();o.type="triangle";o.frequency.value=f;g.gain.value=.0001;o.connect(g);g.connect(audio.destination);const t=audio.currentTime+i*.22;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.055,t+.04);g.gain.exponentialRampToValueAtTime(.0001,t+.2);o.start(t);o.stop(t+.22)})}
 function triggerCat(c){c.done=true;paused=true;catScareActive=true;$("catScare").style.display="flex";$("catWords").textContent="MİYAV! BENİM ŞARKIMI DİNLE!";if(window.speechSynthesis){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance("Miyav miyav! Ben gece kedisiyim. Miyav miyav! Bu orman artık benim!");u.lang="tr-TR";u.pitch=1.5;u.rate=1.2;speechSynthesis.speak(u)}catSong()}
 $("catClose").onclick=()=>{$("catScare").style.display="none";catScareActive=false;if(window.speechSynthesis)speechSynthesis.cancel();if(started&&!dialogOpen&&!activeOverlay)paused=false};
-function update(dt){if(!started||paused)return;time+=dt;player.invul=Math.max(0,player.invul-dt);attackCooldown=Math.max(0,attackCooldown-dt);player.attack=Math.max(0,player.attack-dt);let dx=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),dy=(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0),len=Math.hypot(dx,dy)||1;if(dx||dy){dx/=len;dy/=len;player.fx=dx;player.fy=dy;let nx=player.x+dx*player.speed*dt,ny=player.y+dy*player.speed*dt;if(!blocked(nx,player.y,15))player.x=nx;if(!blocked(player.x,ny,15))player.y=ny}player.x=clamp(player.x,-2550,2950);player.y=clamp(player.y,-950,950);camera.x+=(player.x-camera.x)*Math.min(1,dt*5);camera.y+=(player.y-camera.y)*Math.min(1,dt*5);$("location").textContent=biome(player.x).name;
-for(const n of npcs){n.phase+=dt;if(n.style==="villager"||n.style==="traveler"){let tx=n.hx+Math.sin(n.phase*.3)*n.walk,ty=n.hy+Math.cos(n.phase*.27)*n.walk,d=Math.hypot(tx-n.x,ty-n.y);if(d>2){n.x+=(tx-n.x)/d*12*dt;n.y+=(ty-n.y)/d*12*dt}}}
-for(const e of enemies){if(!e.alive)continue;let d=dist(e,player);if(d<470){if(d>48){let dx=(player.x-e.x)/Math.max(1,d),dy=(player.y-e.y)/Math.max(1,d),nx=e.x+dx*e.speed*dt,ny=e.y+dy*e.speed*dt;if(!blocked(nx,e.y,14))e.x=nx;if(!blocked(e.x,ny,14))e.y=ny}else if(e.attack<=0){e.attack=e.type==="boss"?1.25:1.5;if(player.invul<=0){let damage=e.type==="boss"?14:8;player.hp-=damage;player.invul=.8;float(player.x,player.y-40,"-"+damage,"#ff7770")}}}e.attack=Math.max(0,e.attack-dt)}
-for(let i=particles.length-1;i>=0;i--){let p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;if(p.life<=0)particles.splice(i,1)}
-for(let i=texts.length-1;i>=0;i--){let t=texts[i];t.y-=25*dt;t.life-=dt;if(t.life<=0)texts.splice(i,1)}
-for(const l of loot){if(l.taken||Math.hypot(player.x-l.x,player.y-l.y)>32)continue;l.taken=true;if(l.type==="fragment"){fragments++;inventory["Alev Parçası"]++;float(player.x,player.y-35,"ALEV PARÇASI!")}if(l.type==="coin"){gold+=5;inventory["Altın"]+=5;float(player.x,player.y-35,"+5 ALTIN","#f3d16e")}if(l.type==="herb"){inventory["Şifalı Ot"]++;float(player.x,player.y-35,"ŞİFALI OT","#8bd18d")}if(l.type==="crystal"){inventory["Buz Kristali"]++;float(player.x,player.y-35,"BUZ KRİSTALİ!","#a8efff")}particle(l.x,l.y,"#e8c16f");questUpdate()}
-for(const c of cats){if(!c.done&&Math.hypot(player.x-c.x,player.y-c.y)<42){triggerCat(c);break}}
-if(player.hp<=0){player.hp=0;paused=true;$("gameOver").style.display="block"}updateUI();checkQuestState()}
-function attack(){if(!started||paused||dialogOpen||attackCooldown>0)return;attackCooldown=.42;player.attack=.27;let target=null,best=135;for(const e of enemies){if(!e.alive)continue;let d=dist(e,player);if(d<best){let vx=e.x-player.x,vy=e.y-player.y,len=Math.hypot(vx,vy)||1,dot=(vx/len)*player.fx+(vy/len)*player.fy;if(dot>.05){best=d;target=e}}}if(!target){particle(player.x+player.fx*45,player.y+player.fy*45,"#d8e4eb");return}let damage=26+level*10;target.hp-=damage;target.hit=.2;particle(target.x,target.y,target.region==="swamp"?"#83e2bd":"#eab96d");float(target.x,target.y-50,"-"+damage);if(target.hp<=0){target.alive=false;gold+=target.type==="boss"?90:12;gainXP(target.type==="boss"?130:28);float(target.x,target.y-70,"YENİLDİ","#e6c48b");if(target===guardian){guardianDefeated=true;inventory["Bataklık Özü"]++;float(target.x,target.y-100,"GÖREV TAMAMLANDI!","#a8f0ca")}checkQuestState()}}
+function update(dt){
+ if(!started||paused)return;
+ time+=dt;
+ player.invul=Math.max(0,player.invul-dt);
+ attackCooldown=Math.max(0,attackCooldown-dt);
+ player.attack=Math.max(0,player.attack-dt);
+ let dx=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),dy=(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0),len=Math.hypot(dx,dy)||1;
+ if(dx||dy){dx/=len;dy/=len;player.fx=dx;player.fy=dy;let nx=player.x+dx*player.speed*dt,ny=player.y+dy*player.speed*dt;if(!blocked(nx,player.y,15))player.x=nx;if(!blocked(player.x,ny,15))player.y=ny}
+ player.x=clamp(player.x,-2550,2950);player.y=clamp(player.y,-950,950);
+ camera.x+=(player.x-camera.x)*Math.min(1,dt*5);camera.y+=(player.y-camera.y)*Math.min(1,dt*5);
+ $("location").textContent=biome(player.x).name;
+ for(const n of npcs){n.phase+=dt;if(n.style==="villager"||n.style==="traveler"){let tx=n.hx+Math.sin(n.phase*.3)*n.walk,ty=n.hy+Math.cos(n.phase*.27)*n.walk,d=Math.hypot(tx-n.x,ty-n.y);if(d>2){n.x+=(tx-n.x)/d*12*dt;n.y+=(ty-n.y)/d*12*dt}}}
+ for(const e of enemies){
+  if(!e.alive)continue;
+  let d=dist(e,player);
+  if(d<470){
+   if(d>48){let dx=(player.x-e.x)/Math.max(1,d),dy=(player.y-e.y)/Math.max(1,d),nx=e.x+dx*e.speed*dt,ny=e.y+dy*e.speed*dt;if(!blocked(nx,e.y,14))e.x=nx;if(!blocked(e.x,ny,14))e.y=ny}
+   else if(e.attack<=0){e.attack=e.type==="boss"?1.25:1.5;if(player.invul<=0){let damage=e.type==="boss"?14:8;player.hp-=damage;player.invul=.8;float(player.x,player.y-40,"-"+damage,"#ff7770")}}
+  }
+  e.attack=Math.max(0,e.attack-dt);
+ }
+ for(let i=particles.length-1;i>=0;i--){let p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;if(p.life<=0)particles.splice(i,1)}
+ for(let i=texts.length-1;i>=0;i--){let t=texts[i];t.y-=25*dt;t.life-=dt;if(t.life<=0)texts.splice(i,1)}
+ for(const l of loot){
+  if(l.taken||Math.hypot(player.x-l.x,player.y-l.y)>32)continue;
+  l.taken=true;
+  if(l.type==="fragment"){fragments++;inventory["Alev Parçası"]++;float(player.x,player.y-35,"ALEV PARÇASI!")}
+  if(l.type==="coin"){gold+=5;inventory["Altın"]+=5;float(player.x,player.y-35,"+5 ALTIN","#f3d16e")}
+  if(l.type==="herb"){inventory["Şifalı Ot"]++;float(player.x,player.y-35,"ŞİFALI OT","#8bd18d")}
+  if(l.type==="crystal"){inventory["Buz Kristali"]++;float(player.x,player.y-35,"BUZ KRİSTALİ!","#a8efff")}
+  particle(l.x,l.y,"#e8c16f");questUpdate();
+ }
+ for(const c of cats){if(!c.done&&Math.hypot(player.x-c.x,player.y-c.y)<42){triggerCat(c);break}}
+ if(player.hp<=0){player.hp=0;paused=true;$("gameOver").style.display="block"}
+ updateUI();checkQuestState();
+}
+function attack(){
+ if(!started||paused||dialogOpen||activeOverlay||catScareActive||attackCooldown>0)return;
+ attackCooldown=.42;player.attack=.27;
+ let target=null,best=135;
+ for(const e of enemies){
+  if(!e.alive)continue;
+  let d=dist(e,player);
+  if(d<best){let vx=e.x-player.x,vy=e.y-player.y,len=Math.hypot(vx,vy)||1,dot=(vx/len)*player.fx+(vy/len)*player.fy;if(dot>.05){best=d;target=e}}
+ }
+ if(!target){particle(player.x+player.fx*45,player.y+player.fy*45,"#d8e4eb");return}
+ let damage=26+level*10;target.hp-=damage;target.hit=.2;
+ particle(target.x,target.y,target.region==="swamp"?"#83e2bd":"#eab96d");
+ float(target.x,target.y-50,"-"+damage);
+ if(target.hp<=0){
+  target.alive=false;gold+=target.type==="boss"?90:12;
+  gainXP(target.type==="boss"?130:28);
+  float(target.x,target.y-70,"YENİLDİ","#e6c48b");
+  if(target===guardian){guardianDefeated=true;inventory["Bataklık Özü"]++;float(target.x,target.y-100,"GÖREV TAMAMLANDI!","#a8f0ca")}
+  checkQuestState();
+ }
+}
 function aimAtPointer(e){const r=canvas.getBoundingClientRect(),sx=e.clientX-r.left-W/2,sy=e.clientY-r.top-H/2,a=sx/.72,b=sy/.36,wx=(a+b)/2,wy=(b-a)/2,len=Math.hypot(wx,wy)||1;player.fx=wx/len;player.fy=wy/len}
-canvas.addEventListener("pointerdown",e=>{if(!started||paused||dialogOpen)return;if(e.pointerType==="mouse"&&e.button===0){aimAtPointer(e);attack()}});
+canvas.addEventListener("pointerdown",e=>{if(!started||paused||dialogOpen||activeOverlay)return;if(e.pointerType==="mouse"&&e.button===0){aimAtPointer(e);attack()}});
 canvas.addEventListener("contextmenu",e=>e.preventDefault());
 function openDialog(n){currentNPC=n;lineIndex=0;dialogOpen=true;paused=true;if(n.name==="Aldric"&&!elderQuestDone){elderQuestDone=true;questUpdate();float(player.x,player.y-65,"GÖREV TAMAMLANDI!","#f1d18b")}$("dialog").style.display="block";showLine()}
 function showLine(){const line=currentNPC.lines[lineIndex];$("speaker").textContent=currentNPC.name+" — "+currentNPC.role;$("dialogText").textContent=line;speak(line,currentNPC.name)}
 function nextDialog(){if(!dialogOpen)return;lineIndex++;if(lineIndex>=currentNPC.lines.length){dialogOpen=false;paused=false;$("dialog").style.display="none";if(window.speechSynthesis)speechSynthesis.cancel();currentNPC=null}else showLine()}
-function interact(){if(!started)return;if(dialogOpen){nextDialog();return}let n=nearestNPC();if(n){openDialog(n);return}if(fragments>=3&&guardianDefeated&&player.x>2600){finalGateOpen=true;currentNPC={name:"Anlatıcı",role:"",lines:["Üç Alev Parçası ve Bataklık Özü kapının üzerinde parlıyor.","Eski mühür çözülüyor. Unutulmuş krallığın kapıları açılıyor.","Ama taht salonunda seni bekleyen bir sır var... Bu yolculuk henüz bitmedi."]};lineIndex=0;dialogOpen=true;paused=true;$("dialog").style.display="block";showLine()}}
-function closeOverlay(){$("inventory").style.display="none";$("mapPanel").style.display="none";activeOverlay=null;if(started&&!dialogOpen&&!catScareActive)paused=false}
-function showInventory(){if(!started||dialogOpen||catScareActive)return;if(activeOverlay==="inventory"){closeOverlay();return}$("mapPanel").style.display="none";activeOverlay="inventory";paused=true;$("items").innerHTML="";const icons={"Alev Parçası":"🔥","Altın":"🪙","Şifalı Ot":"🌿","Bataklık Özü":"🧪","Buz Kristali":"💎"};for(const [name,count] of Object.entries(inventory)){let d=document.createElement("div");d.className="item";let b=document.createElement("b");b.textContent=icons[name];d.appendChild(b);d.appendChild(document.createTextNode(name+" · "+count));$("items").appendChild(d)}let heal=document.createElement("button");heal.textContent="ŞİFALI OT KULLAN";heal.style.gridColumn="1/-1";heal.onclick=()=>{if(inventory["Şifalı Ot"]>0&&player.hp<player.maxHp){inventory["Şifalı Ot"]--;player.hp=Math.min(player.maxHp,player.hp+35);float(player.x,player.y-45,"+35 CAN","#8de69c");updateUI();showInventory()}};$("items").appendChild(heal);$("inventory").style.display="block"}
-function showMap(){if(!started||dialogOpen||catScareActive)return;if(activeOverlay==="map"){closeOverlay();return}$("inventory").style.display="none";activeOverlay="map";paused=true;mctx.clearRect(0,0,600,240);const colors=["#40543b","#8a8059","#9a8b5b","#31564c","#426d70","#8ca8b4"];biomes.forEach((z,i)=>{let x=(z.a+2600)/5600*600,w=(z.b-z.a)/5600*600;mctx.fillStyle=colors[i];mctx.fillRect(x,0,w,240);mctx.fillStyle="#fff";mctx.font="10px Arial";mctx.fillText(z.name,x+4,18)});mctx.fillStyle="#f6e4a2";mctx.beginPath();mctx.arc((player.x+2600)/5600*600,(player.y+950)/1900*240,6,0,7);mctx.fill();mctx.fillStyle="#e66";mctx.beginPath();mctx.arc((guardian.x+2600)/5600*600,(guardian.y+950)/1900*240,5,0,7);mctx.fill();$("mapPanel").style.display="block"}
+function interact(){
+ if(!started)return;
+ if(dialogOpen){nextDialog();return}
+ let n=nearestNPC();
+ if(n){openDialog(n);return}
+ if(fragments>=3&&guardianDefeated&&player.x>2600){
+  finalGateOpen=true;
+  currentNPC={name:"Anlatıcı",role:"",lines:["Üç Alev Parçası ve Bataklık Özü kapının üzerinde parlıyor.","Eski mühür çözülüyor. Unutulmuş krallığın kapıları açılıyor.","Ama taht salonunda seni bekleyen bir sır var... Bu yolculuk henüz bitmedi."]};
+  lineIndex=0;dialogOpen=true;paused=true;$("dialog").style.display="block";showLine();
+ }
+}
+function closeOverlay(){
+ $("inventory").style.display="none";$("mapPanel").style.display="none";activeOverlay=null;
+ if(started&&!dialogOpen&&!catScareActive&&!$("gameOver").style.display.includes("block"))paused=false;
+}
+function showInventory(){
+ if(!started||dialogOpen||catScareActive)return;
+ if(activeOverlay==="inventory"){closeOverlay();return}
+ $("mapPanel").style.display="none";activeOverlay="inventory";paused=true;$("items").innerHTML="";
+ const icons={"Alev Parçası":"🔥","Altın":"🪙","Şifalı Ot":"🌿","Bataklık Özü":"🧪","Buz Kristali":"💎"};
+ for(const [name,count] of Object.entries(inventory)){
+  let d=document.createElement("div");d.className="item";
+  let b=document.createElement("b");b.textContent=icons[name];
+  d.appendChild(b);d.appendChild(document.createTextNode(name+" · "+count));$("items").appendChild(d);
+ }
+ let heal=document.createElement("button");heal.textContent="ŞİFALI OT KULLAN";heal.style.gridColumn="1/-1";
+ heal.onclick=()=>{if(inventory["Şifalı Ot"]>0&&player.hp<player.maxHp){inventory["Şifalı Ot"]--;player.hp=Math.min(player.maxHp,player.hp+35);float(player.x,player.y-45,"+35 CAN","#8de69c");updateUI();showInventory()}};
+ $("items").appendChild(heal);$("inventory").style.display="block";
+}
+function showMap(){
+ if(!started||dialogOpen||catScareActive)return;
+ if(activeOverlay==="map"){closeOverlay();return}
+ $("inventory").style.display="none";activeOverlay="map";paused=true;
+ mctx.clearRect(0,0,600,240);
+ const colors=["#40543b","#8a8059","#9a8b5b","#31564c","#426d70","#8ca8b4"];
+ biomes.forEach((z,i)=>{let x=(z.a+2600)/5600*600,w=(z.b-z.a)/5600*600;mctx.fillStyle=colors[i];mctx.fillRect(x,0,w,240);mctx.fillStyle="#fff";mctx.font="10px Arial";mctx.fillText(z.name,x+4,18)});
+ mctx.fillStyle="#f6e4a2";mctx.beginPath();mctx.arc((player.x+2600)/5600*600,(player.y+950)/1900*240,6,0,7);mctx.fill();
+ mctx.fillStyle="#e66";mctx.beginPath();mctx.arc((guardian.x+2600)/5600*600,(guardian.y+950)/1900*240,5,0,7);mctx.fill();
+ $("mapPanel").style.display="block";
+}
 function toggleInventory(){showInventory()}
 function toggleMap(){showMap()}
-addEventListener("keydown",e=>{let k=e.key.toLowerCase();if(["arrowup","arrowdown","arrowleft","arrowright"," "].includes(k))e.preventDefault();keys[k]=true;if(e.repeat)return;if(k==="e")interact();if(k===" "||k==="j")attack();if(k==="i")toggleInventory();if(k==="m")toggleMap();if(k==="escape"){if(activeOverlay)closeOverlay();else if(dialogOpen)nextDialog()}});
+addEventListener("keydown",e=>{
+ let k=e.key.toLowerCase();
+ if(["arrowup","arrowdown","arrowleft","arrowright"," "].includes(k))e.preventDefault();
+ keys[k]=true;if(e.repeat)return;
+ if(k==="e")interact();
+ if(k===" "||k==="j")attack();
+ if(k==="i")toggleInventory();
+ if(k==="m")toggleMap();
+ if(k==="escape"){if(activeOverlay)closeOverlay();else if(dialogOpen)nextDialog()}
+});
 addEventListener("keyup",e=>keys[e.key.toLowerCase()]=false);
-addEventListener("blur",()=>{for(const k in keys)keys[k]=false});
+function clearKeys(){for(const k in keys)keys[k]=false}
+addEventListener("blur",clearKeys);
+document.addEventListener("visibilitychange",()=>{if(document.hidden)clearKeys()});
 
-/* MOBİL YÖN TUŞLARI: BASILI TUTULDUĞU SÜRECE HAREKET */
+/* MOBİL YÖN TUŞLARI */
 document.querySelectorAll("[data-key]").forEach(b=>{
  const k=b.dataset.key;
  const down=e=>{e.preventDefault();keys[k]=true;try{b.setPointerCapture(e.pointerId)}catch(err){}};
@@ -296,8 +409,13 @@ document.querySelectorAll("[data-key]").forEach(b=>{
  b.addEventListener("pointerdown",down);
  b.addEventListener("pointerup",up);
  b.addEventListener("pointercancel",up);
- b.addEventListener("lostpointercapture",up);
+ b.addEventListener("lostpointercapture",()=>{keys[k]=false});
  b.addEventListener("contextmenu",e=>e.preventDefault());
+});
+addEventListener("pointerup",e=>{
+ if(e.pointerType==="touch"||e.pointerType==="pen") {
+  document.querySelectorAll("[data-key]").forEach(b=>{keys[b.dataset.key]=false});
+ }
 });
 $("attackMobile").addEventListener("pointerdown",e=>{e.preventDefault();attack()});
 $("interactMobile").addEventListener("pointerdown",e=>{e.preventDefault();interact()});
@@ -305,7 +423,12 @@ $("inventoryMobile").onclick=toggleInventory;
 $("mapMobile").onclick=toggleMap;
 $("nextBtn").onclick=nextDialog;
 $("voiceBtn").onclick=()=>{voiceOn=!voiceOn;$("voiceBtn").textContent="SES: "+(voiceOn?"AÇIK":"KAPALI");if(!voiceOn&&window.speechSynthesis)speechSynthesis.cancel()};
-$("start").onclick=()=>{started=true;paused=false;dialogOpen=false;$("title").style.display="none";player.x=-1120;player.y=0;startMusic();updateUI();questUpdate()};
+$("start").onclick=()=>{
+ started=true;paused=false;dialogOpen=false;
+ $("title").style.display="none";
+ player.x=-1120;player.y=0;camera.x=player.x;camera.y=player.y;
+ startMusic();updateUI();questUpdate();
+};
 function loop(ts){let dt=Math.min((ts-last)/1000||0,.033);last=ts;update(dt);render();requestAnimationFrame(loop)}
 updateUI();questUpdate();requestAnimationFrame(loop);
 })();
