@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -172,6 +173,31 @@ text-shadow:0 0 15px #20d99a,0 0 35px #087e61
 .tenyuo .btn{background:#087e61}
 .tenyuo .btn:hover{background:#12b88b}
 
+/* DEAD ZONE */
+.deadzone .game-banner{
+background:
+radial-gradient(ellipse at 50% 55%,#5a171b 0%,transparent 45%),
+linear-gradient(135deg,#080b0c,#17201e,#09090c);
+}
+.deadzone .game-banner:before{
+content:"";position:absolute;width:145px;height:145px;
+border:2px solid #b52c35;transform:rotate(45deg);
+box-shadow:0 0 30px #e52b38,inset 0 0 30px #9d202a;
+opacity:.6
+}
+.deadzone .game-banner:after{
+content:"";position:absolute;width:220px;height:2px;
+background:#e52b38;box-shadow:0 0 20px #e52b38;
+bottom:35px
+}
+.deadzone .game-banner strong{
+color:#f2e6e6;letter-spacing:6px;
+text-shadow:0 0 15px #e52b38,0 0 30px #79121c
+}
+.deadzone .tag{color:#c83b43}
+.deadzone .btn{background:#8f2029}
+.deadzone .btn:hover{background:#d52b38}
+
 .about{background:#11121a}
 
 footer{
@@ -302,7 +328,6 @@ section{padding:65px 7%}
 </div>
 </div>
 
-<!-- TENYUO -->
 <div class="game-card tenyuo">
 <div class="game-banner">
 <strong>TENYUO<br>ELDORIA</strong>
@@ -312,6 +337,19 @@ section{padding:65px 7%}
 <h3>TENYUO: ELDORIA</h3>
 <p>Eldoria'nın uçsuz bucaksız dünyasını keşfet. Yaratıklarla savaş, görevleri tamamla, güçlen ve kendi efsaneni yaz!</p>
 <button class="btn" onclick="location.href='tenyuo.html'">DÜNYAYI KEŞFET</button>
+</div>
+</div>
+
+<!-- DEAD ZONE -->
+<div class="game-card deadzone">
+<div class="game-banner">
+<strong>DEAD<br>ZONE</strong>
+</div>
+<div class="game-info">
+<div class="tag">FPS • ZOMBİ • HAYATTA KALMA</div>
+<h3>DEAD ZONE</h3>
+<p>Şehir zombilerin istilası altında! Silahını kuşan, beş dakika boyunca hayatta kal ve kaçış aracına ulaşarak şehirden kurtul.</p>
+<button class="btn" onclick="location.href='deadzone.html'">HAYATTA KAL</button>
 </div>
 </div>
 
