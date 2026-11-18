@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>TROLL DEVIL | REXSUS STUDIOS</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#080b18;font-family:Arial,sans-serif;touch-action:none}
+canvas{display:block;width:100vw;height:100vh}
+#hud{position:fixed;top:12px;left:15px;color:white;z-index:5;text-shadow:0 2px 5px #000;pointer-events:none}
+#brand{font-weight:1000;font-size:20px;letter-spacing:3px;color:#ff405d}
+#stats{font-size:12px;margin-top:5px;color:#e2e5f5}
+#level{position:fixed;right:15px;top:15px;color:white;font-weight:bold;font-size:13px;text-shadow:0 2px 5px #000;z-index:5;text-align:right}
+#toast{position:fixed;top:17%;left:50%;transform:translateX(-50%);z-index:8;color:white;font-weight:1000;font-size:clamp(15px,3vw,25px);text-align:center;text-shadow:0 3px 8px #000;pointer-events:none;opacity:0;transition:opacity .12s;white-space:nowrap}
+#menu{
+ position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;
+ background:
+ radial-gradient(ellipse at 50% 110%,#e52c3930,transparent 42%),
+ radial-gradient(ellipse at 15% 20%,#6d204c66,transparent 40%),
+ radial-gradient(ellipse at 85% 15%,#263d7b55,transparent 40%),
+ linear-gradient(145deg,#090b19,#171026 55%,#080b18);
+ overflow:hidden;color:white;
+}
+#menu:before{
+ content:"";position:absolute;width:min(95vw,850px);aspect-ratio:1;border:1px solid #ff405d25;border-radius:50%;
+ box-shadow:0 0 100px #ff174722,inset 0 0 100px #ff174722;
+ animation:rotateGlow 28s linear infinite;
+}
+#menu:after{
+ content:"";position:absolute;inset:0;pointer-events:none;
+ background:repeating-linear-gradient(0deg,transparent 0px,transparent 3px,#ffffff05 4px);
+}
+.menu-orb{position:absolute;border-radius:50%;filter:blur(2px);pointer-events:none;animation:floatOrb 7s ease-in-out infinite}
+.orb1{width:140px;height:140px;left:8%;top:13%;background:radial-gradient(circle,#ff405d30,transparent 70%)}
+.orb2{width:220px;height:220px;right:4%;bottom:5%;background:radial-gradient(circle,#6848ff25,transparent 70%);animation-delay:-3s}
+.orb3{width:100px;height:100px;right:18%;top:12%;background:radial-gradient(circle,#ff9a4825,transparent 70%);animation-delay:-1s}
+.menu-content{position:relative;z-index:2;width:min(100%,780px);display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:stretch}
+.panel{
+ position:relative;padding:30px 24px;border:1px solid #ff526844;border-radius:24px;
+ background:linear-gradient(145deg,#1b1b32eF,#0b0d1ceb);
+ box-shadow:0 0 55px #ff174722,0 25px 80px #0009,inset 0 1px #ffffff12;
+ backdrop-filter:blur(12px);overflow:hidden;
+}
+.panel:before{content:"";position:absolute;top:0;left:10%;width:80%;height:1px;background:linear-gradient(90deg,transparent,#ff8294,transparent)}
+.logo{
+ font-size:clamp(55px,9vw,94px);font-weight:1000;line-height:.82;letter-spacing:5px;
+ color:#ff405d;text-shadow:0 0 12px #ff1747,0 0 35px #ff1747,0 0 75px #ff174766;
+ animation:logoPulse 2.5s ease-in-out infinite;
+}
+.sub{letter-spacing:5px;color:#ff9aaa;font-size:12px;font-weight:bold;margin:18px 0 20px}
+.desc{color:#c5c9dc;font-size:13px;line-height:1.8;margin-bottom:20px}
+#start{
+ position:relative;overflow:hidden;width:100%;padding:17px 25px;border:1px solid #ff9baa;border-radius:12px;
+ background:linear-gradient(110deg,#ff1747,#ff5268,#a90e35);
+ box-shadow:0 0 25px #ff174766,0 6px 0 #76152c;font-size:16px;letter-spacing:2px;transition:.2s;
+}
+#start:before{content:"";position:absolute;top:-60%;left:-40%;width:30%;height:220%;background:#ffffff55;transform:rotate(25deg);animation:shine 3.5s infinite}
+#start:hover{transform:scale(1.035);box-shadow:0 0 45px #ff1747aa,0 6px 0 #76152c}
+#start:active{transform:scale(.97)}
+.small{font-size:10px;color:#747d9b;margin-top:20px;letter-spacing:2px}
+.side-panel{display:flex;flex-direction:column;gap:12px}
+.info-card{
+ flex:1;text-align:left;padding:17px;border-radius:17px;border:1px solid #ffffff17;
+ background:linear-gradient(140deg,#ffffff0b,#ffffff03);
+ box-shadow:inset 0 1px #ffffff0a;
+}
+.info-title{font-size:11px;color:#ff8294;letter-spacing:2px;font-weight:900;margin-bottom:9px}
+.info-main{font-size:17px;color:white;font-weight:900;margin-bottom:5px}
+.info-text{font-size:11px;color:#aab0c8;line-height:1.6}
+.biome-row{display:flex;gap:7px;margin-top:12px}
+.biome-dot{height:7px;flex:1;border-radius:20px}
+.dot1{background:#ff405d}.dot2{background:#4ce3ff}.dot3{background:#ff9b3e}
+.menu-footer{position:absolute;bottom:12px;left:0;width:100%;text-align:center;color:#70758f;font-size:10px;letter-spacing:3px;z-index:2}
+@keyframes logoPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.5)}}
+@keyframes rotateGlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes floatOrb{0%,100%{transform:translateY(0)}50%{transform:translateY(-22px)}}
+@keyframes shine{0%{left:-50%}60%,100%{left:130%}}
+#mobile{position:fixed;inset:0;z-index:10;pointer-events:none;display:none}
+.pad{position:absolute;bottom:max(14px,env(safe-area-inset-bottom));width:66px;height:66px;border-radius:50%;border:2px solid #ffffff70;background:#ffffff25;color:white;display:grid;place-items:center;font-size:25px;font-weight:bold;pointer-events:auto;user-select:none;touch-action:none}
+#left{left:18px}#right{left:94px}
+#jump{right:20px;width:84px;height:84px;background:#ef365b77;border-color:#ff8497;font-size:14px}
+#restart{position:fixed;right:14px;bottom:14px;z-index:11;display:none;padding:10px 15px;font-size:12px;background:#303851;box-shadow:0 4px 0 #171e30}
+#rotate{display:none;position:fixed;inset:0;z-index:30;background:#090c19;color:white;align-items:center;justify-content:center;text-align:center;padding:25px;font-size:21px;font-weight:bold}
+@media(orientation:portrait) and (pointer:coarse){#rotate{display:flex}}
+@media(pointer:coarse){#mobile{display:block}}
+@media(pointer:fine){#mobile{display:none}}
+@media(max-width:650px){
+ .menu-content{grid-template-columns:1fr;max-width:440px;max-height:95vh;overflow:auto}
+ .side-panel{display:grid;grid-template-columns:1fr 1fr}
+ .panel{padding:20px 18px}
+ .logo{font-size:58px}
+ .sub{margin:12px 0}
+ .desc{margin-bottom:13px}
+ .info-card{padding:11px}
+ .menu-footer{display:none}
+}
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+<div id="hud">
+ <div id="brand">TROLL DEVIL</div>
+ <div id="stats">ÖLÜM: <span id="deaths">0</span> · BÖLÜM: <span id="coins">1</span></div>
+</div>
+<div id="level">BÖLÜM 1 / 30</div>
+<div id="toast"></div>
+<div id="menu">
+ <div class="menu-orb orb1"></div><div class="menu-orb orb2"></div><div class="menu-orb orb3"></div>
+ <div class="menu-content">
+  <div class="panel">
+   <div class="logo">TROLL<br>DEVIL</div>
+   <div class="sub">THE IMPOSSIBLE GAME</div>
+   <div class="desc">30 bölüm. 3 biyom. Sonsuz tuzak.<br>Burada hiçbir şey göründüğü gibi değil.</div>
+   <button id="start">OYUNA BAŞLA</button>
+   <div class="small">REXSUS STUDIOS · PLAY BEYOND LIMITS</div>
+  </div>
+  <div class="side-panel">
+   <div class="info-card">
+    <div class="info-title">YOUR MISSION</div>
+    <div class="info-main">SADECE HAYATTA KAL.</div>
+    <div class="info-text">Kapıya ulaş. Tuzaklardan kaç. Ve oyuna asla güvenme.</div>
+   </div>
+   <div class="info-card">
+    <div class="info-title">3 DÜŞMAN BİYOM</div>
+    <div class="info-main">HER BÖLGE DAHA ZOR</div>
+    <div class="info-text">Karanlık Vadi, Buz Dünyası ve Lav Cehennemi seni bekliyor.</div>
+    <div class="biome-row"><div class="biome-dot dot1"></div><div class="biome-dot dot2"></div><div class="biome-dot dot3"></div></div>
+   </div>
+   <div class="info-card">
+    <div class="info-title">KONTROLLER</div>
+    <div class="info-main">HAREKET ET · ZIPLA</div>
+    <div class="info-text">A / D veya yön tuşları · SPACE ile zıpla. Mobilde ekran tuşlarını kullan.</div>
+   </div>
+  </div>
+ </div>
+ <div class="menu-footer">REXSUS STUDIOS · EST. 2026 · ENTER THE DEVIL'S WORLD</div>
+</div>
+<div id="rotate">📱<br><br>TELEFONUNU YATAY ÇEVİR<br><br><span style="font-size:13px;color:#aaa">Oyun yatay ekran için tasarlandı.</span></div>
+<div id="mobile">
+ <div class="pad" id="left">◀</div>
+ <div class="pad" id="right">▶</div>
+ <div class="pad" id="jump">JUMP</div>
+</div>
+<button id="restart">↻ YENİDEN</button>
+
+<script>
+(()=>{
+"use strict";
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+const W=960,H=540;
+let dpr=1,scale=1,ox=0,oy=0;
+function resize(){
+ const w=innerWidth,h=innerHeight;
+ dpr=Math.min(devicePixelRatio||1,2);
+ canvas.width=w*dpr;canvas.height=h*dpr;
+ scale=Math.min(w/W,h/H);ox=(w-W*scale)/2;oy=(h-H*scale)/2;
+}
+addEventListener("resize",resize);resize();
+const $=id=>document.getElementById(id);
+let playing=false,level=0,deaths=0,frame=0,camera=0;
+let platforms=[],spikes=[],hazards=[],particles=[];
+let worldWidth=1600,exit={};
+let toastTimer=0,shake=0,jumpBuffer=0;
+let entering=false,enterTimer=0;
+let keys={left:false,right:false};
+let hazardClock=0;
+const player={x:65,y:420,w:27,h:35,vx:0,vy:0,onGround:false,face:1,dead:false,coyote:0};
+const gravity=.62,jumpPower=13.4,speed=4.5;
+const biomes=[
+ {name:"KARANLIK VADİ",sky:["#111a35","#282342","#493047"],mountain:"#292643",ground:"#303e5c",top:"#778caf",accent:"#ff405d"},
+ {name:"BUZ DÜNYASI",sky:["#10243b","#28506b","#6d9eae"],mountain:"#23465b",ground:"#355b75",top:"#a5e6f2",accent:"#4ce3ff"},
+ {name:"LAV CEHENNEMİ",sky:["#260e19","#5b2025","#a34429"],mountain:"#47202b",ground:"#542b35",top:"#ff8050",accent:"#ffb13b"}
+];
+const maps=[
+ {name:"ISINMA TURU",w:1250,e:1160,p:[[0,455,280,85],[330,455,280,85],[660,455,270,85],[980,455,270,85]],s:[[280,420,50,35],[610,420,50,35],[930,420,50,35]],t:"normal"},
+ {name:"DAR GEÇİT",w:1450,e:1360,p:[[0,455,240,85],[300,405,130,25],[490,355,130,25],[680,405,130,25],[870,455,180,85],[1100,455,350,85]],s:[[240,420,60,35],[430,420,60,35],[620,420,60,35],[810,420,60,35]],t:"hidden"},
+ {name:"SAHTE GÜVEN",w:1500,e:1410,p:[[0,455,300,85],[350,420,170,30],[570,455,180,85],[800,390,160,30],[1010,455,490,85]],s:[[300,420,50,35],[520,420,50,35],[750,420,50,35],[960,420,50,35]],t:"fake"},
+ {name:"DİKEN BAHÇESİ",w:1600,e:1510,p:[[0,455,220,85],[280,455,180,85],[520,455,180,85],[760,455,180,85],[1000,455,600,85]],s:[[220,420,60,35],[460,420,60,35],[700,420,60,35],[940,420,60,35]],t:"pop"},
+ {name:"HAREKETLİ ADA",w:1600,e:1510,p:[[0,455,220,85],[300,400,130,25],[500,330,130,25],[700,400,130,25],[900,330,130,25],[1100,455,500,85]],s:[[220,420,80,35],[430,420,70,35],[630,420,70,35],[830,420,70,35]],t:"moving"},
+ {name:"TAVAN TUZAĞI",w:1600,e:1510,p:[[0,455,320,85],[380,455,220,85],[660,455,220,85],[940,455,660,85]],s:[[320,420,60,35],[600,420,60,35],[880,420,60,35]],t:"ceiling"},
+ {name:"TERS KÖŞE",w:1700,e:1610,p:[[0,455,250,85],[320,390,130,25],[520,330,130,25],[720,390,130,25],[920,330,130,25],[1120,455,580,85]],s:[[250,420,70,35],[450,420,70,35],[650,420,70,35],[850,420,70,35]],t:"reverse"},
+ {name:"KAYBOLAN YOL",w:1550,e:1460,p:[[0,455,280,85],[340,455,180,85],[580,455,180,85],[820,455,180,85],[1060,455,490,85]],s:[[280,420,60,35],[520,420,60,35],[760,420,60,35],[1000,420,60,35]],t:"vanish"},
+ {name:"KAÇAN KAPI",w:1700,e:1610,p:[[0,455,300,85],[360,405,150,25],[570,355,150,25],[780,405,150,25],[1000,455,700,85]],s:[[300,420,60,35],[510,420,60,35],[720,420,60,35],[930,420,70,35]],t:"fakeexit"},
+ {name:"ŞEYTANIN OYUNU",w:1900,e:1810,p:[[0,455,260,85],[320,400,140,25],[520,340,140,25],[720,400,140,25],[930,455,200,85],[1180,390,150,25],[1400,455,500,85]],s:[[260,420,60,35],[460,420,60,35],[660,420,60,35],[860,420,70,35],[1130,420,50,35],[1330,420,70,35]],t:"combo"}
+];
+const levels=[];
+for(let b=0;b<3;b++)for(let i=0;i<10;i++){
+ const m=maps[i];
+ levels.push({name:m.name,width:m.w,exit:m.e,p:m.p.map(v=>[...v]),s:m.s.map(v=>[...v]),trick:m.t,biome:b,variant:b});
+}
+function say(text,ms=1100){
+ $("toast").textContent=text;$("toast").style.opacity=1;toastTimer=ms;
+}
+function makeParticle(x,y,color){
+ particles.push({x,y,vx:(Math.random()-.5)*5,vy:-Math.random()*4-1,life:35,color});
+}
+let audio=null,musicNodes=[],musicTimer=null;
+function startMusic(){
+ if(audio){if(audio.state==="suspended")audio.resume();return;}
+ const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+ audio=new AC();
+ const master=audio.createGain();master.gain.value=.035;master.connect(audio.destination);
+ const filter=audio.createBiquadFilter();filter.type="lowpass";filter.frequency.value=650;filter.connect(master);
+ [110,164.81,220].forEach((freq,i)=>{
+  const osc=audio.createOscillator(),gain=audio.createGain();
+  osc.type="sine";osc.frequency.value=freq;gain.gain.value=[.22,.12,.08][i];
+  osc.connect(gain);gain.connect(filter);osc.start();musicNodes.push(osc);
+ });
+ const melody=audio.createOscillator(),melodyGain=audio.createGain();
+ melody.type="sine";melody.frequency.value=220;melodyGain.gain.value=.12;
+ melody.connect(melodyGain);melodyGain.connect(filter);melody.start();musicNodes.push(melody);
+ const notes=[220,246.94,196,174.61,196,164.81];let note=0;
+ musicTimer=setInterval(()=>{
+  if(!audio||audio.state==="closed")return;
+  const now=audio.currentTime;melody.frequency.cancelScheduledValues(now);
+  melody.frequency.setTargetAtTime(notes[note++%notes.length],now,.7);
+ },2400);
+}
+function addSpike(x,y,w=48,hidden=false,moving=false){
+ spikes.push({
+  x,y,w,h:35,baseX:x,baseY:y,active:true,hidden,
+  popping:false,popTimer:0,moving,moveRange:24+Math.min(36,level*1.3),
+  moveSpeed:.045+Math.min(.025,level*.001),revealAt:x-100,
+  triggered:false,armTimer:0
+ });
+}
+function resetLevel(){
+ const l=levels[level];worldWidth=l.width;
+ platforms=l.p.map((p,i)=>({
+  x:p[0],y:p[1],w:p[2],h:p[3],baseX:p[0],baseY:p[1],id:i,
+  active:true,cracking:false,collapseTimer:0,moving:false,delta:0,
+  range:45,vanish:false,troll:false,triggered:false
+ }));
+ spikes=l.s.map((s,i)=>({
+  x:s[0],y:s[1],w:s[2],h:s[3],baseX:s[0],baseY:s[1],
+  active:true,hidden:false,popping:false,popTimer:0,moving:false,
+  moveRange:35,moveSpeed:.045,revealAt:s[0]-100,triggered:false,armTimer:0
+ }));
+ hazards=[];particles=[];frame=0;camera=0;shake=0;entering=false;enterTimer=0;jumpBuffer=0;hazardClock=0;
+ player.x=65;player.y=420;player.vx=0;player.vy=0;player.onGround=false;player.dead=false;player.face=1;player.coyote=0;
+ exit={x:l.exit,y:390,w:48,h:65,open:false,changed:false};
+ const difficulty=Math.floor(level/3);
+ if(l.trick==="hidden"){if(spikes[1])spikes[1].hidden=true;if(spikes[3])spikes[3].hidden=true;}
+ if(l.trick==="fake"){if(platforms[1])platforms[1].vanish=true;if(platforms[3])platforms[3].vanish=true;}
+ if(l.trick==="pop")spikes.forEach((s,i)=>{if(i%2===1)s.popping=true;});
+ if(l.trick==="moving")platforms.forEach((p,i)=>{if(i===1||i===3){p.moving=true;p.range=55+difficulty*3;}});
+ if(l.trick==="vanish")platforms.forEach((p,i)=>{if(i===1||i===3)p.vanish=true;});
+ if(l.trick==="combo"){if(platforms[1])platforms[1].vanish=true;if(spikes[2])spikes[2].hidden=true;if(platforms[5]){platforms[5].moving=true;platforms[5].range=65;}}
+
+ // İlk 10 bölüm artık gerçek bir meydan okuma.
+ if(level<10){
+  const difficultyBoost=level;
+  // Bazı güvenli görünen platformlar kısa süre sonra çöker.
+  platforms.forEach((p,i)=>{
+   if(i>0&&i<platforms.length-1&&((i+level)%2===0)){
+    p.vanish=true;p.troll=true;
+   }
+  });
+  // Ek gizli ve hareketli dikenler.
+  if(level>=1)addSpike(l.width*.39,420,48,true,true);
+  if(level>=2)addSpike(l.width*.67,420,52,true,level>=4);
+  if(level>=4)addSpike(l.width*.83,420,48,level%2===0,true);
+  if(level>=6)addSpike(l.width*.55,420,55,true,true);
+  if(level>=8)addSpike(l.width*.91,420,50,true,true);
+  // Platformlara yaklaşınca hareket eden tuzaklar.
+  if(level>=3)platforms.forEach((p,i)=>{
+   if(i>0&&i<platforms.length-1&&i%2===1){p.moving=true;p.range=45+level*2;}
+  });
+ }
+ if(level>=3)spikes.forEach((s,i)=>{
+  if(i%2===0){s.moving=true;s.moveRange=20+Math.min(45,difficulty*5);s.moveSpeed=.035+difficulty*.002;}
+ });
+ if(l.variant===1){if(spikes[0])spikes[0].hidden=true;if(platforms[2]&&level%2===0)platforms[2].vanish=true;}
+ if(l.variant===2){if(platforms[2]){platforms[2].moving=true;platforms[2].range=45;}if(spikes[1])spikes[1].hidden=true;if(platforms[1])platforms[1].vanish=true;}
+ if(level>=5)addSpike(l.width*.52,420,42,true,true);
+ if(level>=12)addSpike(l.width*.76,420,48,true,true);
+ if(level>=8)platforms.forEach((p,i)=>{
+  if(i>0&&i<platforms.length-1&&i%2===1){p.vanish=true;p.troll=true;}
+ });
+ $("level").textContent=`BÖLÜM ${level+1} / 30 · ${l.name}`;
+ $("coins").textContent=level+1;$("deaths").textContent=deaths;
+ if(level===0)say("İLK BÖLÜMDE BİLE RAHAT YOK!",1500);
+ if(level===5)say("ARTIK OYUN CİDDİLEŞİYOR...",1500);
+ if(level===10)say("BUZ DÜNYASINA HOŞ GELDİN!",1600);
+ if(level===15)say("BURADAN SONRASI KÂBUS!",1500);
+ if(level===20)say("LAV CEHENNEMİNE GİRDİN!",1600);
+ if(level===25)say("ŞEYTAN BİLE BU KADARINI YAPMAZ!",1500);
+}
+function startGame(){
+ $("menu").style.display="none";$("restart").style.display="block";playing=true;level=0;deaths=0;startMusic();resetLevel();say("BOL ŞANS. İHTİYACIN OLACAK.",1600);
+}
+$("start").onclick=startGame;
+function die(message){
+ if(player.dead||entering)return;
+ player.dead=true;deaths++;$("deaths").textContent=deaths;shake=12;say(message,800);
+ for(let i=0;i<18;i++)makeParticle(player.x+player.w/2,player.y+15,"#ff405d");
+ if(deaths%3===0){
+  const taunts=["HAHA! DAHA İLK TUZAKTA GİTTİN! 😂","YİNE Mİ SEN? 😂","KAPIYI BULAMADIN MI? 😂","BİR TANE BÖLÜM GEÇ ARTIK! 😂","BU TUZAK SANA ÖZELDİ! 😂","BEN BİLE BU KADAR ÖLMEDİM! 😂"];
+  setTimeout(()=>{if(playing)say(taunts[Math.min(taunts.length-1,Math.floor(deaths/3)-1)],2600);},500);
+ }
+ setTimeout(()=>{if(playing)resetLevel();},450);
+}
+function nextLevel(){if(entering)return;entering=true;enterTimer=16;player.vx=0;player.vy=0;say("KAPI SENİ YUTTU!",700);}
+function finishLevel(){
+ entering=false;
+ if(level>=levels.length-1){
+  playing=false;
+  $("menu").innerHTML=`<div class="menu-content"><div class="panel"><div class="logo">YOU WIN!</div><div class="sub">30 BÖLÜMÜ DE BİTİRDİN!</div><div class="desc">Ölüm sayın: ${deaths}<br>Üç biyomu da geçtin. Gerçek bir TROLL DEVIL ustasısın!</div><button id="again">TEKRAR OYNA</button><div class="small">REXSUS STUDIOS</div></div></div>`;
+  $("menu").style.display="flex";$("again").onclick=()=>location.reload();return;
+ }
+ level++;resetLevel();say("BÖLÜM GEÇİLDİ! RAHATLAMA.",1000);
+}
+function overlap(a,b){return a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;}
+function requestJump(){if(!playing||player.dead||entering)return;jumpBuffer=9;}
+function update(){
+ frame++;
+ if(toastTimer>0){toastTimer-=16;if(toastTimer<=0)$("toast").style.opacity=0;}
+ if(shake>0)shake*=.8;
+ for(const p of particles){p.x+=p.vx;p.y+=p.vy;p.vy+=.15;p.life--;}
+ particles=particles.filter(p=>p.life>0);
+ if(!playing||player.dead)return;
+ if(entering){enterTimer--;player.x+=2.4;if(enterTimer<=0)finishLevel();return;}
+ const l=levels[level];
+ for(const p of platforms){
+  p.delta=0;
+  if(p.moving){
+   const dist=Math.abs((player.x+player.w/2)-(p.baseX+p.w/2));
+   if(dist<230){const old=p.x;p.x=p.baseX+Math.sin(frame*.045)*p.range;p.delta=p.x-old;}
+   else p.x=p.baseX;
+  }
+ }
+ for(const s of spikes){
+  const dist=Math.abs((player.x+player.w/2)-(s.baseX+s.w/2));
+  if(s.moving&&dist<210)s.x=s.baseX+Math.sin(frame*s.moveSpeed)*s.moveRange;
+  else if(s.moving)s.x=s.baseX;
+  if(s.hidden&&dist<105){
+   s.hidden=false;s.triggered=true;s.armTimer=12;say("SÜRPRİİİZ!",650);
+  }
+  if(s.armTimer>0)s.armTimer--;
+ }
+ // Yönler artık asla tersine dönmez.
+ const dir=(keys.right?1:0)-(keys.left?1:0);
+ player.vx=dir*speed;if(dir)player.face=dir;
+ if(player.onGround){
+  const under=platforms.find(p=>p.active&&player.x+player.w>p.x&&player.x<p.x+p.w&&Math.abs(player.y+player.h-p.y)<3);
+  if(under&&under.moving)player.x+=under.delta;
+ }
+ if(player.onGround)player.coyote=8;else player.coyote=Math.max(0,player.coyote-1);
+ if(jumpBuffer>0){
+  if(player.onGround||player.coyote>0){player.vy=-jumpPower;player.onGround=false;player.coyote=0;jumpBuffer=0;}
+  else jumpBuffer--;
+ }
+ player.x+=player.vx;player.x=Math.max(0,Math.min(worldWidth-player.w,player.x));
+ const oldBottom=player.y+player.h;
+ player.vy=Math.min(16,player.vy+gravity);player.y+=player.vy;player.onGround=false;
+ if(player.vy>=0){
+  for(const p of platforms){
+   if(!p.active)continue;
+   const horizontal=player.x+player.w>p.x+3&&player.x<p.x+p.w-3;
+   const newBottom=player.y+player.h;
+   if(horizontal&&oldBottom<=p.y+5&&newBottom>=p.y){
+    player.y=p.y-player.h;player.vy=0;player.onGround=true;player.coyote=8;
+    if(p.vanish&&!p.cracking){
+     p.cracking=true;p.collapseTimer=level<10?9:12;
+     say(p.troll?"HAHA! ZEMİN GİDİYOR!":"ZEMİN ÇATLIYOR!",550);
+    }
+    break;
+   }
+  }
+ }
+ for(const p of platforms){
+  if(p.cracking&&p.collapseTimer>0){
+   p.collapseTimer--;
+   if(p.collapseTimer<6&&frame%2===0)makeParticle(p.x+Math.random()*p.w,p.y,"#a5a9bc");
+   if(p.collapseTimer===0)p.active=false;
+  }
+ }
+ for(const s of spikes){
+  if(s.popping&&player.x>s.x-90&&!s.active){s.popTimer++;if(s.popTimer>16){s.active=true;s.popping=false;say("DİKENLER GERİ DÖNDÜ!",700);}}
+  if(!s.active||s.hidden||s.armTimer>0)continue;
+  if(overlap(player,{x:s.x+5,y:s.y+7,w:s.w-10,h:s.h-7}))die("DİKENLERE BASTIN!");
+ }
+ if(l.trick==="pop"){
+  for(const s of spikes)if(s.popping&&s.active&&player.x>s.x-100){s.active=false;s.popTimer=0;}
+ }
+ // Düşen engeller daha erken ve daha sık geliyor.
+ hazardClock++;
+ const hazardInterval=Math.max(43,105-level*2);
+ if((level>=3||l.trick==="ceiling"||l.trick==="combo")&&player.x>260&&player.x<worldWidth-150&&hazardClock>hazardInterval){
+  hazardClock=0;
+  const ahead=player.x+100+Math.random()*75;
+  const dropX=Math.min(worldWidth-80,ahead);
+  hazards.push({x:dropX,y:25,w:48+Math.min(15,level),h:42,vy:0,warning:10});
+  if(level>=7&&Math.random()<.3)hazards.push({x:Math.min(worldWidth-70,dropX+90),y:25,w:45,h:40,vy:0,warning:17});
+  say("YUKARIYA BAK!",450);
+ }
+ for(const h of hazards){
+  if(h.warning>0)h.warning--;
+  else{h.vy+=.65;h.y+=h.vy;}
+  if(overlap(player,h))die("GÖKYÜZÜ BİLE DÜŞMANIN!");
+ }
+ hazards=hazards.filter(h=>h.y<H+60);
+ if(level>=10){
+  for(const p of platforms){
+   if(!p.active||p.cracking||!p.vanish)continue;
+   const near=player.x+player.w>p.x-20&&player.x<p.x+p.w+20;
+   if(near&&player.y+player.h>=p.y-45&&player.y<p.y+10&&!p.triggered){
+    p.triggered=true;p.cracking=true;p.collapseTimer=12;
+   }
+  }
+ }
+ if(l.trick==="fakeexit"&&player.x>exit.x-100&&!exit.changed){exit.changed=true;exit.x-=150;say("KAPI KAÇTI! 😂",850);}
+ if(level>=18&&player.x>exit.x-75&&!exit.changed){exit.changed=true;exit.x-=95;say("SON ANDA KAÇTI! 😂",850);}
+ const distance=Math.abs((player.x+player.w/2)-(exit.x+exit.w/2));
+ exit.open=distance<100;
+ const doorZone={x:exit.x+12,y:exit.y+8,w:exit.w-24,h:exit.h-5};
+ if(exit.open&&overlap(player,doorZone))nextLevel();
+ if(player.y>H+100)die("BOŞLUĞA DÜŞTÜN!");
+ const target=Math.max(0,Math.min(worldWidth-W,player.x-350));camera+=(target-camera)*.13;
+}
+function drawBackground(){
+ const biome=biomes[levels[level]?.biome||0];
+ const grad=ctx.createLinearGradient(0,0,0,H);
+ grad.addColorStop(0,biome.sky[0]);grad.addColorStop(.6,biome.sky[1]);grad.addColorStop(1,biome.sky[2]);
+ ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
+ for(let i=0;i<85;i++){
+  let x=((i*173-camera*.12)%W+W)%W,y=(i*79)%300;
+  ctx.globalAlpha=.2+(i%4)*.12;ctx.fillStyle=i%3===0?"#ffdfb0":"#dceaff";ctx.fillRect(x,y,2,2);
+ }
+ ctx.globalAlpha=1;
+ for(let i=0;i<9;i++){
+  let x=((i*270-camera*.2)%2300+2300)%2300-100;
+  ctx.fillStyle=i%2?"#22243e":biome.mountain;ctx.beginPath();ctx.moveTo(x,470);ctx.lineTo(x+135,230+(i%3)*28);ctx.lineTo(x+280,470);ctx.fill();
+ }
+ ctx.fillStyle=biome.top;ctx.globalAlpha=.75;ctx.beginPath();ctx.arc(790,105,36,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+ // Uzakta dekoratif kuleler.
+ for(let i=0;i<6;i++){
+  const x=((i*220-camera*.32)%1500+1500)%1500-100;
+  ctx.fillStyle="#080c1c66";ctx.fillRect(x,350,35,120);
+  ctx.fillRect(x+10,320,15,30);
+  ctx.fillStyle=biome.accent+"55";ctx.fillRect(x+15,340,5,18);
+ }
+ if(levels[level].biome===1)for(let i=0;i<18;i++){
+  const x=((i*103-camera*.3)%W+W)%W;ctx.fillStyle="#d5faff66";ctx.fillRect(x,(i*53+frame*.3)%430,3,8);
+ }
+ if(levels[level].biome===2)for(let i=0;i<18;i++){
+  const x=((i*117-camera*.2)%W+W)%W;ctx.fillStyle="#ff9a3c88";ctx.beginPath();ctx.arc(x,460+(i%3)*12,3,0,Math.PI*2);ctx.fill();
+ }
+}
+function drawPlatform(p){
+ if(!p.active)return;
+ const biome=biomes[levels[level].biome],x=p.x-camera;
+ ctx.fillStyle=p.cracking?"#5b3546":biome.ground;ctx.fillRect(x,p.y,p.w,p.h);
+ ctx.fillStyle=p.cracking?"#ff697f":biome.top;ctx.fillRect(x,p.y,p.w,7);
+ ctx.fillStyle="#202a42";for(let a=12;a<p.w;a+=40)ctx.fillRect(x+a,p.y+17,3,Math.max(0,p.h-17));
+ if(p.cracking){
+  ctx.strokeStyle="#ff7389";ctx.lineWidth=2;ctx.beginPath();
+  ctx.moveTo(x+p.w*.3,p.y+5);ctx.lineTo(x+p.w*.4,p.y+17);ctx.lineTo(x+p.w*.35,p.y+27);
+  ctx.moveTo(x+p.w*.7,p.y+5);ctx.lineTo(x+p.w*.62,p.y+18);ctx.stroke();
+ }
+}
+function drawSpikes(s){
+ if(!s.active||s.hidden)return;
+ const x=s.x-camera,n=Math.max(2,Math.floor(s.w/18));
+ if(s.armTimer>0){ctx.fillStyle="#ff405d";ctx.globalAlpha=.35+Math.sin(frame)*.35;ctx.fillRect(x-5,s.y-5,s.w+10,5);ctx.globalAlpha=1;}
+ for(let i=0;i<n;i++){
+  const sw=s.w/n;ctx.fillStyle=s.armTimer>0?"#ff8b9c":"#f23b59";ctx.beginPath();
+  ctx.moveTo(x+i*sw,s.y+s.h);ctx.lineTo(x+i*sw+sw/2,s.y+3);ctx.lineTo(x+(i+1)*sw,s.y+s.h);ctx.fill();
+  ctx.strokeStyle="#ff9aaa";ctx.lineWidth=1;ctx.stroke();
+ }
+}
+function drawPlayer(){
+ const x=player.x-camera,y=player.y;
+ ctx.fillStyle="#0008";ctx.beginPath();ctx.ellipse(x+14,y+player.h+4,16,4,0,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle="#f5f3fa";ctx.fillRect(x+4,y+7,19,23);ctx.fillStyle="#fff";ctx.fillRect(x+2,y+1,23,14);
+ ctx.fillStyle="#202438";ctx.fillRect(x+(player.face===1?17:7),y+6,4,5);ctx.fillRect(x+(player.face===1?22:3),y+6,3,5);
+ ctx.fillStyle="#ff405d";ctx.fillRect(x+4,y+28,8,7);ctx.fillRect(x+16,y+28,8,7);ctx.fillStyle="#ffffff55";ctx.fillRect(x+6,y+3,4,3);
+}
+function drawExit(){
+ const x=exit.x-camera,biome=biomes[levels[level].biome];
+ ctx.save();ctx.shadowColor=biome.accent;ctx.shadowBlur=exit.open?32:18;
+ ctx.fillStyle=exit.open?"#e4c7a1":"#71304a";ctx.fillRect(x,exit.y,exit.w,exit.h);ctx.shadowBlur=0;
+ ctx.fillStyle="#17182a";ctx.fillRect(x+7,exit.y+8,exit.w-14,exit.h-8);
+ if(exit.open){
+  ctx.fillStyle=biome.accent;ctx.globalAlpha=.35;ctx.fillRect(x+10,exit.y+10,exit.w-20,exit.h-12);ctx.globalAlpha=1;
+  ctx.fillStyle="#fff";ctx.font="bold 10px Arial";ctx.textAlign="center";ctx.fillText("GİR",x+24,exit.y+38);
+ }else{ctx.fillStyle="#ffbdc8";ctx.beginPath();ctx.arc(x+33,exit.y+36,3,0,Math.PI*2);ctx.fill();}
+ ctx.fillStyle="#fff";ctx.font="bold 11px Arial";ctx.textAlign="center";ctx.fillText(exit.open?"AÇIK":"EXIT",x+24,exit.y-10);ctx.restore();
+}
+function draw(){
+ ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,canvas.width/dpr,canvas.height/dpr);
+ ctx.save();ctx.translate(ox,oy);ctx.scale(scale,scale);
+ if(shake>1)ctx.translate((Math.random()-.5)*shake,(Math.random()-.5)*shake);
+ drawBackground();
+ if(playing||$("menu").style.display==="none"){
+  for(const p of platforms)drawPlatform(p);for(const s of spikes)drawSpikes(s);
+  for(const h of hazards){
+   if(h.warning>0){ctx.fillStyle="#ff405d";ctx.globalAlpha=.25+Math.sin(frame*.5)*.2;ctx.fillRect(h.x-camera-5,0,h.w+10,505);ctx.globalAlpha=1;}
+   ctx.fillStyle="#aab2c9";ctx.fillRect(h.x-camera,h.y,h.w,h.h);ctx.fillStyle="#f5f6ff";ctx.fillRect(h.x-camera,h.y,h.w,5);
+  }
+  drawExit();
+  if(!player.dead){
+   ctx.save();
+   if(entering){ctx.globalAlpha=Math.max(0,enterTimer/16);ctx.translate(player.x-camera+player.w/2,player.y+player.h/2);ctx.scale(Math.max(.1,enterTimer/16),Math.max(.1,enterTimer/16));ctx.translate(-(player.x-camera+player.w/2),-(player.y+player.h/2));}
+   drawPlayer();ctx.restore();
+  }
+  for(const p of particles){ctx.globalAlpha=Math.max(0,p.life/35);ctx.fillStyle=p.color;ctx.fillRect(p.x-camera,p.y,4,4);}
+  ctx.globalAlpha=1;ctx.fillStyle="#111426";ctx.fillRect(0,505,W,35);ctx.fillStyle="#59617e";ctx.fillRect(0,505,W,3);
+  ctx.fillStyle="#9ba3c1";ctx.font="bold 10px Arial";ctx.textAlign="center";ctx.fillText(biomes[levels[level].biome].name+" · SAKIN RAHATLAMA.",W/2,528);
+ }
+ ctx.restore();
+}
+function loop(){update();draw();requestAnimationFrame(loop);}loop();
+addEventListener("keydown",e=>{
+ if(["ArrowLeft","ArrowRight","ArrowUp","Space"].includes(e.code))e.preventDefault();
+ if(e.code==="ArrowLeft"||e.code==="KeyA")keys.left=true;
+ if(e.code==="ArrowRight"||e.code==="KeyD")keys.right=true;
+ if((e.code==="Space"||e.code==="ArrowUp"||e.code==="KeyW")&&!e.repeat)requestJump();
+ if(e.code==="KeyR"&&playing)resetLevel();
+});
+addEventListener("keyup",e=>{
+ if(e.code==="ArrowLeft"||e.code==="KeyA")keys.left=false;
+ if(e.code==="ArrowRight"||e.code==="KeyD")keys.right=false;
+});
+function hold(id,key){
+ const el=$(id);
+ el.addEventListener("pointerdown",e=>{
+  e.preventDefault();keys[key]=true;
+  try{el.setPointerCapture(e.pointerId);}catch(_){}
+ });
+ const release=()=>keys[key]=false;
+ el.addEventListener("pointerup",release);
+ el.addEventListener("pointercancel",release);
+ el.addEventListener("lostpointercapture",release);
+}
+hold("left","left");hold("right","right");
+$("jump").addEventListener("pointerdown",e=>{e.preventDefault();requestJump();});
+$("restart").onclick=()=>{if(playing)resetLevel();};
+addEventListener("blur",()=>{keys.left=false;keys.right=false;});
+})();
+</script>
+</body>
+</html>
