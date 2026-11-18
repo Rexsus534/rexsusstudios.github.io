@@ -22,23 +22,37 @@ canvas{display:block}
 button{border:2px solid #7fe7f5;background:#0b2b42ed;color:white;border-radius:12px;padding:10px 12px;font-weight:bold;cursor:pointer;box-shadow:0 3px 0 #04121c}
 button:active{transform:translateY(2px)}
 #leftHelp{position:absolute;bottom:12px;left:12px;font-size:11px;text-shadow:0 2px 4px #001;max-width:45%}
-#auth{position:fixed;inset:0;background:linear-gradient(#061b2bef,#061b2bf2);z-index:10;display:flex;align-items:center;justify-content:center;padding:16px}
-#authBox{width:min(360px,94vw);text-align:center}
-#authBox h1{margin:4px;color:#75eaff;letter-spacing:3px}
-#authBox p{color:#c6e5ee;font-size:13px}
-input,select{width:100%;padding:12px;margin:5px 0;border-radius:9px;border:1px solid #65cce0;background:#102d40;color:white;font-size:15px}
-#authMsg{min-height:20px;color:#ffd28a;font-size:12px}
-#modal{display:none;position:fixed;inset:0;background:#001b2be8;z-index:8;align-items:center;justify-content:center;padding:14px}
-#modalBox{width:min(460px,95vw);max-height:88vh;overflow:auto;text-align:center}
-#modalBox h2{color:#83eaff;margin:5px}
-.row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:9px 0}
-.choice{flex:1;min-width:125px;padding:12px 8px;border:1px solid #63cada;border-radius:10px;background:#12344a}
-#modalChoices{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-#modalChoices button{flex:1;min-width:125px}
-#wheelWrap{margin:14px auto;width:210px;height:210px;position:relative}
-#wheel{width:200px;height:200px;margin:auto;border-radius:50%;border:7px solid #f7d36c;background:conic-gradient(#e84d4d 0 45deg,#327bb7 45deg 90deg,#5eaa65 90deg 135deg,#8a58b5 135deg 180deg,#e4a43c 180deg 225deg,#3b9f9a 225deg 270deg,#b55b83 270deg 315deg,#778b9c 315deg);transition:transform 2.8s cubic-bezier(.12,.7,.12,1);box-shadow:0 0 20px #ffd45a}
-#wheel:after{content:"REXSUS";position:absolute;inset:70px 45px;background:#092238;border-radius:50%;display:grid;place-items:center;font-weight:900;border:3px solid #f7d36c}
-#pointer{position:absolute;z-index:2;top:-7px;left:calc(50% - 12px);border-left:12px solid transparent;border-right:12px solid transparent;border-top:25px solid #fff}
+
+/* MOBİL JOYSTICK */
+#joystick{
+ position:fixed;
+ left:22px;
+ bottom:25px;
+ width:120px;
+ height:120px;
+ border-radius:50%;
+ background:#09223888;
+ border:2px solid #a5edff99;
+ pointer-events:auto;
+ touch-action:none;
+ display:none;
+ z-index:5;
+}
+#joystickKnob{
+ position:absolute;
+ width:48px;
+ height:48px;
+ left:34px;
+ top:34px;
+ border-radius:50%;
+ background:#75eaffdd;
+ border:3px solid white;
+ box-shadow:0 3px 12px #0018;
+ pointer-events:none;
+}
+@media(max-width:900px){
+ #joystick{display:block}
+}
 @media(max-width:650px){
  #stats{width:145px;font-size:9px;padding:6px;top:34px}
  #quest{width:145px;font-size:9px;padding:6px}
@@ -48,6 +62,8 @@ input,select{width:100%;padding:12px;margin:5px 0;border-radius:9px;border:1px s
  #brand{top:5px;left:7px;font-size:12px}
  #leftHelp{display:none}
  #hint{top:23%;font-size:11px}
+ #joystick{width:105px;height:105px;left:15px;bottom:17px}
+ #joystickKnob{width:43px;height:43px;left:29px;top:29px}
 }
 @media(max-height:500px) and (orientation:landscape){
  #stats{top:28px;width:125px;font-size:8px;padding:5px}
@@ -67,10 +83,30 @@ input,select{width:100%;padding:12px;margin:5px 0;border-radius:9px;border:1px s
  #wheelWrap{width:130px;height:130px;margin:5px auto}
  #wheel{width:125px;height:125px}
  #wheel:after{inset:42px 28px;font-size:10px}
+ #joystick{width:90px;height:90px;left:12px;bottom:12px}
+ #joystickKnob{width:38px;height:38px;left:24px;top:24px}
 }
+#auth{position:fixed;inset:0;background:linear-gradient(#061b2bef,#061b2bf2);z-index:10;display:flex;align-items:center;justify-content:center;padding:16px}
+#authBox{width:min(360px,94vw);text-align:center}
+#authBox h1{margin:4px;color:#75eaff;letter-spacing:3px}
+#authBox p{color:#c6e5ee;font-size:13px}
+input,select{width:100%;padding:12px;margin:5px 0;border-radius:9px;border:1px solid #65cce0;background:#102d40;color:white;font-size:15px}
+#authMsg{min-height:20px;color:#ffd28a;font-size:12px}
+#modal{display:none;position:fixed;inset:0;background:#001b2be8;z-index:8;align-items:center;justify-content:center;padding:14px}
+#modalBox{width:min(460px,95vw);max-height:88vh;overflow:auto;text-align:center}
+#modalBox h2{color:#83eaff;margin:5px}
+.row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:9px 0}
+.choice{flex:1;min-width:125px;padding:12px 8px;border:1px solid #63cada;border-radius:10px;background:#12344a}
+#modalChoices{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+#modalChoices button{flex:1;min-width:125px}
+#wheelWrap{margin:14px auto;width:210px;height:210px;position:relative}
+#wheel{width:200px;height:200px;margin:auto;border-radius:50%;border:7px solid #f7d36c;background:conic-gradient(#e84d4d 0 45deg,#327bb7 45deg 90deg,#5eaa65 90deg 135deg,#8a58b5 135deg 180deg,#e4a43c 180deg 225deg,#3b9f9a 225deg 270deg,#b55b83 270deg 315deg,#778b9c 315deg);transition:transform 2.8s cubic-bezier(.12,.7,.12,1);box-shadow:0 0 20px #ffd45a}
+#wheel:after{content:"REXSUS";position:absolute;inset:70px 45px;background:#092238;border-radius:50%;display:grid;place-items:center;font-weight:900;border:3px solid #f7d36c}
+#pointer{position:absolute;z-index:2;top:-7px;left:calc(50% - 12px);border-left:12px solid transparent;border-right:12px solid transparent;border-top:25px solid #fff}
 </style>
 </head>
 <body>
+
 <div id="hud">
  <div id="brand">REXSUS <span style="color:#75eaff">SEA LEGENDS</span></div>
  <div id="stats" class="panel">
@@ -99,6 +135,11 @@ input,select{width:100%;padding:12px;margin:5px 0;border-radius:9px;border:1px s
   <button id="interact">E ETKİLEŞİM</button>
   <button id="menu">☰</button>
  </div>
+
+ <div id="joystick">
+  <div id="joystickKnob"></div>
+ </div>
+
  <div id="leftHelp">WASD: Hareket · Fare: Kamera · J/Sol tık: Saldırı · Z: Dönüşüm · X: İnsan formu · 1/2: Yetenek · Q: Uçuş · Space: Yüksel · Ctrl: Alçal · C: Kod</div>
 </div>
 
@@ -158,6 +199,12 @@ let dragonForm=null,smokeForm=null,fireAura=null,iceAura=null,knifeBlades=[];
 let attackCD=0,skillCD=0,dashCD=0,animTime=0;
 let yaw=0,pitch=-.24,keys={},drag=false,lastX=0,lastY=0;
 let chestBusy=false,aimMode=null,fireParticles=[],chargeParticles=[];
+
+/* MOBİL JOYSTICK DEĞİŞKENLERİ */
+let joystickX=0,joystickY=0,joystickPointer=null;
+const joystick=$('joystick');
+const joystickKnob=$('joystickKnob');
+
 const islands=[
 {name:'Başlangıç Adası',x:0,z:0,r:79,enemy:'Haydut',goal:5,boss:'Haydut Reisi',color:0x55a56a},
 {name:'Sis Adası',x:225,z:-22,r:77,enemy:'Sis Korsanı',goal:6,boss:'Sis Muhafızı',color:0x6b9b75},
@@ -202,7 +249,6 @@ function makeIsland(data,index){
   const crystal=new THREE.Mesh(new THREE.ConeGeometry(1.2,3.8,5),new THREE.MeshStandardMaterial({color:index===3?0x9cecff:0x68d7c1,emissive:index===3?0x246b91:0x174d32,emissiveIntensity:.5}));
   crystal.position.set(Math.cos(a)*r,2,Math.sin(a)*r);g.add(crystal);
  }
- // Hafif ada parıltıları
  const sparkleMat=new THREE.MeshBasicMaterial({color:0x9df7ff,transparent:true,opacity:.65});
  for(let i=0;i<9;i++){
   const a=i/9*Math.PI*2,r=data.r*.83;
@@ -418,7 +464,6 @@ function cinematicTransform(){
  }
  if(fruit==='Buz'){
   form='ice';const duration=2600;
-  const iceGroup=new THREE.Group();scene.add(iceGroup);
   const crystals=[];
   for(let i=0;i<18;i++){
    const m=new THREE.Mesh(new THREE.OctahedronGeometry(.35+Math.random()*.2),new THREE.MeshBasicMaterial({color:0x9cecff,transparent:true,opacity:.95}));
@@ -523,7 +568,6 @@ function skill(){
  if(fruit==='Alev'){msg('ALEV DALGASI!');targets.forEach(e=>hit(e,90,0xff7135));}
 }
 
-// Hedefleme ve el animasyonları
 const raycaster=new THREE.Raycaster();
 const groundPlane=new THREE.Plane(new THREE.Vector3(0,1,0),-1.9);
 function getAimPoint(event){
@@ -558,12 +602,8 @@ function chargeAtHand(color,count=12){
   chargeParticles.push(m);
  }
 }
-function animateArmBack(){
- armR.rotation.set(-1.45,0,-.9);
-}
-function resetArm(){
- armR.rotation.set(0,0,0);
-}
+function animateArmBack(){armR.rotation.set(-1.45,0,-.9);}
+function resetArm(){armR.rotation.set(0,0,0);}
 function makeFireball(target){
  const group=new THREE.Group();
  const core=new THREE.Mesh(new THREE.SphereGeometry(.52,16,12),new THREE.MeshBasicMaterial({color:0xffa020}));
@@ -627,8 +667,7 @@ function performAimedSkill(event){
  const target=getAimPoint(event);
  if(mode==='fire'){
   clearCharge();makeFireball(target);msg('🔥 ATEŞ TOPU FIRLATILDI!');
-  const old=performance.now();armR.rotation.x=-1.5;
-  setTimeout(()=>{if(!transforming)resetArm();},350);
+  armR.rotation.x=-1.5;setTimeout(()=>{if(!transforming)resetArm();},350);
  }
  if(mode==='lightning'){
   clearCharge();lightningStrike(target);msg('⚡ ŞİMŞEK DÜŞTÜ!');
@@ -637,7 +676,7 @@ function performAimedSkill(event){
  if(mode==='rubber'){
   clearCharge();rubberPunch(target);msg('🟡 LASTİK YUMRUĞU!');
  }
- if(mode==='ice'){
+ if(mode==='ice){
   clearCharge();makeIceCube(target);msg('❄️ BUZ KÜPÜ FIRLATILDI!');
   setTimeout(()=>{if(!transforming)resetArm();},350);
  }
@@ -821,7 +860,7 @@ function adminFruit(eat){
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('modal').style.display==='flex')closeModal();});
 $('modal').addEventListener('click',e=>{if(e.target===$('modal'))closeModal();});
 
-// Klavye, fare ve dokunmatik
+// KLAVYE VE KAMERA
 addEventListener('keydown',e=>{
  const k=e.key.toLowerCase();keys[k]=true;
  if(k==='j')attack();if(k==='z')skill();if(k==='x')exitForm();
@@ -830,18 +869,79 @@ addEventListener('keydown',e=>{
  if(e.code==='Space')e.preventDefault();
 });
 addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
+
+/* KAMERA: MOBİLDE DOKUNARAK SÜRÜKLE */
 renderer.domElement.addEventListener('pointerdown',e=>{
- if(e.pointerType==='mouse'&&!aimMode){drag=true;lastX=e.clientX;lastY=e.clientY;}
+ if(aimMode)return;
+ if(e.pointerType==='mouse'||e.pointerType==='touch'||e.pointerType==='pen'){
+  drag=true;
+  lastX=e.clientX;
+  lastY=e.clientY;
+  try{renderer.domElement.setPointerCapture(e.pointerId);}catch(err){}
+ }
 });
 addEventListener('pointerup',()=>drag=false);
-addEventListener('pointermove',e=>{if(drag){yaw-=(e.clientX-lastX)*.006;pitch=Math.max(-.8,Math.min(.45,pitch+(e.clientY-lastY)*.003));lastX=e.clientX;lastY=e.clientY;}});
+addEventListener('pointercancel',()=>drag=false);
+addEventListener('pointermove',e=>{
+ if(drag){
+  const sensitivity=e.pointerType==='touch'?.008:.006;
+  yaw-=(e.clientX-lastX)*sensitivity;
+  pitch=Math.max(-.8,Math.min(.45,pitch+(e.clientY-lastY)*.003));
+  lastX=e.clientX;
+  lastY=e.clientY;
+ }
+});
 renderer.domElement.addEventListener('click',e=>{
  if(aimMode){performAimedSkill(e);return;}
  if(e.pointerType==='mouse')attack();
 });
+
+/* JOYSTICK KONTROLLERİ */
+function updateJoystick(e){
+ const rect=joystick.getBoundingClientRect();
+ const cx=rect.left+rect.width/2;
+ const cy=rect.top+rect.height/2;
+ let dx=e.clientX-cx;
+ let dy=e.clientY-cy;
+ const max=rect.width*.34;
+ const distance=Math.hypot(dx,dy);
+ if(distance>max){
+  dx=dx/distance*max;
+  dy=dy/distance*max;
+ }
+ joystickX=dx/max;
+ joystickY=dy/max;
+ joystickKnob.style.transform=`translate(${dx}px,${dy}px)`;
+}
+joystick.addEventListener('pointerdown',e=>{
+ e.preventDefault();
+ joystickPointer=e.pointerId;
+ joystick.setPointerCapture(e.pointerId);
+ updateJoystick(e);
+});
+joystick.addEventListener('pointermove',e=>{
+ if(joystickPointer===e.pointerId){
+  e.preventDefault();
+  updateJoystick(e);
+ }
+});
+function stopJoystick(e){
+ if(joystickPointer===null)return;
+ if(e&&e.pointerId!==undefined&&e.pointerId!==joystickPointer)return;
+ joystickPointer=null;
+ joystickX=0;
+ joystickY=0;
+ joystickKnob.style.transform='translate(0px,0px)';
+}
+joystick.addEventListener('pointerup',stopJoystick);
+joystick.addEventListener('pointercancel',stopJoystick);
+joystick.addEventListener('lostpointercapture',stopJoystick);
+
 function dash(){if(dashCD>0)return;dashCD=2;player.position.x-=Math.sin(yaw)*7;player.position.z-=Math.cos(yaw)*7;burst(player.position.clone().add(new THREE.Vector3(0,1,0)),0x8beaff,1);}
+
 function movePlayer(dt){
- let f=(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0),s=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0);
+ let f=(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0)-joystickY;
+ let s=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0)+joystickX;
  const dir=new THREE.Vector3(-Math.sin(yaw)*f+Math.cos(yaw)*s,0,-Math.cos(yaw)*f-Math.sin(yaw)*s);
  if(dir.lengthSq()){
   dir.normalize();const speed=player.userData.onBoat&&currentBoat?currentBoat.speed:(form==='smoke'?13:form==='dragon'?12:form==='fire'?11:form==='ice'?8:9);
@@ -868,7 +968,6 @@ function updateAnimatedThings(now){
  animatedThings.forEach((a,i)=>{
   let k=Math.min(1,(now-a.begin)/a.duration);
   if(a.kind==='rubber'){
-   // Kol geriye çekilir, sonra ileri doğru uzar ve yumruk atar
    let extend=k<.25?0:k<.62?(k-.25)/.37:k<.78?1:1-(k-.78)/.22;
    const length=Math.max(.1,a.distance*extend);
    const end=a.start.clone().addScaledVector(a.dir,length);
@@ -881,7 +980,7 @@ function updateAnimatedThings(now){
     enemies.filter(e=>e.alive&&e.island===activeIsland&&e.g.position.distanceTo(a.end)<9).forEach(e=>hit(e,125,0xffd35b));
     burst(a.end,0xffd35b,1.5);
    }
-   armR.rotation.x=k<.25?1.2*(k/.25)-1.5:k<.62?-2.2: -2.2*(1-(k-.62)/.38);
+   armR.rotation.x=k<.25?1.2*(k/.25)-1.5:k<.62?-2.2:-2.2*(1-(k-.62)/.38);
    armR.rotation.z=k<.25?-.9:0;
   }
   if(k>=1){
@@ -949,7 +1048,7 @@ function loop(now){
     for(let j=0;j<2;j++)particle(p.mesh.position.clone().add(new THREE.Vector3((Math.random()-.5)*.5,(Math.random()-.5)*.5,(Math.random()-.5)*.5)),Math.random()>.5?0xff6418:0xffd04a,.1);
    }
    if(p.kind==='ice'&&Math.random()<.8)particle(p.mesh.position.clone(),0x9cecff,.09);
-   const e=enemies.find(v=>v.alive&&v.island===activeIsland&&v.g.position.distanceTo(p.mesh.position)<(p.kind==='fireball'||p.kind==='ice'?3:3));
+   const e=enemies.find(v=>v.alive&&v.island===activeIsland&&v.g.position.distanceTo(p.mesh.position)<3);
    if(e){
     hit(e,p.damage,p.kind==='fireball'?0xff5a14:p.kind==='ice'?0x75dfff:0xc18a50);
     if(p.kind==='fireball'||p.kind==='ice'){
