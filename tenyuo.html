@@ -822,6 +822,393 @@ if(!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjection
 });
 addEventListener("beforeunload",()=>{if(data&&player){data.x=player.position.x;data.z=player.position.z;persist()}});
 if(account&&data)initGame();
+  
+// =====================================================
+// TENYUO ELDORIA - ADMIN PANEL
+// =====================================================
+
+const ADMIN_USER = "TENYUO_ADMIN";
+const ADMIN_PASS = "Eldoria2026!";
+
+let adminLoggedIn = false;
+
+const adminStyle = document.createElement("style");
+adminStyle.textContent = `
+#adminLogin,#adminPanel{
+position:fixed;inset:0;z-index:200;
+background:#07111df2;display:none;
+align-items:center;justify-content:center;padding:12px;
+}
+.adminBox{
+width:min(850px,96vw);max-height:90vh;overflow:auto;
+background:#101e2d;border:1px solid #d1ad62;
+border-radius:12px;padding:20px;color:white;
+box-shadow:0 15px 60px #000;
+}
+.adminBox h2{color:#e9c77d;letter-spacing:2px}
+.adminBox input,.adminBox select{
+width:100%;padding:11px;margin:6px 0;
+background:#091522;color:white;border:1px solid #526174;
+border-radius:6px;
+}
+.adminBox button{
+padding:9px 12px;margin:4px;
+border:0;border-radius:5px;background:#c59b4c;
+color:#10151b;font-weight:bold;cursor:pointer;
+}
+.adminBox .danger{background:#9e4141;color:white}
+.adminBox .adminItem{
+background:#1b2a3b;padding:12px;margin:8px 0;
+border:1px solid #ffffff20;border-radius:7px;
+}
+.adminTabs{display:flex;flex-wrap:wrap;gap:5px;margin:12px 0}
+.adminTabs button{flex:1;min-width:100px}
+.adminClose{float:right;background:#693e3e!important;color:white!important}
+.adminSmall{font-size:11px;color:#aebdca}
+`;
+document.head.appendChild(adminStyle);
+
+const loginLayer=document.createElement("div");
+loginLayer.id="adminLogin";
+loginLayer.innerHTML=`
+<div class="adminBox" style="max-width:400px">
+<button class="adminClose" onclick="window.closeAdminLogin()">KAPAT</button>
+<h2>TENYUO ADMIN</h2>
+<p class="adminSmall">Yönetici girişi</p>
+<input id="adminUsername" placeholder="Yönetici adı">
+<input id="adminPassword" type="password" placeholder="Şifre">
+<button style="width:100%" onclick="window.adminLogin()">GİRİŞ YAP</button>
+<p id="adminLoginError" style="color:#ff7777"></p>
+</div>`;
+document.body.appendChild(loginLayer);
+
+const adminLayer=document.createElement("div");
+adminLayer.id="adminPanel";
+adminLayer.innerHTML=`
+<div class="adminBox">
+<button class="adminClose" onclick="window.closeAdmin()">ÇIKIŞ ✕</button>
+<h2>⚙ TENYUO YÖNETİM PANELİ</h2>
+<p class="adminSmall">ELDORIA · ADMIN CONTROL CENTER</p>
+<div class="adminTabs">
+<button onclick="window.adminPage('players')">OYUNCULAR</button>
+<button onclick="window.adminPage('rewards')">ÖDÜL KODLARI</button>
+<button onclick="window.adminPage('shop')">MARKET</button>
+<button onclick="window.adminPage('notice')">DUYURULAR</button>
+<button onclick="window.adminPage('enemies')">DÜŞMANLAR</button>
+</div>
+<div id="adminContent"></div>
+</div>`;
+document.body.appendChild(adminLayer);
+
+// Admin butonu
+const adminButton=document.createElement("button");
+adminButton.className="uiBtn";
+adminButton.textContent="⚙ ADMIN";
+adminButton.style.display="none";
+adminButton.onclick=()=>window.openAdminLogin();
+document.getElementById("topright").appendChild(adminButton);
+
+// Admin butonu yalnızca oyun içinde gösterilir.
+const oldStartAccount=startAccount;
+startAccount=function(email){
+oldStartAccount(email);
+adminButton.style.display="block";
+};
+
+window.openAdminLogin=()=>{
+if(!gameReady){
+toast("Önce oyuna giriş yapmalısın.");
+return;
+}
+document.getElementById("adminLogin").style.display="flex";
+};
+window.closeAdminLogin=()=>{
+document.getElementById("adminLogin").style.display="none";
+};
+window.adminLogin=()=>{
+const u=document.getElementById("adminUsername").value;
+const p=document.getElementById("adminPassword").value;
+if(u!==ADMIN_USER||p!==ADMIN_PASS){
+document.getElementById("adminLoginError").textContent="Yönetici bilgileri hatalı!";
+return;
+}
+adminLoggedIn=true;
+window.closeAdminLogin();
+adminLayer.style.display="flex";
+window.adminPage("players");
+toast("Yönetici girişi başarılı!");
+};
+window.closeAdmin=()=>{
+adminLoggedIn=false;
+adminLayer.style.display="none";
+};
+window.adminPage=(page)=>{
+if(!adminLoggedIn)return;
+const area=document.getElementById("adminContent");
+const accounts=getAccounts();
+
+if(page==="players"){
+let html="<h2>OYUNCU YÖNETİMİ</h2>";
+const entries=Object.entries(accounts);
+html+=`<p>Toplam hesap: ${entries.length}</p>`;
+for(const [email,a] of entries){
+const d=a.data||{};
+html+=`
+<div class="adminItem">
+<b>${d.username||a.username||"Oyuncu"}</b>
+<p class="adminSmall">${email}</p>
+<p>Seviye: ${d.level||1} · Altın: ${d.gold||0} · XP: ${d.xp||0}</p>
+<input id="gold_${encodeURIComponent(email)}" type="number" placeholder="Yeni altın miktarı">
+<input id="level_${encodeURIComponent(email)}" type="number" placeholder="Yeni seviye">
+<input id="xp_${encodeURIComponent(email)}" type="number" placeholder="Yeni XP">
+<input id="hp_${encodeURIComponent(email)}" type="number" placeholder="Yeni can">
+<input id="mana_${encodeURIComponent(email)}" type="number" placeholder="Yeni mana">
+<button onclick="window.adminSavePlayer('${encodeURIComponent(email)}')">DEĞİŞİKLİKLERİ KAYDET</button>
+<button onclick="window.adminGivePotion('${encodeURIComponent(email)}')">+1 CAN İKSİRİ</button>
+<button class="danger" onclick="window.adminDeletePlayer('${encodeURIComponent(email)}')">HESABI SİL</button>
+</div>`;
+}
+area.innerHTML=html;
+}
+
+if(page==="rewards"){
+area.innerHTML=`
+<h2>ÖDÜL KODU YÖNETİMİ</h2>
+<div class="adminItem">
+<input id="newRewardCode" placeholder="Kod adı">
+<input id="newRewardGold" type="number" placeholder="Verilecek altın">
+<input id="newRewardXP" type="number" placeholder="Verilecek XP">
+<button onclick="window.adminCreateReward()">KOD OLUŞTUR</button>
+</div>
+<div id="rewardList"></div>`;
+window.adminRefreshRewards();
+}
+
+if(page==="shop"){
+area.innerHTML=`
+<h2>MARKET FİYATLARI</h2>
+<div class="adminItem">
+${["potion","weapon","mana","health"].map(k=>`
+<label>${k.toUpperCase()}</label>
+<input id="price_${k}" type="number" value="${data.shopPrices[k]}">
+`).join("")}
+<button onclick="window.adminSavePrices()">FİYATLARI KAYDET</button>
+</div>`;
+}
+
+if(page==="notice"){
+area.innerHTML=`
+<h2>DUYURU YAYINLA</h2>
+<div class="adminItem">
+<input id="noticeTitle" placeholder="Duyuru başlığı">
+<input id="noticeText" placeholder="Duyuru mesajı">
+<button onclick="window.adminPublishNotice()">DUYURU YAYINLA</button>
+<button class="danger" onclick="window.adminDeleteNotice()">DUYURUYU SİL</button>
+<p id="noticeStatus"></p>
+</div>`;
+}
+
+if(page==="enemies"){
+area.innerHTML=`
+<h2>DÜŞMAN YÖNETİMİ</h2>
+<p>Toplam düşman: ${enemies.length}</p>
+<div class="adminItem">
+<button onclick="window.adminReviveEnemies()">TÜM DÜŞMANLARI YENİLE</button>
+<button class="danger" onclick="window.adminRemoveEnemies()">TÜM DÜŞMANLARI YOK ET</button>
+</div>
+<div id="enemyAdminList"></div>`;
+area.innerHTML+=enemies.map((e,i)=>`
+<div class="adminItem">
+<b>${e.kind.toUpperCase()} · LV ${e.level}</b>
+<p>Can: ${Math.max(0,Math.round(e.hp))}/${e.maxHp}</p>
+<button onclick="window.adminHealEnemy(${i})">CANINI DOLDUR</button>
+<button class="danger" onclick="window.adminKillEnemy(${i})">YOK ET</button>
+</div>`).join("");
+}
+};
+
+window.adminSavePlayer=encoded=>{
+if(!adminLoggedIn)return;
+const email=decodeURIComponent(encoded);
+const a=getAccounts();
+if(!a[email])return;
+const d=a[email].data;
+if(!d)return;
+const read=id=>document.getElementById(id+"_"+encoded);
+const gold=Number(read("gold").value);
+const level=Number(read("level").value);
+const xp=Number(read("xp").value);
+const hp=Number(read("hp").value);
+const mana=Number(read("mana").value);
+
+if(read("gold").value!=="")d.gold=Math.max(0,gold);
+if(read("level").value!=="")d.level=clamp(level,1,100);
+if(read("xp").value!=="")d.xp=Math.max(0,xp);
+if(read("hp").value!==""){
+d.maxHp=Math.max(1,hp);
+d.hp=d.maxHp;
+}
+if(read("mana").value!==""){
+d.maxMana=Math.max(1,mana);
+d.mana=d.maxMana;
+}
+a[email].data=d;
+saveAccounts(a);
+if(account&&data&&data.email===email){
+data=d;
+updateHUD();
+}
+toast("Oyuncu bilgileri güncellendi!");
+window.adminPage("players");
+};
+
+window.adminGivePotion=encoded=>{
+if(!adminLoggedIn)return;
+const email=decodeURIComponent(encoded);
+const a=getAccounts();
+if(!a[email]?.data)return;
+a[email].data.potions=(a[email].data.potions||0)+1;
+saveAccounts(a);
+toast("Oyuncuya iksir verildi.");
+};
+
+window.adminDeletePlayer=encoded=>{
+if(!adminLoggedIn)return;
+const email=decodeURIComponent(encoded);
+if(email===data?.email){
+toast("Kendi hesabını silemezsin.");
+return;
+}
+if(!confirm("Bu oyuncunun hesabı silinsin mi?"))return;
+const a=getAccounts();
+delete a[email];
+saveAccounts(a);
+window.adminPage("players");
+toast("Oyuncu hesabı silindi.");
+};
+
+window.adminCreateReward=()=>{
+if(!adminLoggedIn)return;
+const code=document.getElementById("newRewardCode").value.trim().toUpperCase();
+const gold=Number(document.getElementById("newRewardGold").value)||0;
+const xp=Number(document.getElementById("newRewardXP").value)||0;
+if(!code){toast("Kod adı gir.");return}
+const custom=JSON.parse(localStorage.getItem("tenyuo_custom_rewards")||"{}");
+custom[code]={gold:Math.max(0,gold),xp:Math.max(0,xp)};
+localStorage.setItem("tenyuo_custom_rewards",JSON.stringify(custom));
+rewards[code]=custom[code];
+window.adminRefreshRewards();
+toast("Yeni ödül kodu oluşturuldu!");
+};
+
+window.adminRefreshRewards=()=>{
+const custom=JSON.parse(localStorage.getItem("tenyuo_custom_rewards")||"{}");
+Object.assign(rewards,custom);
+const list=document.getElementById("rewardList");
+if(!list)return;
+list.innerHTML="<h3>Mevcut kodlar</h3>"+Object.entries(rewards).map(([code,r])=>`
+<div class="adminItem">
+<b>${code}</b>
+<p>${r.gold} ALTIN · ${r.xp} XP</p>
+${custom[code]?`<button class="danger" onclick="window.adminDeleteReward('${code}')">KODU SİL</button>`:"<span class='adminSmall'>Varsayılan kod</span>"}
+</div>`).join("");
+};
+
+window.adminDeleteReward=code=>{
+if(!adminLoggedIn)return;
+const custom=JSON.parse(localStorage.getItem("tenyuo_custom_rewards")||"{}");
+delete custom[code];
+localStorage.setItem("tenyuo_custom_rewards",JSON.stringify(custom));
+delete rewards[code];
+window.adminRefreshRewards();
+toast("Kod silindi.");
+};
+
+window.adminSavePrices=()=>{
+if(!adminLoggedIn)return;
+for(const k of ["potion","weapon","mana","health"]){
+const value=Number(document.getElementById("price_"+k).value);
+if(Number.isFinite(value))data.shopPrices[k]=Math.max(0,value);
+}
+persist();
+toast("Market fiyatları güncellendi.");
+};
+
+window.adminPublishNotice=()=>{
+if(!adminLoggedIn)return;
+const title=document.getElementById("noticeTitle").value.trim();
+const message=document.getElementById("noticeText").value.trim();
+if(!title||!message){toast("Başlık ve mesaj gir.");return}
+localStorage.setItem("tenyuo_announcement",JSON.stringify({title,message}));
+document.getElementById("noticeStatus").textContent="Duyuru yayınlandı!";
+toast("Duyuru yayınlandı!");
+};
+
+window.adminDeleteNotice=()=>{
+if(!adminLoggedIn)return;
+localStorage.removeItem("tenyuo_announcement");
+document.getElementById("noticeStatus").textContent="Duyuru silindi.";
+toast("Duyuru silindi.");
+};
+
+window.adminReviveEnemies=()=>{
+if(!adminLoggedIn)return;
+for(const e of enemies){
+if(e.alive)continue;
+e.alive=true;
+e.hp=e.maxHp;
+e.mesh.position.set(e.homeX,terrainHeight(e.homeX,e.homeZ),e.homeZ);
+scene.add(e.mesh);
+}
+toast("Düşmanlar yenilendi!");
+window.adminPage("enemies");
+};
+
+window.adminRemoveEnemies=()=>{
+if(!adminLoggedIn)return;
+for(const e of enemies){
+e.alive=false;
+scene.remove(e.mesh);
+}
+enemyTarget=null;
+document.getElementById("enemybar").style.display="none";
+toast("Tüm düşmanlar yok edildi.");
+window.adminPage("enemies");
+};
+
+window.adminHealEnemy=i=>{
+if(!adminLoggedIn)return;
+const e=enemies[i];
+if(e){e.hp=e.maxHp;toast("Düşmanın canı dolduruldu.");window.adminPage("enemies")}
+};
+
+window.adminKillEnemy=i=>{
+if(!adminLoggedIn)return;
+const e=enemies[i];
+if(e&&e.alive){
+e.alive=false;
+scene.remove(e.mesh);
+if(enemyTarget===e)enemyTarget=null;
+toast("Düşman yok edildi.");
+window.adminPage("enemies");
+}
+};
+
+// Özel kodları oyunun ödül sistemine yükle.
+try{
+Object.assign(rewards,JSON.parse(localStorage.getItem("tenyuo_custom_rewards")||"{}"));
+}catch(e){}
+
+// Oyuncular duyuruyu oyuna girdiklerinde görür.
+const oldInitGame=initGame;
+initGame=function(){
+oldInitGame();
+const notice=JSON.parse(localStorage.getItem("tenyuo_announcement")||"null");
+if(notice){
+setTimeout(()=>toast("📢 "+notice.title+": "+notice.message),1200);
+}
+if(account)adminButton.style.display="block";
+};
 </script>
 </body>
 </html>
