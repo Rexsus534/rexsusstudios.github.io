@@ -5,6 +5,147 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>PROJECT: REX</title>
+ /* PROJECT REX - MOBİL YATAY EKRAN */
+@media (orientation: landscape) and (max-height: 600px) and (pointer: coarse) {
+ html,body {
+  width:100%;
+  height:100%;
+  height:100dvh;
+  overflow:hidden;
+  position:fixed;
+ }
+
+ canvas {
+  width:100vw;
+  height:100%;
+  display:block;
+ }
+
+ #hud {
+  top:5px;
+  left:6px;
+  right:6px;
+  gap:6px;
+ }
+
+ #hud .panel {
+  padding:5px 8px;
+  border-radius:8px;
+  font-size:10px;
+ }
+
+ #healthOuter {
+  width:115px;
+  height:8px;
+  margin-top:3px;
+ }
+
+ #superOuter {
+  width:85px;
+  height:6px;
+  margin-top:3px;
+ }
+
+ #mobile {
+  display:flex !important;
+  left:10px;
+  right:10px;
+  bottom:7px;
+  align-items:end;
+ }
+
+ #stick {
+  width:88px;
+  height:88px;
+ }
+
+ #knob {
+  width:38px;
+  height:38px;
+  left:23px;
+  top:23px;
+ }
+
+ .controls {
+  gap:8px;
+ }
+
+ .controls button {
+  width:53px;
+  height:53px;
+  font-size:10px;
+ }
+
+ #attackBtn {
+  width:67px;
+  height:67px;
+ }
+
+ #overlay {
+  padding:5px;
+ }
+
+ #menu {
+  width:96vw;
+  max-height:96dvh;
+  padding:8px 14px;
+  border-radius:12px;
+ }
+
+ #menu h1 {
+  font-size:25px;
+  margin:2px;
+ }
+
+ #menu h3 {
+  margin:5px;
+  font-size:14px;
+ }
+
+ #menu p {
+  margin:4px;
+  font-size:10px;
+ }
+
+ #heroes {
+  grid-template-columns:repeat(4,1fr);
+  gap:5px;
+  margin:7px 0;
+ }
+
+ .hero {
+  padding:5px 3px;
+  border-radius:7px;
+ }
+
+ .hero .symbol {
+  font-size:21px;
+ }
+
+ .hero b {
+  font-size:10px;
+  margin:2px;
+ }
+
+ .hero small {
+  font-size:9px;
+ }
+
+ #start {
+  padding:8px 20px;
+  font-size:13px;
+ }
+
+ #end .panel {
+  padding:12px;
+ }
+}
+
+@media (pointer:coarse) and (orientation:landscape) {
+ #mobile {
+  display:flex;
+ }
+}
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#080d18;color:white;font-family:Arial;overflow:hidden;touch-action:none}
