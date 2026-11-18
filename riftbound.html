@@ -7,8 +7,8 @@
 <title>RIFTBOUND: The Forgotten Realm</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#080910;color:white;font-family:Arial;overflow:hidden;touch-action:none}
-canvas{width:100vw;height:100vh;display:block}
+html,body{width:100%;height:100%;background:#080910;color:white;font-family:Arial;overflow:hidden;touch-action:none}
+canvas{width:100vw;height:100vh;height:100dvh;display:block}
 #hud{position:fixed;inset:0;pointer-events:none}
 .panel{background:#10131de8;border:1px solid #625873;border-radius:10px;padding:10px 13px;box-shadow:0 4px 18px #0008}
 #top{position:absolute;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;gap:8px}
@@ -23,10 +23,10 @@ canvas{width:100vw;height:100vh;display:block}
 #message{position:absolute;top:34%;width:100%;text-align:center;font-size:clamp(22px,5vw,36px);font-weight:900;letter-spacing:4px;text-shadow:0 4px 20px black;opacity:0;transition:opacity .4s}
 #bottom{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);font-size:11px;color:#aaa;white-space:nowrap}
 #controls{position:fixed;inset:0;pointer-events:none}
-#stick{position:absolute;bottom:25px;left:22px;width:125px;height:125px;border:2px solid #ffffff55;background:#ffffff0d;border-radius:50%;pointer-events:auto}
-#nub{position:absolute;width:47px;height:47px;left:37px;top:37px;border-radius:50%;background:#bca8d077;border:2px solid #fff9}
+#stick{position:absolute;bottom:25px;left:22px;width:125px;height:125px;border:2px solid #ffffff55;background:#ffffff0d;border-radius:50%;pointer-events:auto;touch-action:none}
+#nub{position:absolute;width:47px;height:47px;left:37px;top:37px;border-radius:50%;background:#bca8d077;border:2px solid #fff9;pointer-events:none}
 .actions{position:absolute;right:18px;bottom:25px;display:flex;gap:10px;align-items:end;pointer-events:auto}
-.act{width:62px;height:62px;border-radius:50%;background:#28243b;color:white;border:2px solid #ffffff77;font-weight:bold;font-size:10px}
+.act{width:62px;height:62px;border-radius:50%;background:#28243b;color:white;border:2px solid #ffffff77;font-weight:bold;font-size:10px;touch-action:none}
 #attack{width:76px;height:76px;background:#803448;border-color:#f18c9c}
 #menu,#dead,#levelup{position:fixed;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse,#282039,#080910 75%)}
 #menuBox,#levelbox{width:min(540px,92%);text-align:center;padding:30px;background:#11121bdc;border:1px solid #625273;border-radius:12px}
@@ -45,6 +45,8 @@ button{cursor:pointer}
 #dead{display:none;background:#08050bee;text-align:center}
 #dead h1{color:#c6536c;font-size:40px;letter-spacing:4px}
 #dead p{color:#aaa;margin:15px}
+
+/* DİKEY MOBİL */
 @media(max-width:650px){
  .bar{width:145px}
  #controls{display:block}
@@ -52,7 +54,180 @@ button{cursor:pointer}
  #choices{grid-template-columns:1fr}
  .choice{min-height:60px}
 }
-@media(min-width:651px){#controls{display:none}}
+
+/* MOBİL YATAY EKRAN - KONTROLLER VE HUD */
+@media (orientation:landscape) and (max-height:700px) and (pointer:coarse){
+ html,body{
+  width:100%;
+  height:100%;
+  height:100dvh;
+  overflow:hidden;
+  position:fixed;
+ }
+ canvas{
+  width:100vw;
+  height:100dvh;
+ }
+ #controls{
+  display:block!important;
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:4;
+ }
+ #stick{
+  display:block!important;
+  width:88px;
+  height:88px;
+  left:9px;
+  bottom:8px;
+  border-width:2px;
+ }
+ #nub{
+  width:36px;
+  height:36px;
+  left:24px;
+  top:24px;
+ }
+ .actions{
+  display:flex!important;
+  right:9px;
+  bottom:9px;
+  gap:6px;
+  align-items:end;
+ }
+ .act{
+  width:47px;
+  height:47px;
+  font-size:9px;
+  border-width:2px;
+  padding:0;
+ }
+ #attack{
+  width:60px;
+  height:60px;
+  font-size:9px;
+ }
+ #top{
+  top:5px;
+  left:6px;
+  right:6px;
+  gap:5px;
+ }
+ .panel{
+  padding:5px 7px;
+  border-radius:7px;
+ }
+ #heroName{
+  font-size:10px;
+  letter-spacing:1px;
+ }
+ .bar{
+  width:105px;
+  height:6px;
+  margin-top:3px;
+ }
+ #stats{
+  font-size:9px;
+  margin-top:3px;
+ }
+ #top .panel:nth-child(2)>div:first-child{
+  font-size:10px!important;
+ }
+ #kills,#gold{
+  font-size:9px!important;
+  margin-top:3px!important;
+ }
+ #region{
+  top:66px;
+  left:8px;
+  font-size:9px;
+  letter-spacing:1px;
+ }
+ #quest{
+  top:83px;
+  left:6px;
+  max-width:190px;
+  padding:5px 7px;
+  font-size:9px;
+  line-height:1.4;
+  border-radius:6px;
+ }
+ #message{
+  top:38%;
+  font-size:clamp(16px,4vw,27px);
+  letter-spacing:2px;
+ }
+ #bottom{
+  display:none!important;
+ }
+ #menuBox,#levelbox{
+  width:min(470px,90vw);
+  max-height:96dvh;
+  overflow:auto;
+  padding:10px 14px;
+ }
+ #menu h1{
+  font-size:30px;
+  letter-spacing:4px;
+ }
+ #menu h2{
+  font-size:9px;
+  margin:4px 0 8px;
+  letter-spacing:3px;
+ }
+ #menu p{
+  font-size:10px;
+  line-height:1.4;
+  margin-bottom:8px;
+ }
+ #start,#restart{
+  padding:9px 17px;
+  font-size:10px;
+  letter-spacing:2px;
+ }
+ #hint{
+  font-size:9px;
+  margin-top:7px;
+  line-height:1.4;
+ }
+ #levelbox h2{
+  font-size:17px;
+ }
+ #levelbox p{
+  font-size:10px!important;
+ }
+ #choices{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:5px;
+  margin-top:9px;
+ }
+ .choice{
+  min-height:65px;
+  padding:7px 4px;
+  font-size:10px;
+ }
+ .choice b{
+  font-size:10px;
+  margin-bottom:5px;
+ }
+ .choice span{
+  font-size:9px;
+ }
+ #dead h1{
+  font-size:25px;
+  letter-spacing:2px;
+ }
+ #dead p{
+  font-size:11px;
+  margin:8px;
+ }
+}
+
+/* GENİŞ EKRANLARDA PC KONTROLLERİ GİZLİ */
+@media(min-width:651px) and (orientation:portrait){
+ #controls{display:none}
+}
 </style>
 </head>
 <body>
