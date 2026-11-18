@@ -254,5 +254,125 @@ section{padding:65px 7%}
 <span>© 2026 REXSUS STUDIOS</span>
 <span>PLAY BEYOND.</span>
 </footer>
+  
+<style>
+/* REXSUS STUDIOS - YATAY MOBİL EKRAN DÜZENİ */
+@media (orientation: landscape) and (max-height: 600px) and (pointer: coarse) {
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  #game {
+    width: 100%;
+    height: 100%;
+  }
+
+  #hud {
+    top: 5px;
+    left: 5px;
+    width: 175px;
+    padding: 7px;
+    border-radius: 6px;
+    font-size: 11px;
+  }
+
+  #hud .bar {
+    height: 8px;
+    margin: 3px 0 5px;
+  }
+
+  #stats {
+    font-size: 10px;
+    line-height: 1.25;
+  }
+
+  #quest {
+    top: 5px;
+    right: 5px;
+    max-width: 155px;
+    padding: 7px;
+    font-size: 10px;
+  }
+
+  #message {
+    top: 7px;
+    max-width: 45vw;
+    padding: 7px 12px;
+    font-size: 11px;
+  }
+
+  #mobileControls {
+    inset: 0;
+  }
+
+  #mobileJoystick {
+    left: 10px;
+    bottom: 9px;
+    width: 94px;
+    height: 94px;
+  }
+
+  #mobileStick {
+    left: 25px;
+    top: 25px;
+    width: 44px;
+    height: 44px;
+  }
+
+  #mobileButtons {
+    right: 8px;
+    bottom: 8px;
+    grid-template-columns: repeat(3, 48px);
+    gap: 5px;
+  }
+
+  #mobileButtons button {
+    width: 48px;
+    height: 48px;
+    font-size: 11px;
+    border-width: 1px;
+  }
+
+  #menu .panel {
+    width: min(360px, 75vw);
+    padding: 12px;
+  }
+
+  #menu h1 {
+    font-size: 23px;
+  }
+
+  #menu p {
+    margin: 7px 0;
+    font-size: 11px;
+  }
+
+  #menu input,
+  #menu select,
+  #menu button {
+    padding: 8px;
+    margin: 4px 0;
+    font-size: 13px;
+  }
+
+  #help {
+    display: none !important;
+  }
+}
+
+/* Küçük ekranlarda taşmayı önle */
+@media (max-width: 800px) {
+  canvas {
+    width: 100vw;
+    height: 100dvh;
+  }
+}
+</style>
+</body>
+</html>
+
 </body>
 </html>
