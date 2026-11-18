@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -15,56 +16,28 @@ canvas{display:block;width:100vw;height:100vh}
 #toast{position:fixed;top:17%;left:50%;transform:translateX(-50%);z-index:8;color:white;font-weight:1000;font-size:clamp(15px,3vw,25px);text-align:center;text-shadow:0 3px 8px #000;pointer-events:none;opacity:0;transition:opacity .12s;white-space:nowrap}
 #menu{
  position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;
- background:
- radial-gradient(ellipse at 50% 110%,#e52c3930,transparent 42%),
- radial-gradient(ellipse at 15% 20%,#6d204c66,transparent 40%),
- radial-gradient(ellipse at 85% 15%,#263d7b55,transparent 40%),
- linear-gradient(145deg,#090b19,#171026 55%,#080b18);
+ background:radial-gradient(ellipse at 50% 110%,#e52c3930,transparent 42%),radial-gradient(ellipse at 15% 20%,#6d204c66,transparent 40%),radial-gradient(ellipse at 85% 15%,#263d7b55,transparent 40%),linear-gradient(145deg,#090b19,#171026 55%,#080b18);
  overflow:hidden;color:white;
 }
-#menu:before{
- content:"";position:absolute;width:min(95vw,850px);aspect-ratio:1;border:1px solid #ff405d25;border-radius:50%;
- box-shadow:0 0 100px #ff174722,inset 0 0 100px #ff174722;
- animation:rotateGlow 28s linear infinite;
-}
-#menu:after{
- content:"";position:absolute;inset:0;pointer-events:none;
- background:repeating-linear-gradient(0deg,transparent 0px,transparent 3px,#ffffff05 4px);
-}
+#menu:before{content:"";position:absolute;width:min(95vw,850px);aspect-ratio:1;border:1px solid #ff405d25;border-radius:50%;box-shadow:0 0 100px #ff174722,inset 0 0 100px #ff174722;animation:rotateGlow 28s linear infinite}
+#menu:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0px,transparent 3px,#ffffff05 4px)}
 .menu-orb{position:absolute;border-radius:50%;filter:blur(2px);pointer-events:none;animation:floatOrb 7s ease-in-out infinite}
 .orb1{width:140px;height:140px;left:8%;top:13%;background:radial-gradient(circle,#ff405d30,transparent 70%)}
 .orb2{width:220px;height:220px;right:4%;bottom:5%;background:radial-gradient(circle,#6848ff25,transparent 70%);animation-delay:-3s}
 .orb3{width:100px;height:100px;right:18%;top:12%;background:radial-gradient(circle,#ff9a4825,transparent 70%);animation-delay:-1s}
 .menu-content{position:relative;z-index:2;width:min(100%,780px);display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:stretch}
-.panel{
- position:relative;padding:30px 24px;border:1px solid #ff526844;border-radius:24px;
- background:linear-gradient(145deg,#1b1b32eF,#0b0d1ceb);
- box-shadow:0 0 55px #ff174722,0 25px 80px #0009,inset 0 1px #ffffff12;
- backdrop-filter:blur(12px);overflow:hidden;
-}
+.panel{position:relative;padding:30px 24px;border:1px solid #ff526844;border-radius:24px;background:linear-gradient(145deg,#1b1b32eF,#0b0d1ceb);box-shadow:0 0 55px #ff174722,0 25px 80px #0009,inset 0 1px #ffffff12;backdrop-filter:blur(12px);overflow:hidden}
 .panel:before{content:"";position:absolute;top:0;left:10%;width:80%;height:1px;background:linear-gradient(90deg,transparent,#ff8294,transparent)}
-.logo{
- font-size:clamp(55px,9vw,94px);font-weight:1000;line-height:.82;letter-spacing:5px;
- color:#ff405d;text-shadow:0 0 12px #ff1747,0 0 35px #ff1747,0 0 75px #ff174766;
- animation:logoPulse 2.5s ease-in-out infinite;
-}
+.logo{font-size:clamp(55px,9vw,94px);font-weight:1000;line-height:.82;letter-spacing:5px;color:#ff405d;text-shadow:0 0 12px #ff1747,0 0 35px #ff1747,0 0 75px #ff174766;animation:logoPulse 2.5s ease-in-out infinite}
 .sub{letter-spacing:5px;color:#ff9aaa;font-size:12px;font-weight:bold;margin:18px 0 20px}
 .desc{color:#c5c9dc;font-size:13px;line-height:1.8;margin-bottom:20px}
-#start{
- position:relative;overflow:hidden;width:100%;padding:17px 25px;border:1px solid #ff9baa;border-radius:12px;
- background:linear-gradient(110deg,#ff1747,#ff5268,#a90e35);
- box-shadow:0 0 25px #ff174766,0 6px 0 #76152c;font-size:16px;letter-spacing:2px;transition:.2s;
-}
+#start{position:relative;overflow:hidden;width:100%;padding:17px 25px;border:1px solid #ff9baa;border-radius:12px;background:linear-gradient(110deg,#ff1747,#ff5268,#a90e35);box-shadow:0 0 25px #ff174766,0 6px 0 #76152c;font-size:16px;letter-spacing:2px;transition:.2s;color:white;font-weight:bold}
 #start:before{content:"";position:absolute;top:-60%;left:-40%;width:30%;height:220%;background:#ffffff55;transform:rotate(25deg);animation:shine 3.5s infinite}
 #start:hover{transform:scale(1.035);box-shadow:0 0 45px #ff1747aa,0 6px 0 #76152c}
 #start:active{transform:scale(.97)}
 .small{font-size:10px;color:#747d9b;margin-top:20px;letter-spacing:2px}
 .side-panel{display:flex;flex-direction:column;gap:12px}
-.info-card{
- flex:1;text-align:left;padding:17px;border-radius:17px;border:1px solid #ffffff17;
- background:linear-gradient(140deg,#ffffff0b,#ffffff03);
- box-shadow:inset 0 1px #ffffff0a;
-}
+.info-card{flex:1;text-align:left;padding:17px;border-radius:17px;border:1px solid #ffffff17;background:linear-gradient(140deg,#ffffff0b,#ffffff03);box-shadow:inset 0 1px #ffffff0a}
 .info-title{font-size:11px;color:#ff8294;letter-spacing:2px;font-weight:900;margin-bottom:9px}
 .info-main{font-size:17px;color:white;font-weight:900;margin-bottom:5px}
 .info-text{font-size:11px;color:#aab0c8;line-height:1.6}
@@ -80,21 +53,25 @@ canvas{display:block;width:100vw;height:100vh}
 .pad{position:absolute;bottom:max(14px,env(safe-area-inset-bottom));width:66px;height:66px;border-radius:50%;border:2px solid #ffffff70;background:#ffffff25;color:white;display:grid;place-items:center;font-size:25px;font-weight:bold;pointer-events:auto;user-select:none;touch-action:none}
 #left{left:18px}#right{left:94px}
 #jump{right:20px;width:84px;height:84px;background:#ef365b77;border-color:#ff8497;font-size:14px}
-#restart{position:fixed;right:14px;bottom:14px;z-index:11;display:none;padding:10px 15px;font-size:12px;background:#303851;box-shadow:0 4px 0 #171e30}
+#restart{position:fixed;right:14px;bottom:14px;z-index:11;display:none;padding:10px 15px;font-size:12px;background:#303851;box-shadow:0 4px 0 #171e30;color:white;border:0;border-radius:8px}
 #rotate{display:none;position:fixed;inset:0;z-index:30;background:#090c19;color:white;align-items:center;justify-content:center;text-align:center;padding:25px;font-size:21px;font-weight:bold}
+#adminOverlay{position:fixed;inset:0;z-index:100;background:#03040eeF;display:none;align-items:center;justify-content:center;padding:15px;color:white}
+#adminBox{width:min(430px,100%);max-height:90vh;overflow:auto;background:linear-gradient(145deg,#201322,#090d1b);border:1px solid #ff405d;border-radius:18px;padding:25px;box-shadow:0 0 50px #ff174744}
+#adminBox h2{color:#ff405d;letter-spacing:3px;margin-bottom:8px;text-align:center}
+#adminBox p{font-size:12px;color:#aaa;text-align:center;margin-bottom:18px}
+#adminPass{width:100%;padding:13px;border:1px solid #555;background:#101426;color:white;border-radius:8px;margin-bottom:10px;font-size:16px;outline:none}
+.adminBtn{width:100%;padding:12px;margin:6px 0;border:1px solid #ffffff22;border-radius:8px;background:#252b43;color:white;font-weight:bold;cursor:pointer}
+.adminBtn:hover{background:#3a425f}
+.adminBtn.active{background:#8d1837;border-color:#ff405d}
+.adminClose{background:#541d2c}
+.adminLabel{display:block;color:#ddd;font-size:13px;margin:15px 0 7px}
+#adminSpeed{width:100%;accent-color:#ff405d}
+#adminStatus{min-height:18px;color:#ff8294;font-size:12px;text-align:center;margin:8px}
+#adminTools{display:none}
 @media(orientation:portrait) and (pointer:coarse){#rotate{display:flex}}
 @media(pointer:coarse){#mobile{display:block}}
 @media(pointer:fine){#mobile{display:none}}
-@media(max-width:650px){
- .menu-content{grid-template-columns:1fr;max-width:440px;max-height:95vh;overflow:auto}
- .side-panel{display:grid;grid-template-columns:1fr 1fr}
- .panel{padding:20px 18px}
- .logo{font-size:58px}
- .sub{margin:12px 0}
- .desc{margin-bottom:13px}
- .info-card{padding:11px}
- .menu-footer{display:none}
-}
+@media(max-width:650px){.menu-content{grid-template-columns:1fr;max-width:440px;max-height:95vh;overflow:auto}.side-panel{display:grid;grid-template-columns:1fr 1fr}.panel{padding:20px 18px}.logo{font-size:58px}.sub{margin:12px 0}.desc{margin-bottom:13px}.info-card{padding:11px}.menu-footer{display:none}}
 </style>
 </head>
 <body>
@@ -116,33 +93,40 @@ canvas{display:block;width:100vw;height:100vh}
    <div class="small">REXSUS STUDIOS · PLAY BEYOND LIMITS</div>
   </div>
   <div class="side-panel">
-   <div class="info-card">
-    <div class="info-title">YOUR MISSION</div>
-    <div class="info-main">SADECE HAYATTA KAL.</div>
-    <div class="info-text">Kapıya ulaş. Tuzaklardan kaç. Ve oyuna asla güvenme.</div>
-   </div>
-   <div class="info-card">
-    <div class="info-title">3 DÜŞMAN BİYOM</div>
-    <div class="info-main">HER BÖLGE DAHA ZOR</div>
-    <div class="info-text">Karanlık Vadi, Buz Dünyası ve Lav Cehennemi seni bekliyor.</div>
-    <div class="biome-row"><div class="biome-dot dot1"></div><div class="biome-dot dot2"></div><div class="biome-dot dot3"></div></div>
-   </div>
-   <div class="info-card">
-    <div class="info-title">KONTROLLER</div>
-    <div class="info-main">HAREKET ET · ZIPLA</div>
-    <div class="info-text">A / D veya yön tuşları · SPACE ile zıpla. Mobilde ekran tuşlarını kullan.</div>
-   </div>
+   <div class="info-card"><div class="info-title">YOUR MISSION</div><div class="info-main">SADECE HAYATTA KAL.</div><div class="info-text">Kapıya ulaş. Tuzaklardan kaç. Ve oyuna asla güvenme.</div></div>
+   <div class="info-card"><div class="info-title">3 DÜŞMAN BİYOM</div><div class="info-main">HER BÖLGE DAHA ZOR</div><div class="info-text">Karanlık Vadi, Buz Dünyası ve Lav Cehennemi seni bekliyor.</div><div class="biome-row"><div class="biome-dot dot1"></div><div class="biome-dot dot2"></div><div class="biome-dot dot3"></div></div></div>
+   <div class="info-card"><div class="info-title">KONTROLLER</div><div class="info-main">HAREKET ET · ZIPLA</div><div class="info-text">A / D veya yön tuşları · SPACE ile zıpla. Mobilde ekran tuşlarını kullan.</div></div>
   </div>
  </div>
  <div class="menu-footer">REXSUS STUDIOS · EST. 2026 · ENTER THE DEVIL'S WORLD</div>
 </div>
 <div id="rotate">📱<br><br>TELEFONUNU YATAY ÇEVİR<br><br><span style="font-size:13px;color:#aaa">Oyun yatay ekran için tasarlandı.</span></div>
 <div id="mobile">
- <div class="pad" id="left">◀</div>
- <div class="pad" id="right">▶</div>
- <div class="pad" id="jump">JUMP</div>
+ <div class="pad" id="left">◀</div><div class="pad" id="right">▶</div><div class="pad" id="jump">JUMP</div>
 </div>
 <button id="restart">↻ YENİDEN</button>
+
+<div id="adminOverlay">
+ <div id="adminBox">
+  <h2>REXSUS ADMIN</h2>
+  <p>YÖNETİCİ ERİŞİM PANELİ</p>
+  <div id="adminLogin">
+   <input id="adminPass" type="password" placeholder="Yönetici şifresi" autocomplete="off">
+   <button class="adminBtn" id="adminSubmit">GİRİŞ YAP</button>
+  </div>
+  <div id="adminTools">
+   <button class="adminBtn" id="godBtn">ÖLÜMSÜZLÜK: KAPALI</button>
+   <button class="adminBtn" id="jumpBtn">SINIRSIZ ZIPLAMA: KAPALI</button>
+   <button class="adminBtn" id="skipBtn">SONRAKİ BÖLÜM</button>
+   <label class="adminLabel">HAREKET HIZI: <span id="speedValue">1.0x</span></label>
+   <input id="adminSpeed" type="range" min="0.5" max="3" step="0.1" value="1">
+   <button class="adminBtn" id="resetDeathsBtn">ÖLÜM SAYACINI SIFIRLA</button>
+   <button class="adminBtn" id="resetCheatsBtn">TÜM HİLELERİ KAPAT</button>
+  </div>
+  <div id="adminStatus"></div>
+  <button class="adminBtn adminClose" id="adminClose">KAPAT (F1 / ESC)</button>
+ </div>
+</div>
 
 <script>
 (()=>{
@@ -159,6 +143,7 @@ function resize(){
 }
 addEventListener("resize",resize);resize();
 const $=id=>document.getElementById(id);
+
 let playing=false,level=0,deaths=0,frame=0,camera=0;
 let platforms=[],spikes=[],hazards=[],particles=[];
 let worldWidth=1600,exit={};
@@ -166,8 +151,81 @@ let toastTimer=0,shake=0,jumpBuffer=0;
 let entering=false,enterTimer=0;
 let keys={left:false,right:false};
 let hazardClock=0;
+
+let adminUnlocked=false;
+let godMode=false;
+let infiniteJump=false;
+let speedMultiplier=1;
+let adminOpen=false;
+
 const player={x:65,y:420,w:27,h:35,vx:0,vy:0,onGround:false,face:1,dead:false,coyote:0};
 const gravity=.62,jumpPower=13.4,speed=4.5;
+
+function openAdmin(){
+ adminOpen=true;
+ $("adminOverlay").style.display="flex";
+ $("adminPass").value="";
+ $("adminStatus").textContent="";
+ $("adminLogin").style.display=adminUnlocked?"none":"block";
+ $("adminTools").style.display=adminUnlocked?"block":"none";
+ if(adminUnlocked)updateAdminButtons();
+ else setTimeout(()=>$("adminPass").focus(),50);
+}
+function closeAdmin(){
+ adminOpen=false;
+ $("adminOverlay").style.display="none";
+ keys.left=false;keys.right=false;
+}
+function updateAdminButtons(){
+ $("godBtn").textContent="ÖLÜMSÜZLÜK: "+(godMode?"AÇIK":"KAPALI");
+ $("godBtn").classList.toggle("active",godMode);
+ $("jumpBtn").textContent="SINIRSIZ ZIPLAMA: "+(infiniteJump?"AÇIK":"KAPALI");
+ $("jumpBtn").classList.toggle("active",infiniteJump);
+ $("adminSpeed").value=speedMultiplier;
+ $("speedValue").textContent=speedMultiplier.toFixed(1)+"x";
+}
+$("adminSubmit").onclick=()=>{
+ if($("adminPass").value==="superrexsus"){
+  adminUnlocked=true;
+  $("adminLogin").style.display="none";
+  $("adminTools").style.display="block";
+  $("adminStatus").textContent="ERİŞİM ONAYLANDI!";
+  updateAdminButtons();
+ }else{
+  $("adminStatus").textContent="HATALI ŞİFRE!";
+  $("adminPass").value="";
+ }
+};
+$("adminPass").addEventListener("keydown",e=>{
+ if(e.key==="Enter")$("adminSubmit").click();
+});
+$("adminClose").onclick=closeAdmin;
+$("godBtn").onclick=()=>{
+ godMode=!godMode;updateAdminButtons();
+ say("ÖLÜMSÜZLÜK "+(godMode?"AÇILDI":"KAPATILDI"));
+};
+$("jumpBtn").onclick=()=>{
+ infiniteJump=!infiniteJump;updateAdminButtons();
+ say("SINIRSIZ ZIPLAMA "+(infiniteJump?"AÇILDI":"KAPATILDI"));
+};
+$("adminSpeed").oninput=()=>{
+ speedMultiplier=Number($("adminSpeed").value);
+ updateAdminButtons();
+};
+$("skipBtn").onclick=()=>{
+ if(!playing){$("adminStatus").textContent="ÖNCE OYUNA BAŞLA!";return;}
+ if(level>=levels.length-1){finishLevel();return;}
+ level++;resetLevel();say("YÖNETİCİ: BÖLÜM ATLANDI!",1200);
+};
+$("resetDeathsBtn").onclick=()=>{
+ deaths=0;$("deaths").textContent="0";
+ $("adminStatus").textContent="ÖLÜM SAYACI SIFIRLANDI.";
+};
+$("resetCheatsBtn").onclick=()=>{
+ godMode=false;infiniteJump=false;speedMultiplier=1;
+ updateAdminButtons();say("HİLELER KAPATILDI.");
+};
+
 const biomes=[
  {name:"KARANLIK VADİ",sky:["#111a35","#282342","#493047"],mountain:"#292643",ground:"#303e5c",top:"#778caf",accent:"#ff405d"},
  {name:"BUZ DÜNYASI",sky:["#10243b","#28506b","#6d9eae"],mountain:"#23465b",ground:"#355b75",top:"#a5e6f2",accent:"#4ce3ff"},
@@ -218,26 +276,10 @@ function startMusic(){
   melody.frequency.setTargetAtTime(notes[note++%notes.length],now,.7);
  },2400);
 }
-function addSpike(x,y,w=48,hidden=false,moving=false){
- spikes.push({
-  x,y,w,h:35,baseX:x,baseY:y,active:true,hidden,
-  popping:false,popTimer:0,moving,moveRange:24+Math.min(36,level*1.3),
-  moveSpeed:.045+Math.min(.025,level*.001),revealAt:x-100,
-  triggered:false,armTimer:0
- });
-}
 function resetLevel(){
  const l=levels[level];worldWidth=l.width;
- platforms=l.p.map((p,i)=>({
-  x:p[0],y:p[1],w:p[2],h:p[3],baseX:p[0],baseY:p[1],id:i,
-  active:true,cracking:false,collapseTimer:0,moving:false,delta:0,
-  range:45,vanish:false,troll:false,triggered:false
- }));
- spikes=l.s.map((s,i)=>({
-  x:s[0],y:s[1],w:s[2],h:s[3],baseX:s[0],baseY:s[1],
-  active:true,hidden:false,popping:false,popTimer:0,moving:false,
-  moveRange:35,moveSpeed:.045,revealAt:s[0]-100,triggered:false,armTimer:0
- }));
+ platforms=l.p.map((p,i)=>({x:p[0],y:p[1],w:p[2],h:p[3],baseX:p[0],baseY:p[1],id:i,active:true,cracking:false,collapseTimer:0,moving:false,delta:0,range:45,vanish:false,troll:false,triggered:false}));
+ spikes=l.s.map((s,i)=>({x:s[0],y:s[1],w:s[2],h:s[3],baseX:s[0],baseY:s[1],active:true,hidden:false,popping:false,popTimer:0,moving:false,moveRange:35,moveSpeed:.045,revealAt:s[0]-100,triggered:false,armTimer:0}));
  hazards=[];particles=[];frame=0;camera=0;shake=0;entering=false;enterTimer=0;jumpBuffer=0;hazardClock=0;
  player.x=65;player.y=420;player.vx=0;player.vy=0;player.onGround=false;player.dead=false;player.face=1;player.coyote=0;
  exit={x:l.exit,y:390,w:48,h:65,open:false,changed:false};
@@ -248,37 +290,22 @@ function resetLevel(){
  if(l.trick==="moving")platforms.forEach((p,i)=>{if(i===1||i===3){p.moving=true;p.range=55+difficulty*3;}});
  if(l.trick==="vanish")platforms.forEach((p,i)=>{if(i===1||i===3)p.vanish=true;});
  if(l.trick==="combo"){if(platforms[1])platforms[1].vanish=true;if(spikes[2])spikes[2].hidden=true;if(platforms[5]){platforms[5].moving=true;platforms[5].range=65;}}
-
- // İlk 10 bölüm artık gerçek bir meydan okuma.
  if(level<10){
   const difficultyBoost=level;
-  // Bazı güvenli görünen platformlar kısa süre sonra çöker.
-  platforms.forEach((p,i)=>{
-   if(i>0&&i<platforms.length-1&&((i+level)%2===0)){
-    p.vanish=true;p.troll=true;
-   }
-  });
-  // Ek gizli ve hareketli dikenler.
+  platforms.forEach((p,i)=>{if(i>0&&i<platforms.length-1&&((i+level)%2===0)){p.vanish=true;p.troll=true;}});
   if(level>=1)addSpike(l.width*.39,420,48,true,true);
   if(level>=2)addSpike(l.width*.67,420,52,true,level>=4);
   if(level>=4)addSpike(l.width*.83,420,48,level%2===0,true);
   if(level>=6)addSpike(l.width*.55,420,55,true,true);
   if(level>=8)addSpike(l.width*.91,420,50,true,true);
-  // Platformlara yaklaşınca hareket eden tuzaklar.
-  if(level>=3)platforms.forEach((p,i)=>{
-   if(i>0&&i<platforms.length-1&&i%2===1){p.moving=true;p.range=45+level*2;}
-  });
+  if(level>=3)platforms.forEach((p,i)=>{if(i>0&&i<platforms.length-1&&i%2===1){p.moving=true;p.range=45+level*2;}});
  }
- if(level>=3)spikes.forEach((s,i)=>{
-  if(i%2===0){s.moving=true;s.moveRange=20+Math.min(45,difficulty*5);s.moveSpeed=.035+difficulty*.002;}
- });
+ if(level>=3)spikes.forEach((s,i)=>{if(i%2===0){s.moving=true;s.moveRange=20+Math.min(45,difficulty*5);s.moveSpeed=.035+difficulty*.002;}});
  if(l.variant===1){if(spikes[0])spikes[0].hidden=true;if(platforms[2]&&level%2===0)platforms[2].vanish=true;}
  if(l.variant===2){if(platforms[2]){platforms[2].moving=true;platforms[2].range=45;}if(spikes[1])spikes[1].hidden=true;if(platforms[1])platforms[1].vanish=true;}
  if(level>=5)addSpike(l.width*.52,420,42,true,true);
  if(level>=12)addSpike(l.width*.76,420,48,true,true);
- if(level>=8)platforms.forEach((p,i)=>{
-  if(i>0&&i<platforms.length-1&&i%2===1){p.vanish=true;p.troll=true;}
- });
+ if(level>=8)platforms.forEach((p,i)=>{if(i>0&&i<platforms.length-1&&i%2===1){p.vanish=true;p.troll=true;}});
  $("level").textContent=`BÖLÜM ${level+1} / 30 · ${l.name}`;
  $("coins").textContent=level+1;$("deaths").textContent=deaths;
  if(level===0)say("İLK BÖLÜMDE BİLE RAHAT YOK!",1500);
@@ -288,11 +315,19 @@ function resetLevel(){
  if(level===20)say("LAV CEHENNEMİNE GİRDİN!",1600);
  if(level===25)say("ŞEYTAN BİLE BU KADARINI YAPMAZ!",1500);
 }
+function addSpike(x,y,w=48,hidden=false,moving=false){
+ spikes.push({x,y,w,h:35,baseX:x,baseY:y,active:true,hidden,popping:false,popTimer:0,moving,moveRange:24+Math.min(36,level*1.3),moveSpeed:.045+Math.min(.025,level*.001),revealAt:x-100,triggered:false,armTimer:0});
+}
 function startGame(){
  $("menu").style.display="none";$("restart").style.display="block";playing=true;level=0;deaths=0;startMusic();resetLevel();say("BOL ŞANS. İHTİYACIN OLACAK.",1600);
 }
 $("start").onclick=startGame;
 function die(message){
+ if(godMode){
+  player.vy=0;
+  player.y=Math.min(player.y,390);
+  return;
+ }
  if(player.dead||entering)return;
  player.dead=true;deaths++;$("deaths").textContent=deaths;shake=12;say(message,800);
  for(let i=0;i<18;i++)makeParticle(player.x+player.w/2,player.y+15,"#ff405d");
@@ -335,21 +370,18 @@ function update(){
   const dist=Math.abs((player.x+player.w/2)-(s.baseX+s.w/2));
   if(s.moving&&dist<210)s.x=s.baseX+Math.sin(frame*s.moveSpeed)*s.moveRange;
   else if(s.moving)s.x=s.baseX;
-  if(s.hidden&&dist<105){
-   s.hidden=false;s.triggered=true;s.armTimer=12;say("SÜRPRİİİZ!",650);
-  }
+  if(s.hidden&&dist<105){s.hidden=false;s.triggered=true;s.armTimer=12;say("SÜRPRİİİZ!",650);}
   if(s.armTimer>0)s.armTimer--;
  }
- // Yönler artık asla tersine dönmez.
  const dir=(keys.right?1:0)-(keys.left?1:0);
- player.vx=dir*speed;if(dir)player.face=dir;
+ player.vx=dir*speed*speedMultiplier;if(dir)player.face=dir;
  if(player.onGround){
   const under=platforms.find(p=>p.active&&player.x+player.w>p.x&&player.x<p.x+p.w&&Math.abs(player.y+player.h-p.y)<3);
   if(under&&under.moving)player.x+=under.delta;
  }
  if(player.onGround)player.coyote=8;else player.coyote=Math.max(0,player.coyote-1);
  if(jumpBuffer>0){
-  if(player.onGround||player.coyote>0){player.vy=-jumpPower;player.onGround=false;player.coyote=0;jumpBuffer=0;}
+  if(player.onGround||player.coyote>0||infiniteJump){player.vy=-jumpPower;player.onGround=false;player.coyote=0;jumpBuffer=0;}
   else jumpBuffer--;
  }
  player.x+=player.vx;player.x=Math.max(0,Math.min(worldWidth-player.w,player.x));
@@ -362,10 +394,7 @@ function update(){
    const newBottom=player.y+player.h;
    if(horizontal&&oldBottom<=p.y+5&&newBottom>=p.y){
     player.y=p.y-player.h;player.vy=0;player.onGround=true;player.coyote=8;
-    if(p.vanish&&!p.cracking){
-     p.cracking=true;p.collapseTimer=level<10?9:12;
-     say(p.troll?"HAHA! ZEMİN GİDİYOR!":"ZEMİN ÇATLIYOR!",550);
-    }
+    if(p.vanish&&!p.cracking){p.cracking=true;p.collapseTimer=level<10?9:12;say(p.troll?"HAHA! ZEMİN GİDİYOR!":"ZEMİN ÇATLIYOR!",550);}
     break;
    }
   }
@@ -382,10 +411,7 @@ function update(){
   if(!s.active||s.hidden||s.armTimer>0)continue;
   if(overlap(player,{x:s.x+5,y:s.y+7,w:s.w-10,h:s.h-7}))die("DİKENLERE BASTIN!");
  }
- if(l.trick==="pop"){
-  for(const s of spikes)if(s.popping&&s.active&&player.x>s.x-100){s.active=false;s.popTimer=0;}
- }
- // Düşen engeller daha erken ve daha sık geliyor.
+ if(l.trick==="pop"){for(const s of spikes)if(s.popping&&s.active&&player.x>s.x-100){s.active=false;s.popTimer=0;}}
  hazardClock++;
  const hazardInterval=Math.max(43,105-level*2);
  if((level>=3||l.trick==="ceiling"||l.trick==="combo")&&player.x>260&&player.x<worldWidth-150&&hazardClock>hazardInterval){
@@ -406,9 +432,7 @@ function update(){
   for(const p of platforms){
    if(!p.active||p.cracking||!p.vanish)continue;
    const near=player.x+player.w>p.x-20&&player.x<p.x+p.w+20;
-   if(near&&player.y+player.h>=p.y-45&&player.y<p.y+10&&!p.triggered){
-    p.triggered=true;p.cracking=true;p.collapseTimer=12;
-   }
+   if(near&&player.y+player.h>=p.y-45&&player.y<p.y+10&&!p.triggered){p.triggered=true;p.cracking=true;p.collapseTimer=12;}
   }
  }
  if(l.trick==="fakeexit"&&player.x>exit.x-100&&!exit.changed){exit.changed=true;exit.x-=150;say("KAPI KAÇTI! 😂",850);}
@@ -417,7 +441,10 @@ function update(){
  exit.open=distance<100;
  const doorZone={x:exit.x+12,y:exit.y+8,w:exit.w-24,h:exit.h-5};
  if(exit.open&&overlap(player,doorZone))nextLevel();
- if(player.y>H+100)die("BOŞLUĞA DÜŞTÜN!");
+ if(player.y>H+100){
+  if(godMode){player.y=350;player.vy=0;}
+  else die("BOŞLUĞA DÜŞTÜN!");
+ }
  const target=Math.max(0,Math.min(worldWidth-W,player.x-350));camera+=(target-camera)*.13;
 }
 function drawBackground(){
@@ -435,7 +462,6 @@ function drawBackground(){
   ctx.fillStyle=i%2?"#22243e":biome.mountain;ctx.beginPath();ctx.moveTo(x,470);ctx.lineTo(x+135,230+(i%3)*28);ctx.lineTo(x+280,470);ctx.fill();
  }
  ctx.fillStyle=biome.top;ctx.globalAlpha=.75;ctx.beginPath();ctx.arc(790,105,36,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
- // Uzakta dekoratif kuleler.
  for(let i=0;i<6;i++){
   const x=((i*220-camera*.32)%1500+1500)%1500-100;
   ctx.fillStyle="#080c1c66";ctx.fillRect(x,350,35,120);
@@ -512,8 +538,17 @@ function draw(){
  }
  ctx.restore();
 }
-function loop(){update();draw();requestAnimationFrame(loop);}loop();
+function loop(){update();draw();requestAnimationFrame(loop);}
+loop();
+
 addEventListener("keydown",e=>{
+ if(e.code==="F1"){
+  e.preventDefault();
+  if(adminOpen)closeAdmin();else openAdmin();
+  return;
+ }
+ if(e.code==="Escape"&&adminOpen){closeAdmin();return;}
+ if(adminOpen)return;
  if(["ArrowLeft","ArrowRight","ArrowUp","Space"].includes(e.code))e.preventDefault();
  if(e.code==="ArrowLeft"||e.code==="KeyA")keys.left=true;
  if(e.code==="ArrowRight"||e.code==="KeyD")keys.right=true;
@@ -527,6 +562,7 @@ addEventListener("keyup",e=>{
 function hold(id,key){
  const el=$(id);
  el.addEventListener("pointerdown",e=>{
+  if(adminOpen)return;
   e.preventDefault();keys[key]=true;
   try{el.setPointerCapture(e.pointerId);}catch(_){}
  });
@@ -536,7 +572,7 @@ function hold(id,key){
  el.addEventListener("lostpointercapture",release);
 }
 hold("left","left");hold("right","right");
-$("jump").addEventListener("pointerdown",e=>{e.preventDefault();requestJump();});
+$("jump").addEventListener("pointerdown",e=>{if(adminOpen)return;e.preventDefault();requestJump();});
 $("restart").onclick=()=>{if(playing)resetLevel();};
 addEventListener("blur",()=>{keys.left=false;keys.right=false;});
 })();
