@@ -53,19 +53,46 @@ button:active{background:#77542f}
 @keyframes catPop{from{transform:scale(.92) rotate(-3deg)}to{transform:scale(1.08) rotate(3deg)}}
 #gameOver{text-align:center}
 @media(max-width:700px){
- #stats{width:150px;padding:8px;top:5px;left:5px}
- #hero{font-size:14px}
- #quests{width:155px;top:5px;right:5px;padding:8px}
- #questText{font-size:10px}
+ #stats{width:125px;padding:6px;top:5px;left:5px}
+ #brand{font-size:8px;letter-spacing:2px}
+ #hero{font-size:12px;margin:3px 0}
+ .info{font-size:9px}
+ .bar{height:5px;margin:3px 0 5px}
+ #quests{width:140px;top:5px;right:5px;padding:6px}
+ .heading{font-size:8px;margin-bottom:4px}
+ #questText{font-size:9px;line-height:1.3}
  #location{top:105px;left:8px;font-size:9px}
  #controls{display:none}
- #mobile{display:block}
+ #mobile{display:block;bottom:8px;left:7px}
+ .pad{grid-template-columns:36px 36px 36px;grid-template-rows:36px 36px 36px;gap:2px}
+ .pad button{font-size:15px;border-radius:5px}
  #dialog{bottom:105px}
  #hint{bottom:100px}
  #musicControl{bottom:12px;left:50%;transform:translateX(-50%)}
- #actions{bottom:15px;right:8px;max-width:130px}
- #actions button{width:49px;height:49px;font-size:9px}
+ #actions{bottom:9px;right:6px;max-width:115px;gap:4px}
+ #actions button{width:43px;height:43px;font-size:8px}
 }
+@media(orientation:landscape) and (max-height:600px){
+ #stats{width:115px;padding:5px}
+ #brand{font-size:7px;letter-spacing:1px}
+ #hero{font-size:11px;margin:2px 0}
+ .info{font-size:8px}
+ .bar{height:4px;margin:2px 0 4px}
+ #quests{width:125px;padding:5px}
+ #questText{font-size:8px;line-height:1.2}
+ .heading{font-size:7px;margin-bottom:3px}
+ #location{top:75px;left:6px;font-size:8px}
+ #mobile{bottom:5px;left:5px}
+ .pad{grid-template-columns:32px 32px 32px;grid-template-rows:32px 32px 32px;gap:2px}
+ .pad button{font-size:13px}
+ #actions{bottom:6px;right:5px;max-width:105px;gap:3px}
+ #actions button{width:39px;height:39px;font-size:7px}
+ #hint{bottom:65px;font-size:9px}
+ #dialog{bottom:55px}
+ #musicControl{bottom:5px;left:50%;transform:translateX(-50%)}
+ #musicControl button{font-size:9px;padding:5px 7px}
+}
+
 </style>
 </head>
 <body>
